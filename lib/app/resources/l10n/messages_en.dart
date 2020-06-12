@@ -1369,6 +1369,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "voucherDetailsAmount": MessageLookupByLibrary.simpleMessage("Amount"),
         "voucherDetailsAvailableBalance":
             MessageLookupByLibrary.simpleMessage("Available balance"),
+        "voucherExpired":
+            MessageLookupByLibrary.simpleMessage("This offer has expired"),
         "voucherListEmpty": MessageLookupByLibrary.simpleMessage(
             "There are no vouchers available at the moment"),
         "voucherNoExpirationDate": MessageLookupByLibrary.simpleMessage(

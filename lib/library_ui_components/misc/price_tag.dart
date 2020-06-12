@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lykke_mobile_mavn/app/resources/color_styles.dart';
 import 'package:lykke_mobile_mavn/app/resources/text_styles.dart';
 import 'package:lykke_mobile_mavn/library_models/fiat_currency.dart';
+import 'package:lykke_mobile_mavn/library_ui_components/misc/null_safe_text.dart';
 
 class PriceTag extends StatelessWidget {
   const PriceTag({@required this.price});
@@ -16,8 +17,8 @@ class PriceTag extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(4),
         width: 70,
-        child: Text(
-          '${price?.assetSymbol} ${price?.displayValueWithoutTrailingZeroes}',
+        child: NullSafeText(
+          price?.displayValueWithSymbol,
           style: TextStyles.lightBodyBody3Regular,
         ),
       );

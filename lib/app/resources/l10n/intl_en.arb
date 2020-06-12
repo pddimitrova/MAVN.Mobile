@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-06-12T12:30:59.511117",
+  "@@last_modified": "2020-06-12T16:44:10.198533",
   "networkErrorTitle": "Internet connection problem",
   "@networkErrorTitle": {
     "type": "text",
@@ -3255,6 +3255,11 @@
   },
   "voucherNoExpirationDate": "This offer has no expiration date",
   "@voucherNoExpirationDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "voucherExpired": "This offer has expired",
+  "@voucherExpired": {
     "type": "text",
     "placeholders": {}
   },

@@ -49,14 +49,14 @@ class VoucherCardWidget extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final localizedStrings = useLocalizedStrings();
-    final expirationDateText = expirationDate != null
-        ? localizedStrings
-            .expirationDate(_dateFormatCurrentYear.format(expirationDate))
-        : localizedStrings.offerNoExpirationDate;
+    final expirationDateText = _getExpirationDate(localizedStrings);
     final purchaseDateText = localizedStrings
         .dateOfPurchase(_dateFormatCurrentYear.format(purchaseDate));
 
     const topHeight = cardHeight * _topSectionRatio;
+
+    final voucherColor =
+        voucherStatus == VoucherStatus.expired ? ColorStyles.black : color;
 
     return Stack(
       children: <Widget>[
@@ -81,7 +81,7 @@ class VoucherCardWidget extends HookWidget {
                         child: Stack(
                           children: <Widget>[
                             TintedContainer(
-                              color: color,
+                              color: voucherColor,
                               imageUrl: imageUrl,
                               child: Padding(
                                 padding: const EdgeInsets.all(12),
@@ -112,7 +112,7 @@ class VoucherCardWidget extends HookWidget {
                             horizontal: 12, vertical: 4),
                         width: double.infinity,
                         height: cardHeight - topHeight,
-                        color: color,
+                        color: voucherColor,
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -164,13 +164,24 @@ class VoucherCardWidget extends HookWidget {
             ),
           ),
         ),
-        Positioned(
-          right: 8,
-          top: 16,
-          child: PriceTag(price: price),
-        ),
+        if (voucherStatus != VoucherStatus.expired)
+          Positioned(
+            right: 8,
+            top: 16,
+            child: PriceTag(price: price),
+          ),
       ],
     );
+  }
+
+  String _getExpirationDate(LocalizedStrings localizedStrings) {
+    if (voucherStatus == VoucherStatus.expired) {
+      return localizedStrings.voucherExpired;
+    }
+    return expirationDate != null
+        ? localizedStrings
+            .expirationDate(_dateFormatCurrentYear.format(expirationDate))
+        : localizedStrings.offerNoExpirationDate;
   }
 
   Widget _buildTag(LocalizedStrings localizedStrings) {
@@ -182,7 +193,7 @@ class VoucherCardWidget extends HookWidget {
       );
     }
 
-    if (expirationDate != null && DateTime.now().isAfter(expirationDate)) {
+    if (voucherStatus == VoucherStatus.expired) {
       return _VoucherTag(
         text: localizedStrings.expired,
         color: ColorStyles.black,
@@ -205,13 +216,11 @@ class VoucherCardWidget extends HookWidget {
       );
 
   Widget _buildCircle() => Container(
-        child: Container(
-          height: _cardInsetSize,
-          width: _cardInsetSize,
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
+        height: _cardInsetSize,
+        width: _cardInsetSize,
+        decoration: const BoxDecoration(
+          color: ColorStyles.offWhite,
+          shape: BoxShape.circle,
         ),
       );
 }

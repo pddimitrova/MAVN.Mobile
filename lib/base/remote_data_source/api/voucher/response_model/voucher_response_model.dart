@@ -87,4 +87,4 @@ class VoucherListResponseModel {
   final int totalCount;
 }
 
-enum VoucherStatus { none, inStock, reserved, sold }
+enum VoucherStatus { none, inStock, reserved, sold, expired }
