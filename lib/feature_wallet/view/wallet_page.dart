@@ -13,15 +13,13 @@ import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_page_bloc.d
 import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_refresh_bloc_output.dart';
 import 'package:lykke_mobile_mavn/feature_payment_request_list/bloc/pending_payment_requests_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_transaction_history/bloc/transaction_history_bloc.dart';
-import 'package:lykke_mobile_mavn/feature_transaction_history/bloc/transaction_history_bloc_output.dart';
-import 'package:lykke_mobile_mavn/feature_transaction_history/view/transaction_history_view.dart';
+import 'package:lykke_mobile_mavn/feature_transaction_history/view/transaction_history_widget.dart';
 import 'package:lykke_mobile_mavn/feature_wallet/bloc/wallet_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_wallet/bloc/wallet_bloc_output.dart';
 import 'package:lykke_mobile_mavn/feature_wallet/ui_components/wallet_actions_widget.dart';
 import 'package:lykke_mobile_mavn/feature_wallet/ui_components/wallet_balance_section.dart';
 import 'package:lykke_mobile_mavn/feature_wallet/ui_components/wallet_disabled_widget.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
-import 'package:lykke_mobile_mavn/library_custom_hooks/on_dispose_hook.dart';
 import 'package:lykke_mobile_mavn/library_custom_hooks/throttling_hook.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/error/network_error.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/misc/disabled_overlay.dart';
@@ -45,15 +43,14 @@ class WalletPage extends HookWidget {
         useBlocState<GenericListState>(partnerPaymentsPendingBloc);
 
     final transactionHistoryBloc = useTransactionHistoryBloc();
-    final transactionHistoryState =
-        useBlocState<TransactionHistoryState>(transactionHistoryBloc);
+    final transactionHistoryState = useBlocState(transactionHistoryBloc);
 
     final bottomBarPageBloc = useBottomBarPageBloc();
     final throttler = useThrottling(duration: const Duration(seconds: 30));
 
     void loadData() {
       partnerPaymentsPendingBloc.updateGenericList();
-      transactionHistoryBloc.loadTransactionHistory(reset: true);
+      transactionHistoryBloc.updateGenericList();
     }
 
     useBlocEventListener(balanceBloc, (event) {
@@ -78,46 +75,34 @@ class WalletPage extends HookWidget {
       partnerPaymentsPendingState,
     ].any((state) => state is BaseNetworkErrorState);
 
-    useOnDispose(router.markAsClosedBoughtVouchersPage);
-
     return Scaffold(
       backgroundColor: ColorStyles.alabaster,
       appBar: AppBar(
         title: Text(
           useLocalizedStrings().walletPageTitle,
-          style: TextStyles.h1PageHeader,
+          style: TextStyles.darkHeaderTitle,
         ),
         backgroundColor: ColorStyles.alabaster,
         elevation: 0,
       ),
-      body: NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          if (transactionHistoryBloc.currentState is TransactionHistoryLoaded &&
-              scrollNotification is ScrollUpdateNotification &&
-              scrollNotification.metrics.maxScrollExtent ==
-                  scrollNotification.metrics.pixels) {
-            transactionHistoryBloc.loadTransactionHistory();
-          }
-        },
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildContent(
-                  isNetworkError,
-                  loadData,
-                  transactionHistoryBloc,
-                  walletIsDisabled,
-                  balanceBloc,
-                  router,
-                  balanceState,
-                  partnerPaymentsPendingState,
-                  walletState,
-                  tokenSymbol.value,
-                ),
-              ],
-            ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              _buildContent(
+                isNetworkError,
+                loadData,
+                transactionHistoryBloc,
+                walletIsDisabled,
+                balanceBloc,
+                router,
+                balanceState,
+                partnerPaymentsPendingState,
+                walletState,
+                tokenSymbol.value,
+              ),
+            ],
           ),
         ),
       ),
@@ -182,7 +167,7 @@ class WalletPage extends HookWidget {
                     router: router,
                     partnerPaymentsPendingState: partnerPaymentsPendingState,
                   ),
-                  TransactionHistoryView(),
+                  TransactionHistoryWidget(),
                 ],
               ),
               if (walletIsDisabled)

@@ -16,6 +16,7 @@ import 'package:lykke_mobile_mavn/base/router/base_router.dart';
 import 'package:lykke_mobile_mavn/base/router/router_page_factory.dart';
 import 'package:lykke_mobile_mavn/base/router/router_page_names.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/view/scanned_info_dialog.dart';
+import 'package:lykke_mobile_mavn/feature_bottom_bar/view/scanned_info_error_dialog.dart';
 import 'package:lykke_mobile_mavn/feature_email_verification/view/email_verification_page.dart';
 import 'package:lykke_mobile_mavn/feature_wallet_linking/bloc/link_wallet_bloc.dart';
 import 'package:lykke_mobile_mavn/library_dependency_injection/core.dart';
@@ -23,6 +24,7 @@ import 'package:lykke_mobile_mavn/library_qr_actions/actions/qr_base_action.dart
 import 'package:lykke_mobile_mavn/library_ui_components/dialog/custom_dialog.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/dialog/delete_account_dialog.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/dialog/enable_biometrics_dialog.dart';
+import 'package:lykke_mobile_mavn/library_ui_components/dialog/enable_location_dialog.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/dialog/log_out_confirmation_dialog.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/error/wallet_disabled_dialog.dart';
 import 'package:store_redirect/store_redirect.dart';
@@ -732,10 +734,17 @@ class Router extends BaseRouter {
 //endregion Static pages from Account
 
   //region Vouchers
-  Future<void> pushVoucherListPage() async {
+  Future<void> pushCampaignListPage() async {
     await pushPage(
       RouterPageFactory.getCampaignListPage(),
       pageName: RouterPageName.campaignListPage,
+    );
+  }
+
+  Future<void> pushCampaignMapPage() async {
+    await pushPage(
+      RouterPageFactory.getCampaignMapPage(),
+      pageName: RouterPageName.campaignMapPage,
     );
   }
 
@@ -747,30 +756,41 @@ class Router extends BaseRouter {
     );
   }
 
-  //TODO: Remove _isBoughtVouchersCurrentRoute custom implementation once
-  //we have ModalRoute.of(_navigatorKey.currentContext) working as expected.
-  bool get isBoughtVouchersCurrentRoute => _isBoughtVouchersCurrentRoute;
-
-  bool _isBoughtVouchersCurrentRoute = false;
-
   void pushBoughtVoucherSuccessPage() {
-    _isBoughtVouchersCurrentRoute = true;
-
-    //TODO open the bought vouchers tab when it's implemented
     popToRoot();
     switchToWalletTab();
   }
 
-  void markAsClosedBoughtVouchersPage() {
-    _isBoughtVouchersCurrentRoute = false;
-  }
-
   Future<void> pushVoucherDetailsPage({
     @required VoucherResponseModel voucher,
+    Color voucherColor,
   }) async {
     await pushPage(
-      RouterPageFactory.getVoucherDetailsPage(voucher: voucher),
+      RouterPageFactory.getVoucherDetailsPage(
+        voucher: voucher,
+        voucherColor: voucherColor,
+      ),
       pageName: RouterPageName.voucherDetailsPage,
+    );
+  }
+
+  Future<void> pushTransferVoucherPage({
+    @required String voucherShortCode,
+  }) async {
+    await pushPage(
+      RouterPageFactory.getTransferVoucherPage(
+        voucherShortCode: voucherShortCode,
+      ),
+      pageName: RouterPageName.voucherTransferPage,
+    );
+  }
+
+  Future<void> replaceWithVoucherTransferSuccessPage({
+    @required String receiverEmail,
+  }) async {
+    await replacePage(
+      RouterPageFactory.getVoucherTransferSuccessPage(receiverEmail),
+      pageName: RouterPageName.voucherTransferSuccessPage,
     );
   }
 
@@ -783,6 +803,15 @@ class Router extends BaseRouter {
       showDialog(
         child: ScannedInfoDialog(localizedStrings, action: action),
       );
+
+  Future<bool> showScannedInfoErrorDialog(
+          LocalizedStrings localizedStrings, QrBaseAction action) =>
+      showDialog(
+        child: ScannedInfoErrorDialog(localizedStrings, action: action),
+      );
+
+  Future<bool> showEnableLocationsDialog(LocalizedStrings localizedStrings) =>
+      showDialog(child: EnableLocationDialog(localizedStrings));
 
   //endregion Misc
 
@@ -797,16 +826,59 @@ class Router extends BaseRouter {
 
 //endregion Notifications
 
+//region SME linking
+
+  Future<void> pushSmeLinkingPage() async {
+    await pushPage(
+      RouterPageFactory.getSmeLinkingPage(),
+      pageName: RouterPageName.smeLinkingPage,
+    );
+  }
+
+  Future<void> replaceWithSmeLinkingSuccessPage() async {
+    await replacePage(
+      RouterPageFactory.getSmeLinkingSuccessPage(),
+      pageName: RouterPageName.smeLinkingSuccessPage,
+    );
+  }
+
+  Future<void> pushSmeInvalidateVoucherPage({
+    @required String voucherShortCode,
+  }) async {
+    await pushPage(
+      RouterPageFactory.getSmeInvalidateVoucherPage(
+        voucherShortCode: voucherShortCode,
+      ),
+      pageName: RouterPageName.smeInvalidateVoucherPage,
+    );
+  }
+
+  Future<void> replaceWithSmeInvalidateSuccessPage() async {
+    await replacePage(
+      RouterPageFactory.getSmeInvalidateVoucherSuccessPage(),
+      pageName: RouterPageName.smeInvalidateSuccessPage,
+    );
+  }
+
+//endregion SME linking
+
 //region Misc
 
-  Future<void> pushComingSoonPage({String title}) async {
+  Future<void> pushComingSoonPage({
+    String title,
+    bool hasBackButton = false,
+  }) async {
     await pushPage(
-      RouterPageFactory.getComingSoonPage(title: title),
+      RouterPageFactory.getComingSoonPage(
+        title: title,
+        hasBackButton: hasBackButton,
+      ),
       pageName: RouterPageName.comingSoonPage,
     );
   }
 
 //endregion Misc
+
 }
 
 Router useRouter() => ModuleProvider.of<AppModule>(useContext()).router;

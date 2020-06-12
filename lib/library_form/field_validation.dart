@@ -451,3 +451,81 @@ class PublicAddressRequiredFieldValidation extends FieldValidation<String> {
           onValidationError: onValidationError,
         );
 }
+
+class PartnerCodeRequiredFieldValidation extends FieldValidation<String> {
+  PartnerCodeRequiredFieldValidation({
+    VoidCallback onValidationError,
+  }) : super(
+          validate: FieldValidators.requiredText,
+          localizedString: LazyLocalizedStrings.partnerCodeRequired,
+          onValidationError: onValidationError,
+        );
+}
+
+class PartnerCodeInvalidFieldValidation extends FieldValidation<String> {
+  PartnerCodeInvalidFieldValidation({
+    VoidCallback onValidationError,
+  }) : super(
+          validate:
+              FieldValidators.matchesLength(FieldConstants.partnerCodeLength),
+          localizedString: LazyLocalizedStrings.partnerCodeInvalid(
+              FieldConstants.partnerCodeLength),
+          onValidationError: onValidationError,
+        );
+}
+
+class PartnerLinkingCodeRequiredFieldValidation
+    extends FieldValidation<String> {
+  PartnerLinkingCodeRequiredFieldValidation({
+    VoidCallback onValidationError,
+  }) : super(
+          validate: FieldValidators.requiredText,
+          localizedString: LazyLocalizedStrings.partnerCodeRequired,
+          onValidationError: onValidationError,
+        );
+}
+
+class PartnerLinkingCodeInvalidLengthFieldValidation
+    extends FieldValidation<String> {
+  PartnerLinkingCodeInvalidLengthFieldValidation({
+    VoidCallback onValidationError,
+  }) : super(
+          validate:
+              FieldValidators.matchesLength(FieldConstants.linkingCodeLength),
+          localizedString: LazyLocalizedStrings.partnerLinkingCodeInvalidLength(
+              FieldConstants.partnerCodeLength),
+          onValidationError: onValidationError,
+        );
+}
+
+class PartnerLinkingCodeInvalidFieldValidation extends FieldValidation<String> {
+  PartnerLinkingCodeInvalidFieldValidation({
+    VoidCallback onValidationError,
+  }) : super(
+          validate: FieldValidators.alphaNumeric,
+          localizedString: LazyLocalizedStrings.partnerLinkingCodeInvalid,
+          onValidationError: onValidationError,
+        );
+}
+
+class ReceiverEmailRequiredFieldValidation extends FieldValidation<String> {
+  ReceiverEmailRequiredFieldValidation({
+    VoidCallback onValidationError,
+  }) : super(
+          validate: FieldValidators.requiredText,
+          localizedString:
+              LazyLocalizedStrings.transferVoucherEmptyReceiverEmailError,
+          onValidationError: onValidationError,
+        );
+}
+
+class ReceiverEmailInvalidFieldValidation extends FieldValidation<String> {
+  ReceiverEmailInvalidFieldValidation({
+    VoidCallback onValidationError,
+  }) : super(
+          validate: FieldValidators.emailFormat,
+          localizedString:
+              LazyLocalizedStrings.transferVoucherInvalidReceiverEmailError,
+          onValidationError: onValidationError,
+        );
+}

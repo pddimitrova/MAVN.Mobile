@@ -27,7 +27,7 @@ class ExternalRouter {
     @required String phone,
     @required String message,
   }) async {
-    final String url = '{$whatsAppUrl}send?phone=$phone&text=$message';
+    final url = '{$whatsAppUrl}send?phone=$phone&text=$message';
     await canLaunchUrl(url)
         ? await launch(url)
         : await router.redirectToCustomAppStore(
@@ -39,6 +39,21 @@ class ExternalRouter {
   Future<bool> launchUrl(String urlString, {VoidCallback onLaunchError}) async {
     if (await canLaunchUrl(urlString)) {
       await launch(urlString);
+      // The delay to prevent instances where invocation is so quick,
+      // throttling does not occur.
+      await Future.delayed(const Duration(milliseconds: 100));
+    } else {
+      if (onLaunchError != null) onLaunchError();
+    }
+  }
+
+  Future<bool> launchWebsite(String urlString,
+      {VoidCallback onLaunchError}) async {
+    if (await canLaunchUrl(urlString)) {
+      await launch(
+        urlString,
+        forceSafariVC: false,
+      );
       // The delay to prevent instances where invocation is so quick,
       // throttling does not occur.
       await Future.delayed(const Duration(milliseconds: 100));

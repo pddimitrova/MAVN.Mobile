@@ -17,6 +17,7 @@ class ColorStyles {
   static const Color cloudyBlue = Color(0xffbdbdc2);
   static const Color charcoalGrey = Color(0xff393b49);
   static const Color white = Color(0xffffffff);
+  static const Color black = Color(0xff000000);
   static const Color pine = Color(0xff1f5822);
   static const Color accentSeaGreen = Color(0xffb4e2df);
   static const Color pale = Color(0xfffde5db);
@@ -79,4 +80,13 @@ class ColorStyles {
   static const Color jakarta = Color(0xff392F6C);
   static const Color blueStone = Color(0xff005F71);
   static const Color eminence = Color(0xff57266A);
+  static const Color shark = Color(0xff2E2E2F);
+  static const Color selectiveYellow = Color(0xffFFB100);
+  static const Color silver = Color(0xffBABABA);
+  static const Color apple = Color(0xff40B12B);
+  static const Color pictonBlue = Color(0xff2F8FEF);
+  static const Color manatee = Color(0xff979DA3);
+  static const Color manatee50 = Color(0x80979DA3);
+  static const Color wildSand = Color(0xFFF4F4F4);
+  static const Color froly = Color(0xffF87B73);
 }

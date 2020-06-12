@@ -42,6 +42,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static m9(amountInToken, token, amountInCurrency, currency) =>
       "${amountInToken} ${token} = ${amountInCurrency} ${currency}";
 
+  static m97(purchaseDate) => "Date of purchase: ${purchaseDate}";
+
   static m10(days) =>
       "${Intl.plural(days, one: '${days} day ago', other: '${days} days ago')}";
 
@@ -63,6 +65,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m18(email) =>
       "This link has expired, we’ve sent a new one to ${email}, please check your email and use the new link";
+
+  static m98(expirationDate) => "Expiration Date: ${expirationDate}";
 
   static m19(days) =>
       "${Intl.plural(days, one: '${days} day', other: '${days} days')}";
@@ -138,7 +142,7 @@ class MessageLookup extends MessageLookupByLibrary {
   static m45(token) =>
       "Sorry, you do not have sufficient ${token} points for this activity";
 
-  static m46(expirationDate) => "This offer expires on ${expirationDate}";
+  static m46(expirationDate) => "This offer expires on: ${expirationDate}";
 
   static m47(appName) => "Welcome to ${appName}";
 
@@ -151,6 +155,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Use your ${token} points on ${company} for invoices, hotel stays, restaurants and much more";
 
   static m51(token) => "Use ${token} points easily";
+
+  static m99(count) => "Partner code must be ${count} characters long";
+
+  static m100(count) => "Linking code must be ${count} characters long";
 
   static m52(count) =>
       "${Intl.plural(count, one: 'Make sure your password contains at least one lower case character', other: 'Make sure your password contains at least ${count} lower case characters')}";
@@ -196,9 +204,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m67(token) => "From external wallet to ${token} wallet";
 
+  static m101(sender) => "Receive from ${sender}";
+
   static m68(token) => "Receive ${token} points";
 
   static m69(token) => "Transfer ${token}";
+
+  static m102(recipient) => "Send to ${recipient}";
 
   static m70(token) => "From ${token} wallet to external wallet";
 
@@ -238,6 +250,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "${amountTokens} ${token} (${amountCurrency} ${currencyCode})";
 
   static m86(token) => "Transfer amount (${token})";
+
+  static m103(receiverEmail) =>
+      "You successfully sent a voucher to ${receiverEmail}";
 
   static m87(soldCount) => "${soldCount} used this offer";
 
@@ -309,6 +324,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "You have no approved referrals at the moment"),
         "availableAt": m6,
         "backToTokenWalletButton": m7,
+        "backToVouchers":
+            MessageLookupByLibrary.simpleMessage("Back to vouchers"),
         "backToWalletButton":
             MessageLookupByLibrary.simpleMessage("Back to Wallet"),
         "balanceBoxErrorMessage": MessageLookupByLibrary.simpleMessage(
@@ -349,6 +366,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "•\tPlace fully in the frame, not cut off\n•\tAvoid glare so that all info is visible\n•\tHold steady to avoid a blurry scan"),
         "canNotReferYourselfError": MessageLookupByLibrary.simpleMessage(
             "Self-referral is not possible. Your referral cannot be submitted."),
+        "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
+        "cancelVoucher": MessageLookupByLibrary.simpleMessage("Cancel Voucher"),
         "cannotGetOffersError": MessageLookupByLibrary.simpleMessage(
             "Sorry, we are unable to show any offers at this moment, please try again"),
         "changePassword":
@@ -407,6 +426,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "This account is currently blocked"),
         "customerDoesNotExistError": MessageLookupByLibrary.simpleMessage(
             "Sorry, the customer could not be found"),
+        "customerHaveAnotherReservedVoucherError":
+            MessageLookupByLibrary.simpleMessage(
+                "You have another voucher purchase in progress. Please finalize it and try again."),
         "customerPhoneIsMissingError": MessageLookupByLibrary.simpleMessage(
             "Error. User\'s phone number could not be retrieved"),
         "customerProfileDoesNotExistError":
@@ -417,6 +439,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dapBrowserHint": MessageLookupByLibrary.simpleMessage(
             "You can also copy the linking url to open in a dApp Browser"),
         "dashboard": MessageLookupByLibrary.simpleMessage("Dashboard"),
+        "dateOfPurchase": m97,
         "dateTimeToday": MessageLookupByLibrary.simpleMessage("Today"),
         "dateTimeYesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
         "daysAgo": m10,
@@ -562,7 +585,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "emptyPhoneNumberClientSideValidationError":
             MessageLookupByLibrary.simpleMessage("Phone number is required"),
         "enterAmountHint": MessageLookupByLibrary.simpleMessage("Enter amount"),
+        "error": MessageLookupByLibrary.simpleMessage("Error"),
+        "expirationDate": m98,
         "expirationFormatDays": m19,
+        "expired": MessageLookupByLibrary.simpleMessage("Expired"),
         "expiredReferralListEmptyState": MessageLookupByLibrary.simpleMessage(
             "You have no expired referrals at the moment"),
         "externalLinkWalletDescription": m20,
@@ -584,6 +610,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "genericErrorShort":
             MessageLookupByLibrary.simpleMessage("Please try again."),
         "getStartedButton": MessageLookupByLibrary.simpleMessage("Get started"),
+        "goBack": MessageLookupByLibrary.simpleMessage("Go back"),
         "goToWallet": MessageLookupByLibrary.simpleMessage("Go to Wallet"),
         "homePageCountdownSubtitle": MessageLookupByLibrary.simpleMessage(
             "are waiting for you, hurry up"),
@@ -649,6 +676,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "This is not a valid signature. Please amend and retry"),
         "invalidWalletLinkSignatureError": MessageLookupByLibrary.simpleMessage(
             "This is not a valid signature. Please amend and retry"),
+        "invalidateVoucher":
+            MessageLookupByLibrary.simpleMessage("Invalidate Voucher"),
         "inviteAFriend":
             MessageLookupByLibrary.simpleMessage("Invite a Friend"),
         "inviteAFriendPageDetails": MessageLookupByLibrary.simpleMessage(
@@ -696,6 +725,10 @@ class MessageLookup extends MessageLookupByLibrary {
                 "Enter public account address"),
         "linkAdvancedWalletTextFieldPublicAddressTitle":
             MessageLookupByLibrary.simpleMessage("Public account address"),
+        "linkBusinessAccount":
+            MessageLookupByLibrary.simpleMessage("Link business account"),
+        "linkBusinessAccountDescription": MessageLookupByLibrary.simpleMessage(
+            "Enter the details of the account you\'d like to link"),
         "linkSimpleWalletDescription": MessageLookupByLibrary.simpleMessage(
             "To link to a simple wallet, copy the linking url and paste in your external wallet"),
         "linkSimpleWalletHeader":
@@ -747,6 +780,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Your external wallet"),
         "linkedWalletSendHint": m33,
         "linkedWalletSendTitle": m34,
+        "linkingCode": MessageLookupByLibrary.simpleMessage("Linking Code"),
+        "linkingCodeHint": MessageLookupByLibrary.simpleMessage(
+            "Please enter your Linking Code"),
         "linkingRequestAlreadyApprovedError":
             MessageLookupByLibrary.simpleMessage(
                 "Error. This linking request has already been approved"),
@@ -761,6 +797,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "We can’t find any item matching your search"),
         "listNoResultsTitle":
             MessageLookupByLibrary.simpleMessage("No results found"),
+        "locationDialogDescription": MessageLookupByLibrary.simpleMessage(
+            "Location Services are not enabled on your device. Please enable them and try again."),
+        "locationDialogTitle": MessageLookupByLibrary.simpleMessage(
+            "Please turn on Location Services"),
         "loginAlreadyInUseError": MessageLookupByLibrary.simpleMessage(
             "An account with this email already exists"),
         "loginPageEmailLabel": MessageLookupByLibrary.simpleMessage("Email"),
@@ -816,6 +856,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Internet connection problem"),
         "newHeader": MessageLookupByLibrary.simpleMessage("New"),
         "nextPageButton": MessageLookupByLibrary.simpleMessage("Next"),
+        "noAvailableVouchersError": MessageLookupByLibrary.simpleMessage(
+            "Smart voucher campaign does not have available vouchers"),
         "noCustomerWithSuchEmailError": MessageLookupByLibrary.simpleMessage(
             "This customer does not exist"),
         "noTokensConversionRateText": m44,
@@ -852,8 +894,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "onboardingSkipButton": MessageLookupByLibrary.simpleMessage("Skip"),
         "outOfStockDescription": MessageLookupByLibrary.simpleMessage(
             "The vouchers in this offer are currently sold out."),
+        "partnerCode": MessageLookupByLibrary.simpleMessage("Partner Code"),
+        "partnerCodeHint": MessageLookupByLibrary.simpleMessage(
+            "Please enter your Partner Code"),
+        "partnerCodeInvalid": m99,
+        "partnerCodeRequired":
+            MessageLookupByLibrary.simpleMessage("Partner code is required"),
         "partnerDetailsPageTitle":
             MessageLookupByLibrary.simpleMessage("Partner Details"),
+        "partnerLinkingCodeInvalid": MessageLookupByLibrary.simpleMessage(
+            "Linking code must contain only alphanumeric characters"),
+        "partnerLinkingCodeInvalidLength": m100,
+        "partnerLinkingCodeRequired":
+            MessageLookupByLibrary.simpleMessage("Partner code is required"),
         "passwordGuide": MessageLookupByLibrary.simpleMessage(
             "We care about your security, please make sure your password has at least:"),
         "passwordHint": MessageLookupByLibrary.simpleMessage("Enter password"),
@@ -890,11 +943,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentIsNotInACorrectStatusToBeUpdatedError":
             MessageLookupByLibrary.simpleMessage(
                 "The request seems to be already completed or canceled."),
+        "paymentProviderError": MessageLookupByLibrary.simpleMessage(
+            "There\'s a problem with payment provider"),
         "paymentRequestsIsForAnotherCustomerError":
             MessageLookupByLibrary.simpleMessage(
                 "Sorry, we couldn\'t find this transfer request"),
         "paymentSuccessDetails": MessageLookupByLibrary.simpleMessage(
             "Great! Your transfer has been submitted. We\'ll notify you as soon as it\'s approved"),
+        "pending": MessageLookupByLibrary.simpleMessage("Pending"),
         "pendingReferralListEmptyState": MessageLookupByLibrary.simpleMessage(
             "You have no pending referrals at the moment"),
         "personalDetailsCountryOfNationality":
@@ -966,10 +1022,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy policy"),
         "propertyPaymentAvailableBalanceLabel":
             MessageLookupByLibrary.simpleMessage("Available balance"),
+        "purchase": MessageLookupByLibrary.simpleMessage("Purchase"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "receiveExternalWalletButton": MessageLookupByLibrary.simpleMessage(
             "Receive from external wallet"),
         "receiveExternalWalletButtonSubtitle": m67,
+        "receiveFrom": m101,
         "receiveTokenPageGenericErrorSubtitle":
             MessageLookupByLibrary.simpleMessage(
                 "Oh no! We\'re unable to display the QR code. Please try again."),
@@ -979,7 +1037,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Share this code with the sender, you\'ll receive points quicker than you thought"),
         "receiveTokenPageTitle": m68,
         "redeem": MessageLookupByLibrary.simpleMessage("Redeem"),
-        "redeemOffer": MessageLookupByLibrary.simpleMessage("Redeem Offer"),
+        "redeemOffer": MessageLookupByLibrary.simpleMessage("Purchase voucher"),
         "redeemVoucherButton":
             MessageLookupByLibrary.simpleMessage("Redeem voucher"),
         "redeemVoucherInsufficientFunds": MessageLookupByLibrary.simpleMessage(
@@ -1079,11 +1137,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Open in browser"),
         "scannedInfoDialogTitle":
             MessageLookupByLibrary.simpleMessage("Scanned Info"),
+        "scannedInfoDialogVoucherError": MessageLookupByLibrary.simpleMessage(
+            "This voucher cannot be invalidated by your account."),
+        "scannedInfoDialogVoucherPositiveButton":
+            MessageLookupByLibrary.simpleMessage("Invalidate Voucher"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "sendTo": m102,
         "sendToExternalWalletButton":
             MessageLookupByLibrary.simpleMessage("Transfer to external wallet"),
         "sendToExternalWalletButtonSubtitle": m70,
+        "sendToFriend":
+            MessageLookupByLibrary.simpleMessage("Send to a friend"),
         "sendTokensButton": m71,
+        "sendVoucher": MessageLookupByLibrary.simpleMessage("Send Voucher"),
         "senderCustomerNotFoundError": MessageLookupByLibrary.simpleMessage(
             "Sorry, we couldn\'t find this account. Transfer canceled"),
         "setPasswordSuccessBackToAccountButton":
@@ -1096,6 +1162,20 @@ class MessageLookup extends MessageLookupByLibrary {
             "Metamask, Coinbase, Trust wallet, ..."),
         "simpleWalletsTitle":
             MessageLookupByLibrary.simpleMessage("Simple wallets"),
+        "smeInvalidateVoucherSuccessDetails":
+            MessageLookupByLibrary.simpleMessage(
+                "You have successfully redeemed this voucher."),
+        "smeInvalidateVoucherSuccessPageTitle":
+            MessageLookupByLibrary.simpleMessage(
+                "Voucher successfully redeemed"),
+        "smeLinkingAlreadyLinkedError": MessageLookupByLibrary.simpleMessage(
+            "Your account is already linked to business."),
+        "smeLinkingCredentialsError": MessageLookupByLibrary.simpleMessage(
+            "Please check credentials and try again"),
+        "smeLinkingSuccessDetails": MessageLookupByLibrary.simpleMessage(
+            "You have successfully linked your accounts. You can now scan vouchers."),
+        "smeLinkingSuccessPageTitle":
+            MessageLookupByLibrary.simpleMessage("Accounts Linked"),
         "socialPageComingSoon":
             MessageLookupByLibrary.simpleMessage("Coming Soon"),
         "socialPageTitle": MessageLookupByLibrary.simpleMessage("Community"),
@@ -1246,6 +1326,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "transferTokenAmountLabel": m86,
         "transferTokensButton":
             MessageLookupByLibrary.simpleMessage("Send points"),
+        "transferVoucherEmptyReceiverEmailError":
+            MessageLookupByLibrary.simpleMessage("Receiver email is required"),
+        "transferVoucherInvalidReceiverEmailError":
+            MessageLookupByLibrary.simpleMessage(
+                "This receiver email is invalid"),
+        "transferVoucherReceiverEmailAddressHint":
+            MessageLookupByLibrary.simpleMessage("Receiver Email"),
+        "transferVoucherSuccessDetails": m103,
+        "transferVoucherSuccessTitle":
+            MessageLookupByLibrary.simpleMessage("Voucher successfully sent"),
         "unlinkExternalWalletButton":
             MessageLookupByLibrary.simpleMessage("Unlink external wallet"),
         "unlinkExternalWalletButtonSubtitle":
@@ -1255,6 +1345,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Unlinking in progress"),
         "unlinkWalletInProgressTitle": MessageLookupByLibrary.simpleMessage(
             "Your wallet is currently being unlinked"),
+        "use": MessageLookupByLibrary.simpleMessage("Use"),
         "useBiometricButton":
             MessageLookupByLibrary.simpleMessage("or use biometric"),
         "useFaceIDButton":
@@ -1268,6 +1359,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Error. The verification code has expired"),
         "verificationCodeMismatchError": MessageLookupByLibrary.simpleMessage(
             "Error. The verification code is invalid"),
+        "viewOffer": MessageLookupByLibrary.simpleMessage("View Offer"),
+        "viewPartner": MessageLookupByLibrary.simpleMessage("View the shop"),
         "viewPartnerDetailsButtonTitle":
             MessageLookupByLibrary.simpleMessage("View partner details"),
         "viewVoucher": MessageLookupByLibrary.simpleMessage("View Voucher"),
@@ -1276,8 +1369,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "voucherDetailsAmount": MessageLookupByLibrary.simpleMessage("Amount"),
         "voucherDetailsAvailableBalance":
             MessageLookupByLibrary.simpleMessage("Available balance"),
+        "voucherExpired":
+            MessageLookupByLibrary.simpleMessage("This offer has expired"),
         "voucherListEmpty": MessageLookupByLibrary.simpleMessage(
             "There are no vouchers available at the moment"),
+        "voucherNoExpirationDate": MessageLookupByLibrary.simpleMessage(
+            "This offer has no expiration date"),
         "voucherSoldCountInfo": m87,
         "voucherStockCount": m88,
         "vouchers": MessageLookupByLibrary.simpleMessage("Vouchers"),

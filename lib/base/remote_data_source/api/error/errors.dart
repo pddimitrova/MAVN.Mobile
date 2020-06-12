@@ -66,6 +66,19 @@ enum ServiceExceptionType {
   verificationCodeDoesNotExist,
   verificationCodeExpired,
   verificationCodeMismatch,
+  customerAlreadyLinkedToAPartner,
+  partnerLinkingInfoDoesNotExist,
+  partnerLinkingInfoDoesNotMatch,
+  smartVoucherNotFound,
+  smartVoucherCampaignNotFound,
+  smartVoucherCampaignNotActive,
+  wrongSmartVoucherValidationCode,
+  sellerCustomerIsNotALinkedPartner,
+  sellerCustomerIsNotTheVoucherIssuer,
+  voucherIsNotInCorrectStatusToBeRedeemed,
+  noAvailableVouchers,
+  customerHaveAnotherReservedVoucher,
+  paymentProviderError,
 }
 
 class ServiceException extends Equatable implements Exception {

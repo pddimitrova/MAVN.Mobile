@@ -11,12 +11,15 @@ import 'package:lykke_mobile_mavn/feature_account_deactivated/view/account_deact
 import 'package:lykke_mobile_mavn/feature_app_referral/di/friend_referral_module.dart';
 import 'package:lykke_mobile_mavn/feature_app_referral/view/friend_referral_page.dart';
 import 'package:lykke_mobile_mavn/feature_app_referral/view/friend_referral_success_page.dart';
+import 'package:lykke_mobile_mavn/feature_barcode_scan/di/barcode_scan_module.dart';
 import 'package:lykke_mobile_mavn/feature_biometrics/view/biometric_agreement_page.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/di/bottom_bar_module.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/view/bottom_bar_page.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_details/view/campaign_details_page.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_list/di/campaign_list_module.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_list/view/campaign_list_page.dart';
+import 'package:lykke_mobile_mavn/feature_campaigns_map/di/campaign_map_module.dart';
+import 'package:lykke_mobile_mavn/feature_campaigns_map/view/campaign_map_page.dart';
 import 'package:lykke_mobile_mavn/feature_change_password/di/change_password_module.dart';
 import 'package:lykke_mobile_mavn/feature_change_password/view/change_password_page.dart';
 import 'package:lykke_mobile_mavn/feature_change_password/view/change_password_success_page.dart';
@@ -43,6 +46,9 @@ import 'package:lykke_mobile_mavn/feature_hotel_welcome/di/hotel_welcome_di.dart
 import 'package:lykke_mobile_mavn/feature_hotel_welcome/view/hotel_welcome_dialog.dart';
 import 'package:lykke_mobile_mavn/feature_landing/di/landing_di.dart';
 import 'package:lykke_mobile_mavn/feature_landing/view/landing_page.dart';
+import 'package:lykke_mobile_mavn/feature_link_sme_account/di/sme_linking_module.dart';
+import 'package:lykke_mobile_mavn/feature_link_sme_account/view/sme_linking_page.dart';
+import 'package:lykke_mobile_mavn/feature_link_sme_account/view/sme_linking_success_page.dart';
 import 'package:lykke_mobile_mavn/feature_login/di/login_module.dart';
 import 'package:lykke_mobile_mavn/feature_login/view/login_page.dart';
 import 'package:lykke_mobile_mavn/feature_maintenance/di/maintenance_module.dart';
@@ -72,7 +78,6 @@ import 'package:lykke_mobile_mavn/feature_pin/view/pin_created_success_page.dart
 import 'package:lykke_mobile_mavn/feature_pin/view/pin_forgot_page.dart';
 import 'package:lykke_mobile_mavn/feature_pin/view/pin_sign_in_page.dart';
 import 'package:lykke_mobile_mavn/feature_pin/view/pin_verification_page.dart';
-
 import 'package:lykke_mobile_mavn/feature_receive_token/di/p2p_receive_token_module.dart';
 import 'package:lykke_mobile_mavn/feature_receive_token/view/p2p_receive_token_page.dart';
 import 'package:lykke_mobile_mavn/feature_referral_list/di/referral_list_module.dart';
@@ -83,6 +88,9 @@ import 'package:lykke_mobile_mavn/feature_reset_password/di/reset_password_modul
 import 'package:lykke_mobile_mavn/feature_reset_password/view/reset_password_page.dart';
 import 'package:lykke_mobile_mavn/feature_reset_password/view/set_password_page.dart';
 import 'package:lykke_mobile_mavn/feature_reset_password/view/set_password_success_page.dart';
+import 'package:lykke_mobile_mavn/feature_sme_invalidate_voucher/di/sme_invalidate_voucher_module.dart';
+import 'package:lykke_mobile_mavn/feature_sme_invalidate_voucher/view/sme_invalidate_voucher_page.dart';
+import 'package:lykke_mobile_mavn/feature_sme_invalidate_voucher/view/sme_invalidate_voucher_success_page.dart';
 import 'package:lykke_mobile_mavn/feature_social/view/social_page.dart';
 import 'package:lykke_mobile_mavn/feature_spend/di/transfer_module.dart';
 import 'package:lykke_mobile_mavn/feature_splash/di/splash_module.dart';
@@ -91,6 +99,9 @@ import 'package:lykke_mobile_mavn/feature_splash/view/splash_page.dart';
 import 'package:lykke_mobile_mavn/feature_terms_and_policies/view/privacy_policy_page.dart';
 import 'package:lykke_mobile_mavn/feature_terms_and_policies/view/terms_of_use_page.dart';
 import 'package:lykke_mobile_mavn/feature_ticker/di/ticker_module.dart';
+import 'package:lykke_mobile_mavn/feature_transfer_vouchers/view/transfer_voucher_page.dart';
+import 'package:lykke_mobile_mavn/feature_transfer_vouchers/view/transfer_voucher_success_page.dart';
+import 'package:lykke_mobile_mavn/feature_voucher_details/di/voucher_details_module.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_details/view/voucher_details_page.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_purchase/di/voucher_purchase_module.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_wallet/di/voucher_wallet_page_module.dart';
@@ -480,6 +491,11 @@ class RouterPageFactory {
         child: CampaignListPage(),
       );
 
+  static Widget getCampaignMapPage() => ModuleProvider(
+        module: CampaignMapModule(),
+        child: CampaignMapPage(),
+      );
+
   static Widget getCampaignDetailsPage({CampaignResponseModel campaign}) =>
       ModuleProvider(
         module: VoucherPurchaseModule(),
@@ -498,8 +514,22 @@ class RouterPageFactory {
         child: VoucherWalletPage(),
       );
 
-  static Widget getVoucherDetailsPage({VoucherResponseModel voucher}) =>
-      VoucherDetailsPage(voucher: voucher);
+  static Widget getVoucherDetailsPage({
+    VoucherResponseModel voucher,
+    Color voucherColor,
+  }) =>
+      ModuleProvider(
+        module: VoucherDetailsModule(),
+        child: VoucherDetailsPage(voucher: voucher, voucherColor: voucherColor),
+      );
+
+  static Widget getTransferVoucherPage({
+    String voucherShortCode,
+  }) =>
+      TransferVoucherPage(voucherCode: voucherShortCode);
+
+  static Widget getVoucherTransferSuccessPage(String receiverEmail) =>
+      TransferVoucherSuccessPage(receiverEmail: receiverEmail);
 
   //endregion Vouchers
 
@@ -507,11 +537,43 @@ class RouterPageFactory {
   static Widget getSocialPage() => SocialPage();
 
   //endregion Social
-  static Widget getMandatoryAppUpgradePage() => const MandatoryAppUpgradePage();
+
+  //region SME linking
+
+  static Widget getSmeLinkingPage() => MultiProvider(
+        providers: [
+          ModuleProvider(module: SmeLinkingModule()),
+          ModuleProvider(module: BarcodeScanModule()),
+        ],
+        child: SmeLinkingPage(),
+      );
+
+  static Widget getSmeLinkingSuccessPage() => SmeLinkingSuccessPage();
+
+  static Widget getSmeInvalidateVoucherPage(
+          {@required String voucherShortCode}) =>
+      MultiProvider(
+        providers: [
+          ModuleProvider(module: SmeInvalidateVoucherModule()),
+          ModuleProvider(module: VoucherDetailsModule()),
+        ],
+        child: SmeInvalidateVoucherPage(
+          voucherShortCode: voucherShortCode,
+        ),
+      );
+
+  static Widget getSmeInvalidateVoucherSuccessPage() =>
+      SmeInvalidateVoucherSuccessPage();
+
+  //endregion SME linking
 
   //region Misc
-  static Widget getComingSoonPage({String title}) => ComingSoonPage(
+  static Widget getMandatoryAppUpgradePage() => const MandatoryAppUpgradePage();
+
+  static Widget getComingSoonPage({String title, bool hasBackButton}) =>
+      ComingSoonPage(
         title: title,
+        hasBackButton: hasBackButton,
       );
 
 //endregion Misc

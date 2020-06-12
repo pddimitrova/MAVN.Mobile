@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:lykke_mobile_mavn/library_models/fiat_currency.dart';
 import 'package:lykke_mobile_mavn/library_utils/enum_mapper.dart';
 
 class VoucherResponseModel {
@@ -7,6 +8,7 @@ class VoucherResponseModel {
     @required this.shortCode,
     @required this.validationCodeHash,
     @required this.campaignId,
+    @required this.partnerId,
     @required this.status,
     @required this.ownerId,
     @required this.purchaseDate,
@@ -15,6 +17,8 @@ class VoucherResponseModel {
     @required this.partnerName,
     @required this.campaignName,
     @required this.imageUrl,
+    @required this.description,
+    @required this.price,
   });
 
   VoucherResponseModel.fromJson(Map<String, dynamic> json)
@@ -22,6 +26,7 @@ class VoucherResponseModel {
         shortCode = json['ShortCode'],
         validationCodeHash = json['ValidationCodeHash'],
         campaignId = json['CampaignId'],
+        partnerId = json['PartnerId'],
         status = EnumMapper.mapFromString(
           json['Status'],
           enumValues: VoucherStatus.values,
@@ -39,7 +44,12 @@ class VoucherResponseModel {
             : null,
         partnerName = json['PartnerName'],
         campaignName = json['CampaignName'],
-        imageUrl = json['ImageUrl'];
+        imageUrl = json['ImageUrl'],
+        description = json['Description'],
+        price = FiatCurrency(
+          value: json['Price'],
+          assetSymbol: json['Currency'],
+        );
 
   static List<VoucherResponseModel> toListFromJson(List list) => list
       .map((vouchersJson) => VoucherResponseModel.fromJson(vouchersJson))
@@ -49,6 +59,7 @@ class VoucherResponseModel {
   final String shortCode;
   final String validationCodeHash;
   final String campaignId;
+  final String partnerId;
   final VoucherStatus status;
   final String ownerId;
   final DateTime purchaseDate;
@@ -57,6 +68,8 @@ class VoucherResponseModel {
   final String partnerName;
   final String campaignName;
   final String imageUrl;
+  final String description;
+  final FiatCurrency price;
 }
 
 class VoucherListResponseModel {
@@ -74,4 +87,4 @@ class VoucherListResponseModel {
   final int totalCount;
 }
 
-enum VoucherStatus { none, inStock, reserved, sold }
+enum VoucherStatus { none, inStock, reserved, sold, expired }

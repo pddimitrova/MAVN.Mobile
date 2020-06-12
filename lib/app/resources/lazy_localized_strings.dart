@@ -2,7 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import 'localized_strings.dart';
 
-typedef String LocalizedStringSelector(LocalizedStrings localizedStrings);
+typedef LocalizedStringSelector = String Function(
+    LocalizedStrings localizedStrings);
 
 class LocalizedStringBuilder {
   LocalizedStringBuilder(this._stringSelector, this._stringName);
@@ -78,6 +79,16 @@ class LazyLocalizedStrings {
 
   static LocalizedStringBuilder get noVouchersInStockError =>
       _builder((_) => _.noVouchersInStockError, 'noVouchersInStockError');
+
+  static LocalizedStringBuilder get noAvailableVouchersError =>
+      _builder((_) => _.noAvailableVouchersError, 'noAvailableVouchersError');
+
+  static LocalizedStringBuilder get paymentProviderError =>
+      _builder((_) => _.paymentProviderError, 'paymentProviderError');
+
+  static LocalizedStringBuilder get customerHaveAnotherReservedVoucherError =>
+      _builder((_) => _.customerHaveAnotherReservedVoucherError,
+          'customerHaveAnotherReservedVoucherError');
 
 // endregion Customer API errors
 //region Common Form Elements
@@ -313,6 +324,9 @@ class LazyLocalizedStrings {
 
   static LocalizedStringBuilder get retryButton =>
       _builder((_) => _.retryButton, 'retryButton');
+
+  static LocalizedStringBuilder get cancelButton =>
+      _builder((_) => _.cancelButton, 'cancelButton');
 
   static LocalizedStringBuilder get backToWalletButton =>
       _builder((_) => _.backToWalletButton, 'backToWalletButton');
@@ -2376,4 +2390,53 @@ class LazyLocalizedStrings {
       _builder((_) => _.emailBody, 'emailBody');
 
 //endregion Email prefilling
+
+//region SME linking
+
+  static LocalizedStringBuilder get partnerCodeRequired =>
+      _builder((_) => _.partnerCodeRequired, 'partnerCodeRequired');
+
+  static LocalizedStringBuilder partnerCodeInvalid(int count) => _builder(
+      (_) => _.partnerCodeInvalid(count), 'partnerCodeInvalid($count)');
+
+  static LocalizedStringBuilder get partnerLinkingCodeRequired => _builder(
+      (_) => _.partnerLinkingCodeRequired, 'partnerLinkingCodeRequired');
+
+  static LocalizedStringBuilder partnerLinkingCodeInvalidLength(int count) =>
+      _builder((_) => _.partnerLinkingCodeInvalidLength(count),
+          'partnerLinkingCodeInvalidLength($count)');
+
+  static LocalizedStringBuilder get partnerLinkingCodeInvalid =>
+      _builder((_) => _.partnerLinkingCodeInvalid, 'partnerLinkingCodeInvalid');
+
+  static LocalizedStringBuilder get smeLinkingAlreadyLinkedError => _builder(
+      (_) => _.smeLinkingAlreadyLinkedError, 'smeLinkingAlreadyLinkedError');
+
+  static LocalizedStringBuilder get smeLinkingCredentialsError => _builder(
+      (_) => _.smeLinkingCredentialsError, 'smeLinkingCredentialsError');
+
+//endregion SME linking
+
+//region SME invalidate voucher
+
+  static LocalizedStringBuilder get scannedInfoDialogVoucherPositiveButton =>
+      _builder((_) => _.scannedInfoDialogVoucherPositiveButton,
+          'scannedInfoDialogVoucherPositiveButton');
+
+  static LocalizedStringBuilder get scannedInfoDialogVoucherError => _builder(
+      (_) => _.scannedInfoDialogVoucherError, 'scannedInfoDialogVoucherError');
+
+//endregion SME invalidate voucher
+
+//region Voucher Transfer
+
+  static LocalizedStringBuilder get transferVoucherEmptyReceiverEmailError =>
+      _builder((_) => _.transferVoucherEmptyReceiverEmailError,
+          'transferVoucherEmptyReceiverEmailError');
+
+  static LocalizedStringBuilder get transferVoucherInvalidReceiverEmailError =>
+      _builder((_) => _.transferVoucherInvalidReceiverEmailError,
+          'transferVoucherInvalidReceiverEmailError');
+
+//endregion Voucher Transfer
 }

@@ -5,6 +5,23 @@ class TextStyles {
   TextStyles._();
 
   static const String commonFontFamily = 'NunitoSans';
+  static const String headerTitleFontFamily = 'PlayFairDisplay';
+
+  static const TextStyle darkHeaderTitle = TextStyle(
+    color: ColorStyles.primaryDark,
+    fontFamily: headerTitleFontFamily,
+    fontStyle: FontStyle.normal,
+    fontSize: 26,
+    fontWeight: FontWeight.w900,
+  );
+
+  static const TextStyle lightHeaderTitle = TextStyle(
+    color: ColorStyles.white,
+    fontFamily: headerTitleFontFamily,
+    fontStyle: FontStyle.normal,
+    fontSize: 26,
+    fontWeight: FontWeight.w900,
+  );
 
   static const TextStyle h1PageHeader = TextStyle(
     color: ColorStyles.primaryDark,
@@ -21,10 +38,11 @@ class TextStyles {
   );
 
   static const TextStyle imageButtonCardCallToAction = TextStyle(
-    color: ColorStyles.primaryBlue,
+    color: ColorStyles.resolutionBlue,
     fontFamily: commonFontFamily,
     fontSize: 16,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
+    decoration: TextDecoration.underline,
   );
 
   static const TextStyle body1BoldDarkHigh = TextStyle(
@@ -394,13 +412,6 @@ class TextStyles {
     height: 1.2,
   );
 
-  static const transactionHistoryAmount = TextStyle(
-    color: ColorStyles.primaryDark,
-    fontFamily: commonFontFamily,
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-  );
-
   // Special font without color or size for the BottomBar text
   static const bottomBarItemText = TextStyle(
     fontFamily: commonFontFamily,
@@ -445,5 +456,53 @@ class TextStyles {
     fontFamily: commonFontFamily,
     fontSize: 14,
     fontWeight: FontWeight.w600,
+  );
+
+  static const partnerNameTopSection = TextStyle(
+    color: Colors.black,
+    fontFamily: commonFontFamily,
+    fontSize: 24,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w900,
+  );
+
+  static const transactionHistoryHeader = TextStyle(
+    color: Colors.black,
+    fontFamily: commonFontFamily,
+    fontSize: 16,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w900,
+  );
+
+  static const transactionHistoryOperation = TextStyle(
+    color: Colors.black,
+    fontFamily: commonFontFamily,
+    fontSize: 12,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w900,
+  );
+
+  static const transactionHistoryCampaign = TextStyle(
+    color: Colors.black,
+    fontFamily: commonFontFamily,
+    fontSize: 20,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w800,
+  );
+
+  static const transactionHistoryPartner = TextStyle(
+    color: ColorStyles.manatee50,
+    fontFamily: commonFontFamily,
+    fontSize: 10,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w800,
+  );
+
+  static const transactionHistoryAmount = TextStyle(
+    color: ColorStyles.resolutionBlue,
+    fontFamily: commonFontFamily,
+    fontSize: 16,
+    fontStyle: FontStyle.normal,
+    fontWeight: FontWeight.w800,
   );
 }

@@ -6,19 +6,20 @@ import 'package:lykke_mobile_mavn/app/resources/svg_assets.dart';
 import 'package:lykke_mobile_mavn/base/common_blocs/generic_list_bloc_output.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/voucher/response_model/voucher_response_model.dart';
 import 'package:lykke_mobile_mavn/base/router/router.dart';
+import 'package:lykke_mobile_mavn/feature_transfer_vouchers/bloc/transfer_voucher_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_transfer_vouchers/bloc/transfer_voucher_bloc_output.dart';
+import 'package:lykke_mobile_mavn/feature_voucher_details/bloc/cancel_voucher_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_voucher_purchase/bloc/voucher_purchase_success_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_voucher_purchase/bloc/voucher_purchase_success_bloc_output.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_wallet/bloc/voucher_list_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_wallet/ui_components/voucher_card_widget.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/list/infinite_list_view.dart';
+import 'package:lykke_mobile_mavn/library_ui_components/misc/material_hero.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/misc/spinner.dart';
 
 class BoughtVouchersList extends HookWidget {
-  final voucherTintColors = [
-    ColorStyles.piper,
-    ColorStyles.jakarta,
-    ColorStyles.blueStone,
-    ColorStyles.eminence,
-  ];
+  static const voucherHeroTag = 'voucher_';
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +28,37 @@ class BoughtVouchersList extends HookWidget {
     final voucherListBloc = useVoucherListBloc();
     final voucherListBlocState = useBlocState(voucherListBloc);
 
+    final cancelVoucherBloc = useCancelVoucherBloc();
+    final voucherPurchaseSuccessBloc = useVoucherPurchaseSuccessBloc();
+    final transferVoucherBloc = useTransferVoucherBloc();
+
     final data = useState(<VoucherResponseModel>[]);
     final isErrorDismissed = useState(false);
-
-    void loadData() {
-      isErrorDismissed.value = false;
-      voucherListBloc.getList();
-    }
 
     void loadInitialData() {
       isErrorDismissed.value = false;
       voucherListBloc.updateGenericList();
+    }
+
+    useBlocEventListener(cancelVoucherBloc, (event) {
+      loadInitialData();
+    });
+
+    useBlocEventListener(voucherPurchaseSuccessBloc, (event) {
+      if (event is VoucherPurchaseSuccessSuccessEvent) {
+        loadInitialData();
+      }
+    });
+
+    useBlocEventListener(transferVoucherBloc, (event) {
+      if (event is TransferVoucherSuccessEvent) {
+        loadInitialData();
+      }
+    });
+
+    void loadData() {
+      isErrorDismissed.value = false;
+      voucherListBloc.getList();
     }
 
     useEffect(() {
@@ -47,7 +68,7 @@ class BoughtVouchersList extends HookWidget {
     if (voucherListBlocState is GenericListLoadedState) {
       data.value = voucherListBlocState.list;
     }
-    int tintColorIndex = 0;
+    var tintColorIndex = 0;
 
     return Stack(
       children: [
@@ -81,17 +102,24 @@ class BoughtVouchersList extends HookWidget {
                         data.value.indexOf(voucher) == 0) {
                       tintColorIndex = 0;
                     }
+                    final voucherTintColor =
+                        VoucherCardWidget.voucherTintColors[tintColorIndex];
                     return InkWell(
-                      onTap: () =>
-                          router.pushVoucherDetailsPage(voucher: voucher),
-                      child: Hero(
-                        tag: 'voucher_${voucher.id}',
+                      onTap: () => router.pushVoucherDetailsPage(
+                        voucher: voucher,
+                        voucherColor: voucherTintColor,
+                      ),
+                      child: MaterialHero(
+                        tag: '$voucherHeroTag${voucher.id}',
                         child: VoucherCardWidget(
                           imageUrl: voucher.imageUrl,
-                          color: voucherTintColors[tintColorIndex],
+                          color: voucherTintColor,
                           partnerName: voucher.partnerName,
                           voucherName: voucher.campaignName,
                           expirationDate: voucher.expirationDate,
+                          voucherStatus: voucher.status,
+                          price: voucher.price,
+                          purchaseDate: voucher.purchaseDate,
                         ),
                       ),
                     );

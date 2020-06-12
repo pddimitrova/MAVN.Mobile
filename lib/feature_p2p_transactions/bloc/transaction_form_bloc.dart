@@ -5,8 +5,8 @@ import 'package:lykke_mobile_mavn/app/resources/lazy_localized_strings.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/error/errors.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/error/exception_to_message_mapper.dart';
 import 'package:lykke_mobile_mavn/base/repository/wallet/wallet_repository.dart';
+import 'package:lykke_mobile_mavn/feature_barcode_scan/bloc/barcode_scanner_manager.dart';
 import 'package:lykke_mobile_mavn/feature_p2p_transactions/analytics/transaction_form_analytics_manager.dart';
-import 'package:lykke_mobile_mavn/feature_p2p_transactions/bloc/barcode_scanner_manager.dart';
 import 'package:lykke_mobile_mavn/feature_p2p_transactions/bloc/transaction_form_bloc_output.dart';
 import 'package:lykke_mobile_mavn/feature_p2p_transactions/di/transaction_form_module.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
@@ -63,8 +63,8 @@ class TransactionFormBloc extends Bloc<TransactionFormState> {
   Future<void> startScan() async {
     setState(BarcodeUninitializedState());
     try {
-      final String barcode = await _barcodeScanManager.startScan();
-      sendEvent(BarcodeScanSuccessEvent(barcode));
+      final scanResult = await _barcodeScanManager.startScan();
+      sendEvent(BarcodeScanSuccessEvent(scanResult));
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         setState(BarcodeScanPermissionErrorState(

@@ -6,6 +6,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:location/location.dart';
 import 'package:lykke_mobile_mavn/app/app.dart';
 import 'package:lykke_mobile_mavn/app/resources/localized_strings.dart';
 import 'package:lykke_mobile_mavn/base/common_blocs/accept_hotel_referral_bloc.dart';
@@ -38,6 +39,7 @@ import 'package:lykke_mobile_mavn/base/remote_data_source/api/mobile/mobile_sett
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/partner/partner_api.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/phone/phone_api.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/referral/referral_api.dart';
+import 'package:lykke_mobile_mavn/base/remote_data_source/api/sme/sme_api.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/voucher/voucher_api.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/wallet/wallet_api.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/notification/notification_api.dart';
@@ -58,6 +60,7 @@ import 'package:lykke_mobile_mavn/base/repository/partner/partner_repository.dar
 import 'package:lykke_mobile_mavn/base/repository/phone/phone_repository.dart';
 import 'package:lykke_mobile_mavn/base/repository/pin/pin_repository.dart';
 import 'package:lykke_mobile_mavn/base/repository/referral/referral_repository.dart';
+import 'package:lykke_mobile_mavn/base/repository/sme/sme_repository.dart';
 import 'package:lykke_mobile_mavn/base/repository/token/token_repository.dart';
 import 'package:lykke_mobile_mavn/base/repository/user/user_repository.dart';
 import 'package:lykke_mobile_mavn/base/repository/voucher/voucher_repository.dart';
@@ -70,13 +73,16 @@ import 'package:lykke_mobile_mavn/feature_biometrics/bloc/biometric_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_debug_menu/bloc/debug_menu_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_email_verification/analytics/email_verification_analytics_manager.dart';
 import 'package:lykke_mobile_mavn/feature_email_verification/bloc/email_confirmation_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_login/bloc/login_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_login/use_case/login_use_case.dart';
 import 'package:lykke_mobile_mavn/feature_notification/bloc/notification_count_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_notification/router/notification_router.dart';
 import 'package:lykke_mobile_mavn/feature_payment_request_list/bloc/pending_payment_requests_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_personal_details/bloc/delete_account_use_case.dart';
+import 'package:lykke_mobile_mavn/feature_transfer_vouchers/bloc/transfer_voucher_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_user_verification/bloc/user_verification_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_voucher_details/bloc/cancel_voucher_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_purchase/bloc/voucher_purchase_success_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_wallet/bloc/wallet_bloc.dart';
 import 'package:lykke_mobile_mavn/lib_dynamic_links/dynamic_link_manager.dart';
@@ -105,6 +111,8 @@ class AppModule extends Module {
   RouterPageFactory get routerPageFactory => get();
 
   NotificationRouter get notificationRouter => get();
+
+  Location get location => get();
 
   GlobalKey<NavigatorState> get globalNavigatorStateKey => get();
 
@@ -146,6 +154,8 @@ class AppModule extends Module {
   VoucherRepository get voucherRepository => get();
 
   NotificationRepository get notificationRepository => get();
+
+  SmeRepository get smeRepository => get();
 
   NotificationCountBloc get notificationCountBloc => get();
 
@@ -206,6 +216,12 @@ class AppModule extends Module {
 
   VoucherPurchaseSuccessBloc get voucherPurchaseSuccessBloc => get();
 
+  CancelVoucherBloc get cancelVoucherBloc => get();
+
+  UserLocationBloc get userLocationBloc => get();
+
+  TransferVoucherBloc get transferVoucherBloc => get();
+
   @override
   void provideInstances() {
     // Global navigator state key
@@ -224,6 +240,10 @@ class AppModule extends Module {
     provideSingleton(() => ExternalRouter(get()));
 
     provideSingleton(() => NotificationRouter(get()));
+
+    //Location
+
+    provideSingleton(() => Location());
 
     // Analytics
     provideSingleton(() => FirebaseAnalytics());
@@ -262,7 +282,7 @@ class AppModule extends Module {
       qualifierName: customerApiHttpClientQualifier,
     );
 
-    const String walletSocketRealm = 'prices';
+    const walletSocketRealm = 'prices';
 
     // Web socket WAMP client
     provideSingleton(() => WampClient(
@@ -302,6 +322,8 @@ class AppModule extends Module {
         get<HttpClient>(qualifierName: customerApiHttpClientQualifier)));
     provideSingleton(() => NotificationApi(
         get<HttpClient>(qualifierName: customerApiHttpClientQualifier)));
+    provideSingleton(() =>
+        SmeApi(get<HttpClient>(qualifierName: customerApiHttpClientQualifier)));
 
     provideSingleton(() => RemoteConfigManager(
           remoteConfig: remoteConfig,
@@ -336,6 +358,7 @@ class AppModule extends Module {
     provideSingleton(() => CampaignRepository(get()));
     provideSingleton(() => VoucherRepository(get()));
     provideSingleton(() => NotificationRepository(get()));
+    provideSingleton(() => SmeRepository(get()));
     provideSingleton(() => NotificationCountBloc(get()));
 
     // Bloc
@@ -370,6 +393,12 @@ class AppModule extends Module {
 
     provideSingleton(() => VoucherPurchaseSuccessBloc(get()));
 
+    provideSingleton(() => CancelVoucherBloc(get(), get()));
+
+    provideSingleton(() => UserLocationBloc(get()));
+
+    provideSingleton(() => TransferVoucherBloc(get(), get()));
+
     // Dynamic Link Manager
     provideSingleton(
       () => DynamicLinkManager(
@@ -383,7 +412,7 @@ class AppModule extends Module {
     );
 
     //Qr Content Manager
-    provideSingleton(() => QrContentManager(get(), get(), get()));
+    provideSingleton(() => QrContentManager(get(), get(), get(), get()));
 
     //Use case
     provideSingleton(() => LoginUseCase(get(), get(), get()));

@@ -136,12 +136,16 @@ class RouterPageName {
 
   //region Campaigns
   static const String campaignListPage = 'campaign_list_page';
+  static const String campaignMapPage = 'campaign_map_page';
   static const String campaignDetailsPage = 'campaign_details_page';
 
   //endregion Campaigns
 
   //region Voucher
   static const String voucherDetailsPage = 'voucher_details_page';
+  static const String voucherTransferPage = 'voucher_transfer_page';
+  static const String voucherTransferSuccessPage =
+      'voucher_transfer_success_page';
 
   //endregion Voucher
 
@@ -152,6 +156,7 @@ class RouterPageName {
 
   //region Notifications
   static const String notificationListPage = 'notification_list_page';
+
 //endregion Notifications
 
 //region Social
@@ -159,6 +164,14 @@ class RouterPageName {
   static const String socialPage = 'social_page';
 
 //endregion Social
+
+// region SME linking
+  static const String smeLinkingPage = 'sme_linking_page';
+  static const String smeLinkingSuccessPage = 'sme_linking_success_page';
+  static const String smeInvalidateVoucherPage = 'sme_invalidate_voucher_page';
+  static const String smeInvalidateSuccessPage = 'sme_invalidate_success_page';
+
+// endregion SME linking
 
 //region Misc
 

@@ -72,9 +72,9 @@ LocalizedStrings useLocalizedStrings() => LocalizedStrings.of(useContext());
 
 class LocalizedStrings {
   static Future<LocalizedStrings> load(Locale locale) {
-    final String name =
+    final name =
         locale.countryCode == null ? locale.languageCode : locale.toString();
-    final String localeName = Intl.canonicalizedLocale(name);
+    final localeName = Intl.canonicalizedLocale(name);
 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
@@ -147,6 +147,19 @@ class LocalizedStrings {
   String get noVouchersInStockError =>
       Intl.message('Sorry, all vouchers are sold out',
           name: 'noVouchersInStockError');
+
+  String get noAvailableVouchersError =>
+      Intl.message('Smart voucher campaign does not have available vouchers',
+          name: 'noAvailableVouchersError');
+
+  String get paymentProviderError =>
+      Intl.message('There\'s a problem with payment provider',
+          name: 'paymentProviderError');
+
+  String get customerHaveAnotherReservedVoucherError => Intl.message(
+      // ignore: lines_longer_than_80_chars
+      'You have another voucher purchase in progress. Please finalize it and try again.',
+      name: 'customerHaveAnotherReservedVoucherError');
 
 // endregion Customer API errors
 //region Common Form Elements
@@ -433,6 +446,10 @@ class LocalizedStrings {
   String get continueButton => Intl.message('Continue', name: 'continueButton');
 
   String get retryButton => Intl.message('Retry', name: 'retryButton');
+
+  String get cancelButton => Intl.message('Cancel', name: 'cancelButton');
+
+  String get goBack => Intl.message('Go back', name: 'goBack');
 
   String get backToWalletButton =>
       Intl.message('Back to Wallet', name: 'backToWalletButton');
@@ -3045,6 +3062,11 @@ class LocalizedStrings {
 
 //region Campaign Details
 
+  String get viewOffer => Intl.message(
+        'View Offer',
+        name: 'viewOffer',
+      );
+
   String get about => Intl.message(
         'About',
         name: 'about',
@@ -3057,7 +3079,7 @@ class LocalizedStrings {
       );
 
   String offerExpiresOn(String expirationDate) => Intl.message(
-        'This offer expires on $expirationDate',
+        'This offer expires on: $expirationDate',
         name: 'offerExpiresOn',
         args: [expirationDate],
       );
@@ -3068,8 +3090,13 @@ class LocalizedStrings {
       );
 
   String get redeemOffer => Intl.message(
-        'Redeem Offer',
+        'Purchase voucher',
         name: 'redeemOffer',
+      );
+
+  String get viewPartner => Intl.message(
+        'View the shop',
+        name: 'viewPartner',
       );
 
 //endregion Campaign Details
@@ -3098,6 +3125,48 @@ class LocalizedStrings {
   String get viewVoucher => Intl.message(
         'View Voucher',
         name: 'viewVoucher',
+      );
+
+  String get sendToFriend => Intl.message(
+        'Send to a friend',
+        name: 'sendToFriend',
+      );
+
+  String get cancelVoucher => Intl.message(
+        'Cancel Voucher',
+        name: 'cancelVoucher',
+      );
+
+  String get pending => Intl.message(
+        'Pending',
+        name: 'pending',
+      );
+
+  String get expired => Intl.message(
+        'Expired',
+        name: 'expired',
+      );
+
+  String dateOfPurchase(String purchaseDate) => Intl.message(
+        'Date of purchase: $purchaseDate',
+        args: [purchaseDate],
+        name: 'dateOfPurchase',
+      );
+
+  String expirationDate(String expirationDate) => Intl.message(
+        'Expiration Date: $expirationDate',
+        args: [expirationDate],
+        name: 'expirationDate',
+      );
+
+  String get voucherNoExpirationDate => Intl.message(
+        'This offer has no expiration date',
+        name: 'voucherNoExpirationDate',
+      );
+
+  String get voucherExpired => Intl.message(
+        'This offer has expired',
+        name: 'voucherExpired',
       );
 
 // endregion Voucher Details
@@ -3164,4 +3233,188 @@ class LocalizedStrings {
       );
 
 //endregion Email prefilling
+
+//region Location dialog
+
+  String get locationDialogTitle => Intl.message(
+        'Please turn on Location Services',
+        name: 'locationDialogTitle',
+      );
+
+  String get locationDialogDescription => Intl.message(
+      // ignore: lines_longer_than_80_chars
+      'Location Services are not enabled on your device. Please enable them and try again.',
+      name: 'locationDialogDescription');
+
+//endregion Location dialog
+
+//region SME linking
+
+  String get linkBusinessAccount => Intl.message(
+        'Link business account',
+        name: 'linkBusinessAccount',
+      );
+
+  String get linkBusinessAccountDescription => Intl.message(
+        'Enter the details of the account you\'d like to link',
+        name: 'linkBusinessAccountDescription',
+      );
+
+  String get partnerCode => Intl.message(
+        'Partner Code',
+        name: 'partnerCode',
+      );
+
+  String get partnerCodeHint => Intl.message(
+        'Please enter your Partner Code',
+        name: 'partnerCodeHint',
+      );
+
+  String get linkingCode => Intl.message(
+        'Linking Code',
+        name: 'linkingCode',
+      );
+
+  String get linkingCodeHint => Intl.message(
+        'Please enter your Linking Code',
+        name: 'linkingCodeHint',
+      );
+
+  String get partnerCodeRequired => Intl.message(
+        'Partner code is required',
+        name: 'partnerCodeRequired',
+      );
+
+  String partnerCodeInvalid(int count) =>
+      Intl.message('Partner code must be $count characters long',
+          name: 'partnerCodeInvalid',
+          args: [count],
+          examples: const {'count': 8});
+
+  String get partnerLinkingCodeRequired => Intl.message(
+        'Partner code is required',
+        name: 'partnerLinkingCodeRequired',
+      );
+
+  String partnerLinkingCodeInvalidLength(int count) =>
+      Intl.message('Linking code must be $count characters long',
+          name: 'partnerLinkingCodeInvalidLength',
+          args: [count],
+          examples: const {'count': 8});
+
+  String get partnerLinkingCodeInvalid => Intl.message(
+        'Linking code must contain only alphanumeric characters',
+        name: 'partnerLinkingCodeInvalid',
+      );
+
+  String get smeLinkingSuccessPageTitle =>
+      Intl.message('Accounts Linked', name: 'smeLinkingSuccessPageTitle');
+
+  String get smeLinkingSuccessDetails => Intl.message(
+        // ignore: lines_longer_than_80_chars
+        'You have successfully linked your accounts. You can now scan vouchers.',
+        name: 'smeLinkingSuccessDetails',
+      );
+
+  String get smeLinkingAlreadyLinkedError => Intl.message(
+        'Your account is already linked to business.',
+        name: 'smeLinkingAlreadyLinkedError',
+      );
+
+  String get smeLinkingCredentialsError => Intl.message(
+        'Please check credentials and try again',
+        name: 'smeLinkingCredentialsError',
+      );
+
+//endregion SME linking
+
+//region SME invalidate voucher
+
+  String get invalidateVoucher => Intl.message(
+        'Invalidate Voucher',
+        name: 'invalidateVoucher',
+      );
+
+  String get scannedInfoDialogVoucherPositiveButton =>
+      Intl.message('Invalidate Voucher',
+          name: 'scannedInfoDialogVoucherPositiveButton');
+
+  String get scannedInfoDialogVoucherError =>
+      Intl.message('This voucher cannot be invalidated by your account.',
+          name: 'scannedInfoDialogVoucherError');
+
+  String get error => Intl.message('Error', name: 'error');
+
+  String get smeInvalidateVoucherSuccessPageTitle =>
+      Intl.message('Voucher successfully redeemed',
+          name: 'smeInvalidateVoucherSuccessPageTitle');
+
+  String get smeInvalidateVoucherSuccessDetails => Intl.message(
+        // ignore: lines_longer_than_80_chars
+        'You have successfully redeemed this voucher.',
+        name: 'smeInvalidateVoucherSuccessDetails',
+      );
+
+//endregion SME invalidate voucher
+
+//region Voucher History
+
+  String get purchase => Intl.message(
+        'Purchase',
+        name: 'purchase',
+      );
+
+  String get use => Intl.message(
+        'Use',
+        name: 'use',
+      );
+
+  String sendTo(String recipient) => Intl.message(
+        'Send to $recipient',
+        args: [recipient],
+        name: 'sendTo',
+      );
+
+  String receiveFrom(String sender) => Intl.message(
+        'Receive from $sender',
+        args: [sender],
+        name: 'receiveFrom',
+      );
+
+//endregion Voucher History
+
+//region Voucher Transfer
+
+  String get sendVoucher => Intl.message('Send Voucher', name: 'sendVoucher');
+
+  String get transferVoucherReceiverEmailAddressHint =>
+      Intl.message('Receiver Email',
+          name: 'transferVoucherReceiverEmailAddressHint');
+
+  String get transferVoucherEmptyReceiverEmailError =>
+      Intl.message('Receiver email is required',
+          name: 'transferVoucherEmptyReceiverEmailError');
+
+  String get transferVoucherInvalidReceiverEmailError => Intl.message(
+        'This receiver email is invalid',
+        name: 'transferVoucherInvalidReceiverEmailError',
+      );
+
+  String get transferVoucherSuccessTitle => Intl.message(
+        'Voucher successfully sent',
+        name: 'transferVoucherSuccessTitle',
+      );
+
+  String transferVoucherSuccessDetails(String receiverEmail) => Intl.message(
+        'You successfully sent a voucher to $receiverEmail',
+        args: [receiverEmail],
+        name: 'transferVoucherSuccessDetails',
+      );
+
+  String get backToVouchers => Intl.message(
+        'Back to vouchers',
+        name: 'backToVouchers',
+      );
+
+//endregion Voucher Transfer
 }

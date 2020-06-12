@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-05-15T15:31:36.382639",
+  "@@last_modified": "2020-06-12T16:44:10.198533",
   "networkErrorTitle": "Internet connection problem",
   "@networkErrorTitle": {
     "type": "text",
@@ -61,6 +61,21 @@
   },
   "noVouchersInStockError": "Sorry, all vouchers are sold out",
   "@noVouchersInStockError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noAvailableVouchersError": "Smart voucher campaign does not have available vouchers",
+  "@noAvailableVouchersError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paymentProviderError": "There's a problem with payment provider",
+  "@paymentProviderError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "customerHaveAnotherReservedVoucherError": "You have another voucher purchase in progress. Please finalize it and try again.",
+  "@customerHaveAnotherReservedVoucherError": {
     "type": "text",
     "placeholders": {}
   },
@@ -416,6 +431,16 @@
   },
   "retryButton": "Retry",
   "@retryButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancelButton": "Cancel",
+  "@cancelButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "goBack": "Go back",
+  "@goBack": {
     "type": "text",
     "placeholders": {}
   },
@@ -3135,6 +3160,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "viewOffer": "View Offer",
+  "@viewOffer": {
+    "type": "text",
+    "placeholders": {}
+  },
   "about": "About",
   "@about": {
     "type": "text",
@@ -3147,7 +3177,7 @@
       "vendorName": {}
     }
   },
-  "offerExpiresOn": "This offer expires on {expirationDate}",
+  "offerExpiresOn": "This offer expires on: {expirationDate}",
   "@offerExpiresOn": {
     "type": "text",
     "placeholders": {
@@ -3159,8 +3189,13 @@
     "type": "text",
     "placeholders": {}
   },
-  "redeemOffer": "Redeem Offer",
+  "redeemOffer": "Purchase voucher",
   "@redeemOffer": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewPartner": "View the shop",
+  "@viewPartner": {
     "type": "text",
     "placeholders": {}
   },
@@ -3181,6 +3216,50 @@
   },
   "viewVoucher": "View Voucher",
   "@viewVoucher": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sendToFriend": "Send to a friend",
+  "@sendToFriend": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancelVoucher": "Cancel Voucher",
+  "@cancelVoucher": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "pending": "Pending",
+  "@pending": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "expired": "Expired",
+  "@expired": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dateOfPurchase": "Date of purchase: {purchaseDate}",
+  "@dateOfPurchase": {
+    "type": "text",
+    "placeholders": {
+      "purchaseDate": {}
+    }
+  },
+  "expirationDate": "Expiration Date: {expirationDate}",
+  "@expirationDate": {
+    "type": "text",
+    "placeholders": {
+      "expirationDate": {}
+    }
+  },
+  "voucherNoExpirationDate": "This offer has no expiration date",
+  "@voucherNoExpirationDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "voucherExpired": "This offer has expired",
+  "@voucherExpired": {
     "type": "text",
     "placeholders": {}
   },
@@ -3242,6 +3321,190 @@
   },
   "emailBody": "Content",
   "@emailBody": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "locationDialogTitle": "Please turn on Location Services",
+  "@locationDialogTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "locationDialogDescription": "Location Services are not enabled on your device. Please enable them and try again.",
+  "@locationDialogDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "linkBusinessAccount": "Link business account",
+  "@linkBusinessAccount": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "linkBusinessAccountDescription": "Enter the details of the account you'd like to link",
+  "@linkBusinessAccountDescription": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "partnerCode": "Partner Code",
+  "@partnerCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "partnerCodeHint": "Please enter your Partner Code",
+  "@partnerCodeHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "linkingCode": "Linking Code",
+  "@linkingCode": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "linkingCodeHint": "Please enter your Linking Code",
+  "@linkingCodeHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "partnerCodeRequired": "Partner code is required",
+  "@partnerCodeRequired": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "partnerCodeInvalid": "Partner code must be {count} characters long",
+  "@partnerCodeInvalid": {
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": 8
+      }
+    }
+  },
+  "partnerLinkingCodeRequired": "Partner code is required",
+  "@partnerLinkingCodeRequired": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "partnerLinkingCodeInvalidLength": "Linking code must be {count} characters long",
+  "@partnerLinkingCodeInvalidLength": {
+    "type": "text",
+    "placeholders": {
+      "count": {
+        "example": 8
+      }
+    }
+  },
+  "partnerLinkingCodeInvalid": "Linking code must contain only alphanumeric characters",
+  "@partnerLinkingCodeInvalid": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "smeLinkingSuccessPageTitle": "Accounts Linked",
+  "@smeLinkingSuccessPageTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "smeLinkingSuccessDetails": "You have successfully linked your accounts. You can now scan vouchers.",
+  "@smeLinkingSuccessDetails": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "smeLinkingAlreadyLinkedError": "Your account is already linked to business.",
+  "@smeLinkingAlreadyLinkedError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "smeLinkingCredentialsError": "Please check credentials and try again",
+  "@smeLinkingCredentialsError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidateVoucher": "Invalidate Voucher",
+  "@invalidateVoucher": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "scannedInfoDialogVoucherPositiveButton": "Invalidate Voucher",
+  "@scannedInfoDialogVoucherPositiveButton": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "scannedInfoDialogVoucherError": "This voucher cannot be invalidated by your account.",
+  "@scannedInfoDialogVoucherError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "error": "Error",
+  "@error": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "smeInvalidateVoucherSuccessPageTitle": "Voucher successfully redeemed",
+  "@smeInvalidateVoucherSuccessPageTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "smeInvalidateVoucherSuccessDetails": "You have successfully redeemed this voucher.",
+  "@smeInvalidateVoucherSuccessDetails": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "purchase": "Purchase",
+  "@purchase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "use": "Use",
+  "@use": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "sendTo": "Send to {recipient}",
+  "@sendTo": {
+    "type": "text",
+    "placeholders": {
+      "recipient": {}
+    }
+  },
+  "receiveFrom": "Receive from {sender}",
+  "@receiveFrom": {
+    "type": "text",
+    "placeholders": {
+      "sender": {}
+    }
+  },
+  "sendVoucher": "Send Voucher",
+  "@sendVoucher": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "transferVoucherReceiverEmailAddressHint": "Receiver Email",
+  "@transferVoucherReceiverEmailAddressHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "transferVoucherEmptyReceiverEmailError": "Receiver email is required",
+  "@transferVoucherEmptyReceiverEmailError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "transferVoucherInvalidReceiverEmailError": "This receiver email is invalid",
+  "@transferVoucherInvalidReceiverEmailError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "transferVoucherSuccessTitle": "Voucher successfully sent",
+  "@transferVoucherSuccessTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "transferVoucherSuccessDetails": "You successfully sent a voucher to {receiverEmail}",
+  "@transferVoucherSuccessDetails": {
+    "type": "text",
+    "placeholders": {
+      "receiverEmail": {}
+    }
+  },
+  "backToVouchers": "Back to vouchers",
+  "@backToVouchers": {
     "type": "text",
     "placeholders": {}
   }
