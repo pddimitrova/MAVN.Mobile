@@ -9,6 +9,8 @@ class TransferVoucherUninitializedState extends TransferVoucherState {
 
 class TransferVoucherLoadingState extends TransferVoucherState {}
 
+class TransferVoucherLoadedState extends TransferVoucherState {}
+
 class TransferVoucherNetworkErrorState extends TransferVoucherState {}
 
 class TransferVoucherErrorState extends TransferVoucherState {
