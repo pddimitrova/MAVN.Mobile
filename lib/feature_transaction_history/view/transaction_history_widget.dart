@@ -79,8 +79,9 @@ class TransactionHistoryWidget extends HookWidget {
                   isLoading: transactionListBlocState
                       is GenericListPaginationLoadingState,
                   isEmpty: transactionListBlocState is GenericListEmptyState,
-                  emptyText: useLocalizedStrings().voucherListEmpty,
-                  emptyIcon: SvgAssets.voucher,
+                  emptyText:
+                      useLocalizedStrings().walletPageTransactionHistoryEmpty,
+                  emptyIcon: SvgAssets.paymentRequests,
                   retryOnError: loadData,
                   loadData: loadData,
                   showError: transactionListBlocState is GenericListErrorState,

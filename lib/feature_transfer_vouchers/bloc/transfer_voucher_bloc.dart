@@ -29,6 +29,7 @@ class TransferVoucherBloc extends Bloc<TransferVoucherState> {
         shortCode: voucherShortCode,
       );
 
+      setState(TransferVoucherLoadedState());
       sendEvent(TransferVoucherSuccessEvent());
     } on Exception catch (e) {
       setState(_mapExceptionToErrorState(e));

@@ -5,6 +5,7 @@ import 'package:lykke_mobile_mavn/app/resources/lazy_localized_strings.dart';
 import 'package:lykke_mobile_mavn/app/resources/localized_strings.dart';
 import 'package:lykke_mobile_mavn/app/resources/svg_assets.dart';
 import 'package:lykke_mobile_mavn/app/resources/text_styles.dart';
+import 'package:lykke_mobile_mavn/base/common_blocs/customer_bloc.dart';
 import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_barcode_scan/actions/partner_info_qr_content.dart';
 import 'package:lykke_mobile_mavn/feature_barcode_scan/bloc/scan_barcode_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:lykke_mobile_mavn/library_form/form_mixin.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/error/generic_error_widget.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/layout/scaffold_with_app_bar.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/misc/heading.dart';
+import 'package:pedantic/pedantic.dart';
 
 class SmeLinkingPage extends HookWidget with FormMixin {
   final _formKey = GlobalKey<FormState>();
@@ -36,6 +38,8 @@ class SmeLinkingPage extends HookWidget with FormMixin {
     final barcodeScanBloc = useBarcodeScanBloc();
     final barcodeScanState = useBlocState(barcodeScanBloc);
 
+    final customerBloc = useCustomerBloc();
+
     final partnerCodeTextEditingController = useCustomTextEditingController();
     final linkingCodeTextEditingController = useCustomTextEditingController();
 
@@ -52,6 +56,9 @@ class SmeLinkingPage extends HookWidget with FormMixin {
 
     useBlocEventListener(smeLinkingBloc, (event) {
       if (event is SmeLinkingSubmissionSuccessEvent) {
+        ///update local customer model
+        ///to reflect linked account
+        unawaited(customerBloc.getCustomer());
         router.replaceWithSmeLinkingSuccessPage();
       }
     });
