@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:latlong/latlong.dart' as lat_long;
+import 'package:lykke_mobile_mavn/app/resources/color_styles.dart';
 import 'package:lykke_mobile_mavn/app/resources/localized_strings.dart';
+import 'package:lykke_mobile_mavn/base/remote_data_source/api/campaign/response_model/campaign_response_model.dart';
 import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/bloc/campaign_map_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/bloc/campaign_map_bloc_output.dart';
+import 'package:lykke_mobile_mavn/feature_campaigns_map/ui_components/partner_bottom_sheet.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/ui_components/pop_back_button.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/util/location_to_marker_mapper.dart';
+import 'package:lykke_mobile_mavn/feature_campaigns_map/util/marker_helper.dart';
 import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc_state.dart';
 import 'package:lykke_mobile_mavn/feature_location/util/user_position.dart';
@@ -26,11 +30,11 @@ class CampaignMapPage extends HookWidget {
     final localizedStrings = useLocalizedStrings();
 
     final userLocationBloc = useUserLocationBloc();
-    final userLocationState = useBlocState(userLocationBloc);
 
     final campaignMapBloc = useCampaignMapBloc();
     final campaignMapBlocState = useBlocState(campaignMapBloc);
     final mapper = useLocationToMarkerMapper();
+    final markerHelper = useMarkerHelper();
 
     final isErrorDismissed = useState(false);
     final isReturningFromSettings = useState(false);
@@ -96,8 +100,18 @@ class CampaignMapPage extends HookWidget {
 
     if (campaignMapBlocState is CampaignMapLoadedState) {
       data.value = mapper.mapCampaignsToMarkers(
-          campaignMapBlocState.campaignList, () => null)
-        ..add(Marker(
+        campaignMapBlocState.campaignList,
+        (partnerLocation) => _showPartnerBottomSheet(
+          campaigns: markerHelper.getCampaignsForPartnerLocation(
+            campaigns: campaignMapBlocState.campaignList,
+            partnerId: partnerLocation.partnerId,
+            lat: partnerLocation.location.lat,
+            long: partnerLocation.location.long,
+          ),
+          partnerLocation: partnerLocation,
+          context: context,
+        ),
+      )..add(Marker(
           markerId: MarkerId('me'),
           position: LatLng(
             currentUserLocation.value.lat,
@@ -142,6 +156,27 @@ class CampaignMapPage extends HookWidget {
         ),
       ),
     );
+  }
+
+  void _showPartnerBottomSheet({
+    @required PartnerLocation partnerLocation,
+    @required List<CampaignResponseModel> campaigns,
+    @required BuildContext context,
+  }) {
+    showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(25),
+          ),
+        ),
+        backgroundColor: ColorStyles.white,
+        barrierColor: ColorStyles.white.withOpacity(0),
+        context: context,
+        builder: (context) => PartnerBottomSheet(
+              partnerName: partnerLocation.partnerName,
+              partnerLocationAddress: partnerLocation.location.address,
+              campaigns: campaigns,
+            ));
   }
 }
 

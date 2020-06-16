@@ -89,15 +89,21 @@ class CampaignListResponseModel {
 enum Vertical { hospitality, realEstate, retail }
 
 class Geolocation {
-  Geolocation({@required this.long, @required this.lat});
+  Geolocation({
+    @required this.long,
+    @required this.lat,
+    @required this.address,
+  });
 
   Geolocation.fromJson(Map<String, dynamic> json)
       : long = json['Longitude'],
-        lat = json['Latitude'];
+        lat = json['Latitude'],
+        address = json['Address'];
 
   static List<Geolocation> toListFromJson(List list) =>
       list.map((json) => Geolocation.fromJson(json)).toList();
 
   final double long;
   final double lat;
+  final String address;
 }

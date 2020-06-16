@@ -89,4 +89,5 @@ class ColorStyles {
   static const Color manatee50 = Color(0x80979DA3);
   static const Color wildSand = Color(0xFFF4F4F4);
   static const Color froly = Color(0xffF87B73);
+  static const Color iron = Color(0xffCBCED1);
 }
