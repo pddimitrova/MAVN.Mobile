@@ -7,6 +7,7 @@ import 'package:lykke_mobile_mavn/base/local_data_source/shared_preferences_mana
 import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_email_verification/bloc/email_confirmation_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_purchase/bloc/voucher_purchase_success_bloc.dart';
+import 'package:lykke_mobile_mavn/lib_dynamic_links/routes/app_install_dynamic_route.dart';
 import 'package:lykke_mobile_mavn/lib_dynamic_links/routes/app_referral_dynamic_route.dart';
 import 'package:lykke_mobile_mavn/lib_dynamic_links/routes/dynamic_link_route_base.dart';
 import 'package:lykke_mobile_mavn/lib_dynamic_links/routes/email_confirmation_dynamic_route.dart';
@@ -31,6 +32,7 @@ class DynamicLinkManager {
           ResetPasswordDynamicRoute(router),
           AppReferralDynamicLinkRoute(router, sharedPreferencesManager),
           VoucherPurchaseDynamicRoute(router, voucherPurchaseSuccessBloc),
+          AppInstallDynamicLinkRoute(router, sharedPreferencesManager),
         ];
 
   FirebaseDynamicLinks firebaseDynamicLinks;

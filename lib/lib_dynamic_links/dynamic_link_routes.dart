@@ -5,4 +5,5 @@ class DynamicLinkRoutes {
   static const leadReferralAcceptRoute = '/lead-confirmation';
   static const appReferralRoute = '/app-referral';
   static const voucherPurchaseRoute = '/transaction-status';
+  static const appInstallRoute = '/mobile-app-install';
 }
