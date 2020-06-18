@@ -8,12 +8,14 @@ class GenericErrorWidget extends StatelessWidget {
   const GenericErrorWidget({
     @required this.onRetryTap,
     this.text,
+    this.buttonText,
     this.onCloseTap,
     this.valueKey,
     this.margin = const EdgeInsets.all(16),
   });
 
   final String text;
+  final String buttonText;
   final VoidCallback onRetryTap;
   final VoidCallback onCloseTap;
   final ValueKey valueKey;
@@ -55,7 +57,8 @@ class GenericErrorWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5)),
                 child: Text(
-                  LocalizedStrings.of(context).retryButton.toUpperCase(),
+                  buttonText ??
+                      LocalizedStrings.of(context).retryButton.toUpperCase(),
                   style: TextStyles.linksTextLinkBold.copyWith(fontSize: 14),
                 ),
                 onPressed: onRetryTap,

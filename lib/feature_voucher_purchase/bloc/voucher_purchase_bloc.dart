@@ -23,12 +23,13 @@ class VoucherPurchaseBloc extends Bloc<VoucherPurchaseState> {
       final purchaseVoucherResponse =
           await _voucherRepository.purchaseVoucher(id: campaignId);
 
-      //only disabling the loading
-      setState(VoucherPurchaseLoadedState());
-      //triggers flow
+      setState(VoucherPurchaseLoadedState(
+        voucherPurchaseResponseModel: purchaseVoucherResponse,
+      ));
+
       sendEvent(
-        VoucherPurchaseSuccessEvent(
-          paymentUrl: purchaseVoucherResponse.paymentUrl,
+        VoucherPurchaseResponseEvent(
+          voucherPurchaseResponseModel: purchaseVoucherResponse,
         ),
       );
     } on Exception catch (e) {

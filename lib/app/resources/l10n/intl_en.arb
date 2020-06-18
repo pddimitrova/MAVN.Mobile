@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-06-12T16:44:10.198533",
+  "@@last_modified": "2020-06-18T12:00:42.828605",
   "networkErrorTitle": "Internet connection problem",
   "@networkErrorTitle": {
     "type": "text",
@@ -3196,6 +3196,11 @@
   },
   "viewPartner": "View the shop",
   "@viewPartner": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "goToReservedVoucher": "Go to reserved voucher",
+  "@goToReservedVoucher": {
     "type": "text",
     "placeholders": {}
   },

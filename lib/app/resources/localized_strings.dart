@@ -3099,6 +3099,11 @@ class LocalizedStrings {
         name: 'viewPartner',
       );
 
+  String get goToReservedVoucher => Intl.message(
+        'Go to reserved voucher',
+        name: 'goToReservedVoucher',
+      );
+
 //endregion Campaign Details
 
 //region Voucher Waller

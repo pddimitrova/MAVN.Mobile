@@ -515,12 +515,17 @@ class RouterPageFactory {
       );
 
   static Widget getVoucherDetailsPage({
+    String voucherShortCode,
     VoucherResponseModel voucher,
     Color voucherColor,
   }) =>
       ModuleProvider(
         module: VoucherDetailsModule(),
-        child: VoucherDetailsPage(voucher: voucher, voucherColor: voucherColor),
+        child: VoucherDetailsPage(
+          voucherShortCode: voucherShortCode,
+          voucher: voucher,
+          voucherColor: voucherColor,
+        ),
       );
 
   static Widget getTransferVoucherPage({

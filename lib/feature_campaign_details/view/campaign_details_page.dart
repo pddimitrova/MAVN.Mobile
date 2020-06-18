@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lykke_mobile_mavn/app/resources/localized_strings.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/campaign/response_model/campaign_response_model.dart';
+import 'package:lykke_mobile_mavn/base/remote_data_source/api/campaign/response_model/voucher_purchase_response_model.dart';
 import 'package:lykke_mobile_mavn/base/router/external_router.dart';
+import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_details/ui_components/campaign_about_section.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_details/ui_components/campaign_top_section.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_list/ui_components/campaign_widget.dart';
@@ -25,15 +27,32 @@ class CampaignDetailsPage extends HookWidget {
     final localizedStrings = useLocalizedStrings();
 
     final externalRouter = useExternalRouter();
+    final router = useRouter();
 
     final voucherPurchaseBloc = useVoucherPurchaseBloc();
     final voucherPurchaseState = useBlocState(voucherPurchaseBloc);
 
     useBlocEventListener(voucherPurchaseBloc, (event) {
-      if (event is VoucherPurchaseSuccessEvent) {
-        externalRouter.launchWebsite(event.paymentUrl);
+      if (event is VoucherPurchaseResponseEvent) {
+        if (event.voucherPurchaseResponseModel.paymentUrl != null) {
+          externalRouter
+              .launchWebsite(event.voucherPurchaseResponseModel.paymentUrl);
+        }
       }
     });
+
+    void continuePurchase(
+        VoucherPurchaseResponseModel voucherPurchaseResponseModel) {
+      if (voucherPurchaseResponseModel.errorCode ==
+          VoucherPurchaseErrorCode.customerHaveAnotherReservedVoucher) {
+        router
+          ..popToRoot()
+          ..pushVoucherDetailsPage(
+            voucherShortCode:
+                voucherPurchaseResponseModel.reservedVoucherShortCode,
+          );
+      }
+    }
 
     void reserveVoucher() {
       voucherPurchaseBloc.purchaseVoucher(campaignId: campaign.id);
@@ -56,6 +75,7 @@ class CampaignDetailsPage extends HookWidget {
         context: context,
         voucherPurchaseState: voucherPurchaseState,
         onRetryTap: reserveVoucher,
+        onContinuePurchaseTap: continuePurchase,
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: CampaignWidget.cardHeight / 4),
@@ -78,6 +98,7 @@ class CampaignDetailsPage extends HookWidget {
     BuildContext context,
     VoucherPurchaseState voucherPurchaseState,
     VoidCallback onRetryTap,
+    Function(VoucherPurchaseResponseModel) onContinuePurchaseTap,
   }) {
     if (voucherPurchaseState is VoucherPurchaseNetworkErrorState) {
       return Padding(
@@ -89,6 +110,17 @@ class CampaignDetailsPage extends HookWidget {
       return GenericErrorWidget(
           onRetryTap: onRetryTap,
           text: voucherPurchaseState.error.localize(context));
+    }
+
+    if (voucherPurchaseState is VoucherPurchaseLoadedState &&
+        voucherPurchaseState.voucherPurchaseResponseModel.errorCode ==
+            VoucherPurchaseErrorCode.customerHaveAnotherReservedVoucher) {
+      return GenericErrorWidget(
+          onRetryTap: () => onContinuePurchaseTap(
+              voucherPurchaseState.voucherPurchaseResponseModel),
+          buttonText: LocalizedStrings.of(context).goToReservedVoucher,
+          text: LocalizedStrings.of(context)
+              .customerHaveAnotherReservedVoucherError);
     }
     return Container();
   }

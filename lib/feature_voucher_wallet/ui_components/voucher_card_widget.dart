@@ -55,8 +55,7 @@ class VoucherCardWidget extends HookWidget {
 
     const topHeight = cardHeight * _topSectionRatio;
 
-    final voucherColor =
-        voucherStatus == VoucherStatus.expired ? ColorStyles.black : color;
+    final voucherColor = _getVoucherColor();
 
     return Stack(
       children: <Widget>[
@@ -172,6 +171,13 @@ class VoucherCardWidget extends HookWidget {
           ),
       ],
     );
+  }
+
+  Color _getVoucherColor() {
+    if (voucherStatus == VoucherStatus.expired) {
+      return ColorStyles.black;
+    }
+    return color ?? voucherTintColors.first;
   }
 
   String _getExpirationDate(LocalizedStrings localizedStrings) {

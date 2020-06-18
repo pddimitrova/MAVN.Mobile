@@ -762,11 +762,13 @@ class Router extends BaseRouter {
   }
 
   Future<void> pushVoucherDetailsPage({
-    @required VoucherResponseModel voucher,
+    @required String voucherShortCode,
+    VoucherResponseModel voucher,
     Color voucherColor,
   }) async {
     await pushPage(
       RouterPageFactory.getVoucherDetailsPage(
+        voucherShortCode: voucherShortCode,
         voucher: voucher,
         voucherColor: voucherColor,
       ),

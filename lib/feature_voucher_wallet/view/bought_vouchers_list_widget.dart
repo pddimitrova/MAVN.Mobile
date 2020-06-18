@@ -106,6 +106,7 @@ class BoughtVouchersList extends HookWidget {
                         VoucherCardWidget.voucherTintColors[tintColorIndex];
                     return InkWell(
                       onTap: () => router.pushVoucherDetailsPage(
+                        voucherShortCode: voucher.shortCode,
                         voucher: voucher,
                         voucherColor: voucherTintColor,
                       ),

@@ -611,6 +611,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Please try again."),
         "getStartedButton": MessageLookupByLibrary.simpleMessage("Get started"),
         "goBack": MessageLookupByLibrary.simpleMessage("Go back"),
+        "goToReservedVoucher":
+            MessageLookupByLibrary.simpleMessage("Go to reserved voucher"),
         "goToWallet": MessageLookupByLibrary.simpleMessage("Go to Wallet"),
         "homePageCountdownSubtitle": MessageLookupByLibrary.simpleMessage(
             "are waiting for you, hurry up"),
