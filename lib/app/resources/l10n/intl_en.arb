@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-06-18T12:00:42.828605",
+  "@@last_modified": "2020-06-18T15:00:19.206234",
   "networkErrorTitle": "Internet connection problem",
   "@networkErrorTitle": {
     "type": "text",
@@ -3452,25 +3452,25 @@
     "type": "text",
     "placeholders": {}
   },
-  "purchase": "Purchase",
-  "@purchase": {
+  "purchased": "Purchased",
+  "@purchased": {
     "type": "text",
     "placeholders": {}
   },
-  "use": "Use",
-  "@use": {
+  "used": "Used",
+  "@used": {
     "type": "text",
     "placeholders": {}
   },
-  "sendTo": "Send to {recipient}",
-  "@sendTo": {
+  "sentTo": "Sent to {recipient}",
+  "@sentTo": {
     "type": "text",
     "placeholders": {
       "recipient": {}
     }
   },
-  "receiveFrom": "Receive from {sender}",
-  "@receiveFrom": {
+  "receivedFrom": "Received from {sender}",
+  "@receivedFrom": {
     "type": "text",
     "placeholders": {
       "sender": {}

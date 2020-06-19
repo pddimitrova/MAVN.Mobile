@@ -17,6 +17,7 @@ class CampaignMapBloc extends Bloc<CampaignMapState> {
 
   static const _pageSize = 100;
   static const double _defaultRadius = 2;
+  static const _defaultCountry = 'CHE';
 
   final CampaignRepository _campaignRepository;
   final ExceptionToMessageMapper _exceptionToMessageMapper;
@@ -31,6 +32,8 @@ class CampaignMapBloc extends Bloc<CampaignMapState> {
   }) async {
     setState(CampaignMapLoadingState());
 
+    if (radius < 128.0) return;
+
     try {
       final campaignListResponse = await _campaignRepository.getCampaigns(
         pageSize: _pageSize,
@@ -38,6 +41,26 @@ class CampaignMapBloc extends Bloc<CampaignMapState> {
         long: long,
         lat: lat,
         radius: radius ?? _defaultRadius,
+      );
+
+      setState(CampaignMapLoadedState(
+        campaignList: campaignListResponse.campaigns,
+      ));
+    } on Exception catch (e) {
+      final errorMessage = _exceptionToMessageMapper.map(e);
+
+      setState(CampaignMapErrorState(errorMessage));
+    }
+  }
+
+  Future<void> loadCampaignsForCountry({String countryCode}) async {
+    setState(CampaignMapLoadingState());
+
+    try {
+      final campaignListResponse = await _campaignRepository.getCampaigns(
+        pageSize: _pageSize,
+        currentPage: 1,
+        countryCode: countryCode ?? _defaultCountry,
       );
 
       setState(CampaignMapLoadedState(

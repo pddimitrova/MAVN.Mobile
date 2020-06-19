@@ -98,17 +98,17 @@ class TransactionHistoryMapper {
       case TransactionType.smartVoucherTransferSend:
         return transaction.otherSideCustomerEmail != null
             ? LocalizedStrings.of(context)
-                .sendTo(transaction.otherSideCustomerEmail)
+                .sentTo(transaction.otherSideCustomerEmail)
             : '';
       case TransactionType.smartVoucherTransferReceive:
         return transaction.otherSideCustomerEmail != null
             ? LocalizedStrings.of(context)
-                .receiveFrom(transaction.otherSideCustomerEmail)
+                .receivedFrom(transaction.otherSideCustomerEmail)
             : '';
       case TransactionType.smartVoucherPayment:
-        return LocalizedStrings.of(context).purchase;
+        return LocalizedStrings.of(context).purchased;
       case TransactionType.smartVoucherUse:
-        return LocalizedStrings.of(context).use;
+        return LocalizedStrings.of(context).used;
     }
   }
 

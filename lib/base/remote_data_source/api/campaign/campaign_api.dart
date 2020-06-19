@@ -20,6 +20,7 @@ class CampaignApi extends BaseApi {
   static const String queryParamLong = 'Longitude';
   static const String queryParamLat = 'Latitude';
   static const String queryParamRadius = 'RadiusInKm';
+  static const String queryParamCountryCode = 'CountryIso3Code';
 
   Future<CampaignListResponseModel> getCampaigns({
     @required int pageSize,
@@ -27,6 +28,7 @@ class CampaignApi extends BaseApi {
     double long,
     double lat,
     double radius,
+    String countryCode,
   }) =>
       exceptionHandledHttpClientRequest(() async {
         final response = await httpClient
@@ -36,6 +38,7 @@ class CampaignApi extends BaseApi {
           if (long != null) queryParamLong: long,
           if (lat != null) queryParamLat: lat,
           if (radius != null) queryParamRadius: radius,
+          if (countryCode != null) queryParamCountryCode: countryCode,
         });
         return CampaignListResponseModel.fromJson(response.data);
       });

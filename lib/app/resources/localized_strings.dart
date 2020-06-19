@@ -3364,26 +3364,26 @@ class LocalizedStrings {
 
 //region Voucher History
 
-  String get purchase => Intl.message(
-        'Purchase',
-        name: 'purchase',
+  String get purchased => Intl.message(
+        'Purchased',
+        name: 'purchased',
       );
 
-  String get use => Intl.message(
-        'Use',
-        name: 'use',
+  String get used => Intl.message(
+        'Used',
+        name: 'used',
       );
 
-  String sendTo(String recipient) => Intl.message(
-        'Send to $recipient',
+  String sentTo(String recipient) => Intl.message(
+        'Sent to $recipient',
         args: [recipient],
-        name: 'sendTo',
+        name: 'sentTo',
       );
 
-  String receiveFrom(String sender) => Intl.message(
-        'Receive from $sender',
+  String receivedFrom(String sender) => Intl.message(
+        'Received from $sender',
         args: [sender],
-        name: 'receiveFrom',
+        name: 'receivedFrom',
       );
 
 //endregion Voucher History

@@ -17,6 +17,7 @@ class CampaignRepository {
     double long,
     double lat,
     double radius,
+    String countryCode,
   }) =>
       _campaignApi.getCampaigns(
         pageSize: pageSize,
@@ -24,6 +25,7 @@ class CampaignRepository {
         long: long,
         lat: lat,
         radius: radius,
+        countryCode: countryCode,
       );
 
   Future<CampaignResponseModel> getCampaignDetails({

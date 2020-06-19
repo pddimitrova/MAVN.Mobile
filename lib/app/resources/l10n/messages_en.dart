@@ -204,17 +204,17 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m67(token) => "From external wallet to ${token} wallet";
 
-  static m101(sender) => "Receive from ${sender}";
-
   static m68(token) => "Receive ${token} points";
 
-  static m69(token) => "Transfer ${token}";
+  static m101(sender) => "Received from ${sender}";
 
-  static m102(recipient) => "Send to ${recipient}";
+  static m69(token) => "Transfer ${token}";
 
   static m70(token) => "From ${token} wallet to external wallet";
 
   static m71(token) => "Transfer ${token}";
+
+  static m102(recipient) => "Sent to ${recipient}";
 
   static m72(time) =>
       "If your friend doesn\'t accept the invite within ${time} you will lose ";
@@ -1024,12 +1024,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy policy"),
         "propertyPaymentAvailableBalanceLabel":
             MessageLookupByLibrary.simpleMessage("Available balance"),
-        "purchase": MessageLookupByLibrary.simpleMessage("Purchase"),
+        "purchased": MessageLookupByLibrary.simpleMessage("Purchased"),
         "receive": MessageLookupByLibrary.simpleMessage("Receive"),
         "receiveExternalWalletButton": MessageLookupByLibrary.simpleMessage(
             "Receive from external wallet"),
         "receiveExternalWalletButtonSubtitle": m67,
-        "receiveFrom": m101,
         "receiveTokenPageGenericErrorSubtitle":
             MessageLookupByLibrary.simpleMessage(
                 "Oh no! We\'re unable to display the QR code. Please try again."),
@@ -1038,6 +1037,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "receiveTokenPageSubDetails": MessageLookupByLibrary.simpleMessage(
             "Share this code with the sender, you\'ll receive points quicker than you thought"),
         "receiveTokenPageTitle": m68,
+        "receivedFrom": m101,
         "redeem": MessageLookupByLibrary.simpleMessage("Redeem"),
         "redeemOffer": MessageLookupByLibrary.simpleMessage("Purchase voucher"),
         "redeemVoucherButton":
@@ -1144,7 +1144,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "scannedInfoDialogVoucherPositiveButton":
             MessageLookupByLibrary.simpleMessage("Invalidate Voucher"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
-        "sendTo": m102,
         "sendToExternalWalletButton":
             MessageLookupByLibrary.simpleMessage("Transfer to external wallet"),
         "sendToExternalWalletButtonSubtitle": m70,
@@ -1154,6 +1153,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "sendVoucher": MessageLookupByLibrary.simpleMessage("Send Voucher"),
         "senderCustomerNotFoundError": MessageLookupByLibrary.simpleMessage(
             "Sorry, we couldn\'t find this account. Transfer canceled"),
+        "sentTo": m102,
         "setPasswordSuccessBackToAccountButton":
             MessageLookupByLibrary.simpleMessage("Back to sign-in"),
         "setPasswordSuccessDetails": MessageLookupByLibrary.simpleMessage(
@@ -1347,13 +1347,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Unlinking in progress"),
         "unlinkWalletInProgressTitle": MessageLookupByLibrary.simpleMessage(
             "Your wallet is currently being unlinked"),
-        "use": MessageLookupByLibrary.simpleMessage("Use"),
         "useBiometricButton":
             MessageLookupByLibrary.simpleMessage("or use biometric"),
         "useFaceIDButton":
             MessageLookupByLibrary.simpleMessage("or use Face ID"),
         "useFingerprintButton":
             MessageLookupByLibrary.simpleMessage("or use fingerprint"),
+        "used": MessageLookupByLibrary.simpleMessage("Used"),
         "verificationCodeDoesNotExistError":
             MessageLookupByLibrary.simpleMessage(
                 "Error. The verification code is invalid"),
