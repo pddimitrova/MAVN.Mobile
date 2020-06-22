@@ -20,6 +20,14 @@ class NotificationTapped {
         notificationTappedCustomPayload =
             HotelWelcomeNotificationTapped(route, id, json['partnerMessageId']);
         break;
+      case NotificationRoutes.voucherUsageSuccess:
+        notificationTappedCustomPayload = VoucherUsageSuccessTapped(
+          route,
+          id,
+          json['parentName'],
+          json['voucherShortCode'],
+        );
+        break;
       default:
         notificationTappedCustomPayload = NotificationTappedCustomPayload(
           route,
@@ -53,6 +61,16 @@ class HotelWelcomeNotificationTapped extends NotificationTappedCustomPayload {
     String messageGroupId,
     this.partnerMessageId,
   ) : super(route, messageGroupId);
-
   final String partnerMessageId;
+}
+
+class VoucherUsageSuccessTapped extends NotificationTappedCustomPayload {
+  VoucherUsageSuccessTapped(
+    String route,
+    String messageGroupId,
+    this.partnerName,
+    this.voucherShortCode,
+  ) : super(route, messageGroupId);
+  final String partnerName;
+  final String voucherShortCode;
 }

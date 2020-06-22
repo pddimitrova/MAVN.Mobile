@@ -3422,4 +3422,23 @@ class LocalizedStrings {
       );
 
 //endregion Voucher Transfer
+
+//region Voucher Usage
+
+  String voucherUsageSuccessDetails(
+    String voucherShortCode,
+    String partnerName,
+  ) =>
+      Intl.message(
+        'You have successfully used voucher $voucherShortCode at $partnerName',
+        args: [voucherShortCode, partnerName],
+        name: 'voucherUsageSuccessDetails',
+      );
+
+  String get voucherUsageSuccessPageTitle =>
+      Intl.message('Successfully used voucher',
+          name: 'voucherUsageSuccessPageTitle');
+
+//endregion Voucher Usage
+
 }

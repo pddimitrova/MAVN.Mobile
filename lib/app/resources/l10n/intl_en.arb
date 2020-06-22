@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-06-18T15:00:19.206234",
+  "@@last_modified": "2020-06-22T17:05:01.136348",
   "networkErrorTitle": "Internet connection problem",
   "@networkErrorTitle": {
     "type": "text",
@@ -3510,6 +3510,19 @@
   },
   "backToVouchers": "Back to vouchers",
   "@backToVouchers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "voucherUsageSuccessDetails": "You have successfully used voucher {voucherShortCode} at {partnerName}",
+  "@voucherUsageSuccessDetails": {
+    "type": "text",
+    "placeholders": {
+      "voucherShortCode": {},
+      "partnerName": {}
+    }
+  },
+  "voucherUsageSuccessPageTitle": "Successfully used voucher",
+  "@voucherUsageSuccessPageTitle": {
     "type": "text",
     "placeholders": {}
   }

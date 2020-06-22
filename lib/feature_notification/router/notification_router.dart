@@ -18,6 +18,7 @@ class NotificationRouter {
     if (notificationTapped == null) {
       return;
     }
+
     final route = notificationTapped.notificationTappedCustomPayload.route;
     switch (route) {
       case NotificationRoutes.referralListPageRoute:
@@ -54,6 +55,19 @@ class NotificationRouter {
               (notificationTapped.notificationTappedCustomPayload
                       as HotelWelcomeNotificationTapped)
                   .partnerMessageId);
+          break;
+        }
+      case NotificationRoutes.voucherUsageSuccess:
+        {
+          _router
+            ..popToRoot()
+            ..pushVoucherUsageSuccessPage(
+                (notificationTapped.notificationTappedCustomPayload
+                        as VoucherUsageSuccessTapped)
+                    .voucherShortCode,
+                (notificationTapped.notificationTappedCustomPayload
+                        as VoucherUsageSuccessTapped)
+                    .partnerName);
           break;
         }
     }

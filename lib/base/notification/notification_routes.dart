@@ -4,4 +4,5 @@ class NotificationRoutes {
   static const transactionHistoryPageRoute = 'transaction-history';
   static const walletPageRoute = 'wallet';
   static const hotelWelcomeRoute = 'hotel-welcome';
+  static const voucherUsageSuccess = 'voucher-usage-success';
 }

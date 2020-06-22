@@ -881,6 +881,23 @@ class Router extends BaseRouter {
 
 //endregion Misc
 
+//region Voucher Usage
+
+  Future<void> pushVoucherUsageSuccessPage(
+    String voucherShortCode,
+    String partnerName,
+  ) async {
+    await pushPage(
+      RouterPageFactory.getVoucherUsageSuccessPage(
+        voucherShortCode,
+        partnerName,
+      ),
+      pageName: RouterPageName.voucherUsageSuccessPage,
+    );
+  }
+
+//endregion Voucher Usage
+
 }
 
 Router useRouter() => ModuleProvider.of<AppModule>(useContext()).router;

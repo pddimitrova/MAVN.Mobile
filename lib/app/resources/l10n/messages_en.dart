@@ -259,6 +259,9 @@ class MessageLookup extends MessageLookupByLibrary {
   static m88(stockCount) =>
       "${Intl.plural(stockCount, zero: 'Out of stock', other: '${stockCount} left')}";
 
+  static m104(voucherShortCode, partnerName) =>
+      "You have successfully used voucher ${voucherShortCode} at ${partnerName}";
+
   static m89(count) =>
       "${Intl.plural(count, zero: 'You have no pending transfers', one: 'You have ${count} pending transfer', other: 'You have ${count} pending transfers')}";
 
@@ -1379,6 +1382,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "This offer has no expiration date"),
         "voucherSoldCountInfo": m87,
         "voucherStockCount": m88,
+        "voucherUsageSuccessDetails": m104,
+        "voucherUsageSuccessPageTitle":
+            MessageLookupByLibrary.simpleMessage("Successfully used voucher"),
         "vouchers": MessageLookupByLibrary.simpleMessage("Vouchers"),
         "vouchersOption": MessageLookupByLibrary.simpleMessage("Vouchers"),
         "walletLinkingInProgress":

@@ -104,6 +104,7 @@ import 'package:lykke_mobile_mavn/feature_transfer_vouchers/view/transfer_vouche
 import 'package:lykke_mobile_mavn/feature_voucher_details/di/voucher_details_module.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_details/view/voucher_details_page.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_purchase/di/voucher_purchase_module.dart';
+import 'package:lykke_mobile_mavn/feature_voucher_usage/view/voucher_usage_success_page.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_wallet/di/voucher_wallet_page_module.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_wallet/view/voucher_wallet_page.dart';
 import 'package:lykke_mobile_mavn/feature_wallet/di/wallet_page_module.dart';
@@ -582,4 +583,17 @@ class RouterPageFactory {
       );
 
 //endregion Misc
+
+//region Voucher Usage
+
+  static Widget getVoucherUsageSuccessPage(
+    String voucherShortCode,
+    String partnerName,
+  ) =>
+      VoucherUsageSuccessPage(
+        partnerName: partnerName,
+        voucherShortCode: voucherShortCode,
+      );
+
+//endregion Voucher Usage
 }
