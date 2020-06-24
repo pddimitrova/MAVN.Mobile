@@ -25,7 +25,6 @@ import 'package:lykke_mobile_mavn/library_fcm/bloc/firebase_messaging_bloc_outpu
 import 'package:lykke_mobile_mavn/library_ui_components/error/generic_error_widget.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/error/network_error.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/misc/spinner.dart';
-import 'package:lykke_mobile_mavn/library_ui_components/misc/standard_sized_svg.dart';
 
 class HomePage extends HookWidget {
   @override
@@ -102,15 +101,6 @@ class HomePage extends HookWidget {
           brightness: Brightness.light,
           elevation: 0,
           actions: <Widget>[
-            IconButton(
-              key: const Key('homePageAccountButton'),
-              tooltip: useLocalizedStrings().accountPageTitle,
-              icon: StandardSizedSvg(
-                SvgAssets.user,
-                color: ColorStyles.boulder,
-              ),
-              onPressed: router.pushAccountPage,
-            ),
             IconButton(
               tooltip: useLocalizedStrings().notifications,
               icon: NotificationIconWidget(

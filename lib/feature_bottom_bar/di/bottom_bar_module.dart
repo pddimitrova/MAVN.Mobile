@@ -15,7 +15,7 @@ class BottomBarModule extends Module {
 
   Widget get voucherWalletPage => get(qualifierName: 'voucherWalletPage');
 
-  Widget get socialPage => get(qualifierName: 'socialPage');
+  Widget get accountPage => get(qualifierName: 'accountPage');
 
   @override
   void provideInstances() {
@@ -28,7 +28,7 @@ class BottomBarModule extends Module {
         qualifierName: 'offersPage');
     provideSingleton<Widget>(() => RouterPageFactory.getVoucherWalletPage(),
         qualifierName: 'voucherWalletPage');
-    provideSingleton<Widget>(() => RouterPageFactory.getSocialPage(),
-        qualifierName: 'socialPage');
+    provideSingleton<Widget>(() => RouterPageFactory.getAccountPage(),
+        qualifierName: 'accountPage');
   }
 }

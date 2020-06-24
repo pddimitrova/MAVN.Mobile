@@ -36,11 +36,11 @@ void main() {
           .called(1);
     });
 
-    test('navigatedToSocialTab', () async {
-      await _subject.navigatedToSocialTab();
+    test('navigatedToAccountTab', () async {
+      await _subject.navigatedToMyAccountTab();
 
       verify(_mockAnalyticsService.setCurrentScreen(
-              screenName: RouterPageName.socialPage))
+              screenName: RouterPageName.accountPage))
           .called(1);
     });
   });

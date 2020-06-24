@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-06-22T17:05:01.136348",
+  "@@last_modified": "2020-06-24T12:09:36.551982",
   "networkErrorTitle": "Internet connection problem",
   "@networkErrorTitle": {
     "type": "text",
@@ -1500,11 +1500,6 @@
     "type": "text",
     "placeholders": {}
   },
-  "socialPageTitle": "Community",
-  "@socialPageTitle": {
-    "type": "text",
-    "placeholders": {}
-  },
   "socialPageComingSoon": "Coming Soon",
   "@socialPageComingSoon": {
     "type": "text",
@@ -2357,8 +2352,8 @@
     "type": "text",
     "placeholders": {}
   },
-  "bottomBarSocial": "Community",
-  "@bottomBarSocial": {
+  "bottomBarAccount": "Account",
+  "@bottomBarAccount": {
     "type": "text",
     "placeholders": {}
   },

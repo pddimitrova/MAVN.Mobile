@@ -6,5 +6,5 @@ class BottomBarNavigationConstants {
   // floating button in the center and make all items are aligned.
   static const transparentPageIndex = 2;
   static const walletPageIndex = 3;
-  static const socialRulePageIndex = 4;
+  static const accountPageIndex = 4;
 }

@@ -357,9 +357,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Hello"),
         "biometricsGoToSettingsDescription": MessageLookupByLibrary.simpleMessage(
             "Biometric authentication is not set up on your device. Please enable either Touch ID or Face ID on your phone."),
+        "bottomBarAccount": MessageLookupByLibrary.simpleMessage("Account"),
         "bottomBarExplore": MessageLookupByLibrary.simpleMessage("Explore"),
         "bottomBarOffers": MessageLookupByLibrary.simpleMessage("Offers"),
-        "bottomBarSocial": MessageLookupByLibrary.simpleMessage("Community"),
         "bottomBarWallet": MessageLookupByLibrary.simpleMessage("Wallet"),
         "cameraPreviewRetakeButton":
             MessageLookupByLibrary.simpleMessage("Retake"),
@@ -1183,7 +1183,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Accounts Linked"),
         "socialPageComingSoon":
             MessageLookupByLibrary.simpleMessage("Coming Soon"),
-        "socialPageTitle": MessageLookupByLibrary.simpleMessage("Community"),
         "somethingIsNotRightError": MessageLookupByLibrary.simpleMessage(
             "Something is not right, give it another go!"),
         "spendPageTitle": MessageLookupByLibrary.simpleMessage("Redeem"),

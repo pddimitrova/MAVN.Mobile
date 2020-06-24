@@ -18,8 +18,8 @@ class BottomBarAnalyticsManager {
   Future<void> navigatedToWalletTab() =>
       _analyticsService.setCurrentScreen(screenName: RouterPageName.walletPage);
 
-  Future<void> navigatedToSocialTab() =>
-      _analyticsService.setCurrentScreen(screenName: RouterPageName.socialPage);
+  Future<void> navigatedToMyAccountTab() => _analyticsService.setCurrentScreen(
+      screenName: RouterPageName.accountPage);
 }
 
 BottomBarAnalyticsManager useBottomBarAnalyticsManager() =>

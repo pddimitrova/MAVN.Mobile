@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lykke_mobile_mavn/app/resources/color_styles.dart';
 import 'package:lykke_mobile_mavn/app/resources/localized_strings.dart';
 import 'package:lykke_mobile_mavn/app/resources/svg_assets.dart';
 import 'package:lykke_mobile_mavn/app/resources/text_styles.dart';
@@ -13,15 +14,14 @@ import 'package:lykke_mobile_mavn/feature_biometrics/bloc/biometric_bloc_output.
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/form/full_page_select/select_list_item.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/form/full_page_select/standard_divider.dart';
-import 'package:lykke_mobile_mavn/library_ui_components/layout/scaffold_with_app_bar.dart';
-import 'package:lykke_mobile_mavn/library_ui_components/misc/page_title.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/misc/standard_sized_svg.dart';
 
 class AccountPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final biometricBloc = useBiometricBloc();
     final router = useRouter();
+    final localizedStrings = useLocalizedStrings();
+    final biometricBloc = useBiometricBloc();
 
     useBlocEventListener(biometricBloc, (event) async {
       if (event is BiometricAuthenticationDisabledEvent) {
@@ -31,72 +31,81 @@ class AccountPage extends HookWidget {
 
     final settings = [
       _AccountSettingWithTrailingIcon(
-        title: useLocalizedStrings().referralTrackingPersonalDetailsOption,
-        asset: SvgAssets.referralTracking,
-        onSelected: router.pushReferralListPage,
-      ),
-      _AccountSettingWithTrailingIcon(
-          title: useLocalizedStrings().accountPagePersonalDetailsOption,
+          title: localizedStrings.accountPagePersonalDetailsOption,
           asset: SvgAssets.settingsPersonalDetails,
           onSelected: router.pushPersonalDetailsPage),
       _AccountSettingWithTrailingIcon(
-        title: useLocalizedStrings().accountPageChangePasswordOption,
+        title: localizedStrings.accountPageChangePasswordOption,
         asset: SvgAssets.settingsChangePassword,
         onSelected: router.pushChangePasswordPage,
       ),
       _AccountSettingWithTrailingIcon(
-        title: useLocalizedStrings().contactUsButton,
-        asset: SvgAssets.settingsContactUs,
-        onSelected: router.pushContactUsPage,
+        title: localizedStrings.referralTrackingPersonalDetailsOption,
+        asset: SvgAssets.referralTracking,
+        onSelected: router.pushReferralListPage,
       ),
       _AccountSettingWithTrailingIcon(
-        title: useLocalizedStrings().termsOfUse,
+        title: localizedStrings.linkBusinessAccount,
+        asset: SvgAssets.linkBusiness,
+        onSelected: router.pushSmeLinkingPage,
+      ),
+      _AccountSettingWithTrailingIcon(
+        title: localizedStrings.termsOfUse,
         asset: SvgAssets.settingsTerms,
         onSelected: router.pushTermsOfUsePage,
       ),
       _AccountSettingWithTrailingIcon(
-        title: useLocalizedStrings().privacyPolicy,
+        title: localizedStrings.privacyPolicy,
         asset: SvgAssets.settingsPrivacy,
         onSelected: router.pushPrivacyPolicyPage,
       ),
       _AccountSettingWithTrailingIcon(
-        title: useLocalizedStrings().linkBusinessAccount,
-        asset: SvgAssets.linkBusiness,
-        onSelected: router.pushSmeLinkingPage,
+        title: localizedStrings.contactUsButton,
+        asset: SvgAssets.settingsContactUs,
+        onSelected: router.pushContactUsPage,
       ),
       AccountSettingWithSwitch(
         title: Platform.isIOS
-            ? useLocalizedStrings().accountPageBiometricsSignInOptionIOS
-            : useLocalizedStrings().accountPageBiometricsSignInOptionAndroid,
+            ? localizedStrings.accountPageBiometricsSignInOptionIOS
+            : localizedStrings.accountPageBiometricsSignInOptionAndroid,
         initialSelectedState: biometricBloc.isBiometricEnabled,
         onBeforeChange: (currentValue) =>
             biometricBloc.toggleBiometrics(enable: !currentValue),
       ),
     ];
 
-    return ScaffoldWithAppBar(
-      body: SingleChildScrollView(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              PageTitle(
-                title: useLocalizedStrings().accountPageTitle,
-              ),
-              const SizedBox(height: 56),
-              ListView.separated(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, position) => settings[position].build(),
-                separatorBuilder: (context, position) => StandardDivider(),
-                itemCount: settings.length,
-              ),
-              StandardDivider(),
-              _AppVersionWidget(),
-              _LogoutButton(
-                onTap: () => router
-                    .showLogOutConfirmationDialog(LocalizedStrings.of(context)),
-              ),
-            ]),
+    return Scaffold(
+      backgroundColor: ColorStyles.alabaster,
+      appBar: AppBar(
+        title: Text(
+          localizedStrings.accountPageTitle,
+          style: TextStyles.darkHeaderTitle,
+        ),
+        backgroundColor: ColorStyles.alabaster,
+        elevation: 0,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 56),
+                ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, position) =>
+                      settings[position].build(),
+                  separatorBuilder: (context, position) => StandardDivider(),
+                  itemCount: settings.length,
+                ),
+                StandardDivider(),
+                _AppVersionWidget(),
+                _LogoutButton(
+                  onTap: () => router.showLogOutConfirmationDialog(
+                      LocalizedStrings.of(context)),
+                ),
+              ]),
+        ),
       ),
     );
   }

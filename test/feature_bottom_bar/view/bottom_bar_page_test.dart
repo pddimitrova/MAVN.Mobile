@@ -65,16 +65,17 @@ void main() {
       verify(_mockBottomBarPageBloc.init()).called(1);
     });
 
-    testWidgets('navigated to Social tab', (widgetTester) async {
+    testWidgets('navigated to My account tab', (widgetTester) async {
       await _givenSubjectWidgetPumped(widgetTester);
 
       thenAssertPagesArePresent(isHomePagePresent: true);
 
-      await whenBottomBarItemWithNameTapped('Social');
+      await whenBottomBarItemWithNameTapped('My account');
 
-      thenAssertPagesArePresent(isSocialPagePresent: true);
+      thenAssertPagesArePresent(isAccountPagePresent: true);
 
-      verify(_mockBottomBarAnalyticsManager.navigatedToSocialTab()).called(1);
+      verify(_mockBottomBarAnalyticsManager.navigatedToMyAccountTab())
+          .called(1);
       verify(_mockBottomBarPageBloc.init()).called(1);
     });
   });
@@ -102,7 +103,7 @@ void thenAssertPagesArePresent({
   bool isHomePagePresent = false,
   bool isOffersPagePresent = false,
   bool isWalletPagePresent = false,
-  bool isSocialPagePresent = false,
+  bool isAccountPagePresent = false,
 }) {
   expect(find.text('Home page'),
       isHomePagePresent ? findsOneWidget : findsNothing);
@@ -110,8 +111,8 @@ void thenAssertPagesArePresent({
       isOffersPagePresent ? findsOneWidget : findsNothing);
   expect(find.text('Wallet page'),
       isWalletPagePresent ? findsOneWidget : findsNothing);
-  expect(find.text('Social page'),
-      isSocialPagePresent ? findsOneWidget : findsNothing);
+  expect(find.text('My account page'),
+      isAccountPagePresent ? findsOneWidget : findsNothing);
 }
 
 /// HELPERS
@@ -125,7 +126,8 @@ Widget _getSubjectWidget() {
   when(mockBottomBarModule.offersPage).thenReturn(const Text('Offers page'));
   when(mockBottomBarModule.voucherWalletPage)
       .thenReturn(const Text('Wallet page'));
-  when(mockBottomBarModule.socialPage).thenReturn(const Text('Social page'));
+  when(mockBottomBarModule.accountPage)
+      .thenReturn(const Text('My account page'));
   when(mockBottomBarModule.bottomBarPageBloc)
       .thenReturn(_mockBottomBarPageBloc);
   return TestAppFrame(

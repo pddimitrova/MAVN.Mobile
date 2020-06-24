@@ -1452,10 +1452,6 @@ class LocalizedStrings {
   //endregion Wallet Unlinking
 
   //region Social Page
-  String get socialPageTitle => Intl.message(
-        'Community',
-        name: 'socialPageTitle',
-      );
 
   String get socialPageComingSoon => Intl.message(
         'Coming Soon',
@@ -2248,9 +2244,9 @@ class LocalizedStrings {
         name: 'bottomBarWallet',
       );
 
-  String get bottomBarSocial => Intl.message(
-        'Community',
-        name: 'bottomBarSocial',
+  String get bottomBarAccount => Intl.message(
+        'Account',
+        name: 'bottomBarAccount',
       );
 
 //endregion Bottom bar texts

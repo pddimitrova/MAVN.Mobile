@@ -1119,8 +1119,6 @@ class LazyLocalizedStrings {
 //endregion Wallet Unlinking
 
 //region Social Page
-  static LocalizedStringBuilder get socialPageTitle =>
-      _builder((_) => _.socialPageTitle, 'socialPageTitle');
 
   static LocalizedStringBuilder get socialPageComingSoon =>
       _builder((_) => _.socialPageComingSoon, 'socialPageComingSoon');
@@ -1737,9 +1735,6 @@ class LazyLocalizedStrings {
 
   static LocalizedStringBuilder get bottomBarWallet =>
       _builder((_) => _.bottomBarWallet, 'bottomBarWallet');
-
-  static LocalizedStringBuilder get bottomBarSocial =>
-      _builder((_) => _.bottomBarSocial, 'bottomBarSocial');
 
 //endregion Bottom bar texts
 

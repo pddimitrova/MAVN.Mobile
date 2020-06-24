@@ -69,7 +69,7 @@ class BottomBarPage extends HookWidget with DynamicLinkManagerMixin {
       // we add an empty container in the page list
       Container(),
       bottomBarModule.voucherWalletPage,
-      bottomBarModule.socialPage,
+      bottomBarModule.accountPage,
     ];
 
     List<Widget> offStagePageList(List<Widget> pageList, int tabIndex) {
@@ -217,9 +217,9 @@ class BottomBarPage extends HookWidget with DynamicLinkManagerMixin {
               valueKey: 'walletTab',
             ),
             _buildBottomNavigationBarItem(
-              title: LocalizedStrings.of(context).bottomBarSocial,
+              title: LocalizedStrings.of(context).bottomBarAccount,
               assetString: SvgAssets.socialIcon,
-              valueKey: 'socialTab',
+              valueKey: 'accountTab',
             ),
           ],
           selectedItemColor: ColorStyles.vividTangerine,
@@ -294,9 +294,9 @@ class BottomBarPage extends HookWidget with DynamicLinkManagerMixin {
           break;
         }
 
-      case BottomBarNavigationConstants.socialRulePageIndex:
+      case BottomBarNavigationConstants.accountPageIndex:
         {
-          bottomBarAnalyticsManager.navigatedToSocialTab();
+          bottomBarAnalyticsManager.navigatedToMyAccountTab();
           break;
         }
     }

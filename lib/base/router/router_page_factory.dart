@@ -91,7 +91,6 @@ import 'package:lykke_mobile_mavn/feature_reset_password/view/set_password_succe
 import 'package:lykke_mobile_mavn/feature_sme_invalidate_voucher/di/sme_invalidate_voucher_module.dart';
 import 'package:lykke_mobile_mavn/feature_sme_invalidate_voucher/view/sme_invalidate_voucher_page.dart';
 import 'package:lykke_mobile_mavn/feature_sme_invalidate_voucher/view/sme_invalidate_voucher_success_page.dart';
-import 'package:lykke_mobile_mavn/feature_social/view/social_page.dart';
 import 'package:lykke_mobile_mavn/feature_spend/di/transfer_module.dart';
 import 'package:lykke_mobile_mavn/feature_splash/di/splash_module.dart';
 import 'package:lykke_mobile_mavn/feature_splash/view/mandatory_app_upgrade_page.dart';
@@ -538,11 +537,6 @@ class RouterPageFactory {
       TransferVoucherSuccessPage(receiverEmail: receiverEmail);
 
   //endregion Vouchers
-
-  //region Social
-  static Widget getSocialPage() => SocialPage();
-
-  //endregion Social
 
   //region SME linking
 

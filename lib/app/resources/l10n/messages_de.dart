@@ -342,7 +342,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Die biometrische Authentifizierung ist auf deinem Gerät nicht eingerichtet. Bitte aktiviere entweder Touch ID oder Face ID auf deinem Telefon."),
         "bottomBarExplore": MessageLookupByLibrary.simpleMessage("Erkunden"),
         "bottomBarOffers": MessageLookupByLibrary.simpleMessage("Angebote"),
-        "bottomBarSocial": MessageLookupByLibrary.simpleMessage("Community"),
         "bottomBarWallet": MessageLookupByLibrary.simpleMessage("Brieftasche"),
         "cameraPreviewRetakeButton":
             MessageLookupByLibrary.simpleMessage("Erneut"),
@@ -1115,7 +1114,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Einfache Wallets"),
         "socialPageComingSoon":
             MessageLookupByLibrary.simpleMessage("Demnächst"),
-        "socialPageTitle": MessageLookupByLibrary.simpleMessage("Gemeinschaft"),
         "somethingIsNotRightError": MessageLookupByLibrary.simpleMessage(
             "Etwas stimmt nicht, probiere es noch einmal!"),
         "spendPageTitle": MessageLookupByLibrary.simpleMessage("Einlösen"),
