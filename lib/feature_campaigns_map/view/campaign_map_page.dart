@@ -24,6 +24,7 @@ import 'package:lykke_mobile_mavn/library_extensions/list_extensions.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/buttons/custom_back_button.dart';
 import 'package:pedantic/pedantic.dart';
 
+// ignore: must_be_immutable
 class CampaignMapPage extends HookWidget {
   static const _defaultInitialPosition = LatLng(47.3769, 8.5417);
 

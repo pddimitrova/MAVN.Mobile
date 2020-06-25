@@ -18,7 +18,6 @@ import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_page_bloc.d
 import 'package:lykke_mobile_mavn/feature_bottom_bar/di/bottom_bar_module.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/view/floating_action_button_location.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_purchase/bloc/voucher_purchase_success_bloc.dart';
-import 'package:lykke_mobile_mavn/feature_wallet/bloc/wallet_bloc.dart';
 import 'package:lykke_mobile_mavn/lib_dynamic_links/dynamic_link_manager.dart';
 import 'package:lykke_mobile_mavn/lib_dynamic_links/dynamic_link_manager_mixin.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
@@ -38,7 +37,7 @@ class BottomBarPage extends HookWidget with DynamicLinkManagerMixin {
     final bottomBarAnalyticsManager = useBottomBarAnalyticsManager();
     final bottomBarPageBloc = useBottomBarPageBloc();
 //    final balanceBloc = useBalanceBloc();
-    final walletBloc = useWalletBloc();
+//    final walletBloc = useWalletBloc();
     final hotelReferralBloc = useAcceptHotelReferralBloc();
     final voucherPurchaseSuccessBloc = useVoucherPurchaseSuccessBloc();
     final firebaseMessagingBloc = useFirebaseMessagingBloc();
