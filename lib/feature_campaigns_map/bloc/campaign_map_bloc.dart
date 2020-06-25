@@ -15,6 +15,7 @@ class CampaignMapBloc extends Bloc<CampaignMapState> {
     this._exceptionToMessageMapper,
   );
 
+  static const _maxRadius = 128.0;
   static const _pageSize = 100;
   static const double _defaultRadius = 2;
   static const _defaultCountry = 'CHE';
@@ -28,11 +29,23 @@ class CampaignMapBloc extends Bloc<CampaignMapState> {
   Future<void> loadCampaignsForLocation({
     @required double lat,
     @required double long,
-    double radius,
+    double radius = _defaultRadius,
   }) async {
-    setState(CampaignMapLoadingState());
+    ///if radius is larger than max appointed by BE
+    ///BE will return an error
+    if (radius > _maxRadius) return;
 
-    if (radius < 128.0) return;
+    final isFirstLoad = currentState is CampaignMapUninitializedState;
+
+    ///if newly selected radius is contained within the previous bigger radius
+    ///do not load campaigns
+    if (currentState is CampaignMapLoadedState &&
+            (currentState as CampaignMapLoadedState).radius > radius ||
+        currentState is CampaignMapLoadingState) {
+      return;
+    }
+
+    setState(CampaignMapLoadingState());
 
     try {
       final campaignListResponse = await _campaignRepository.getCampaigns(
@@ -40,11 +53,21 @@ class CampaignMapBloc extends Bloc<CampaignMapState> {
         currentPage: 1,
         long: long,
         lat: lat,
-        radius: radius ?? _defaultRadius,
+        radius: radius,
       );
 
       setState(CampaignMapLoadedState(
         campaignList: campaignListResponse.campaigns,
+        isForUserLocation: true,
+        isFirstLoad: isFirstLoad,
+        radius: radius,
+      ));
+
+      sendEvent(CampaignMapLoadedEvent(
+        campaignList: campaignListResponse.campaigns,
+        isForUserLocation: true,
+        isFirstLoad: isFirstLoad,
+        radius: radius,
       ));
     } on Exception catch (e) {
       final errorMessage = _exceptionToMessageMapper.map(e);
@@ -53,18 +76,28 @@ class CampaignMapBloc extends Bloc<CampaignMapState> {
     }
   }
 
-  Future<void> loadCampaignsForCountry({String countryCode}) async {
+  Future<void> loadCampaignsForCountry({
+    String countryCode = _defaultCountry,
+  }) async {
     setState(CampaignMapLoadingState());
+    final isFirstLoad = currentState is CampaignMapUninitializedState;
 
     try {
       final campaignListResponse = await _campaignRepository.getCampaigns(
         pageSize: _pageSize,
         currentPage: 1,
-        countryCode: countryCode ?? _defaultCountry,
+        countryCode: countryCode,
       );
 
       setState(CampaignMapLoadedState(
         campaignList: campaignListResponse.campaigns,
+        isForUserLocation: false,
+        isFirstLoad: isFirstLoad,
+      ));
+      sendEvent(CampaignMapLoadedEvent(
+        campaignList: campaignListResponse.campaigns,
+        isForUserLocation: false,
+        isFirstLoad: isFirstLoad,
       ));
     } on Exception catch (e) {
       final errorMessage = _exceptionToMessageMapper.map(e);

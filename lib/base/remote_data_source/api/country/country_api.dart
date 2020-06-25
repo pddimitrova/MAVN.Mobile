@@ -1,5 +1,6 @@
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/country/response_model/countries_response_model.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/country/response_model/country_codes_response_model.dart';
+import 'package:lykke_mobile_mavn/base/remote_data_source/api/country/response_model/partner_country_list_response_model.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/http_client.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/base_api.dart';
 
@@ -8,6 +9,7 @@ class CountryApi extends BaseApi {
 
   static const String countryPath = '/lists/countriesOfResidence';
   static const String countryCodesPath = '/lists/countryPhoneCodes';
+  static const String partnerCountryPath = '/lists/partnersCountries';
 
   Future<CountryListResponseModel> getCountryList() =>
       exceptionHandledHttpClientRequest(() async {
@@ -22,5 +24,13 @@ class CountryApi extends BaseApi {
 
         return CountryCodeListResponseModel.fromJson(
             countryCodeListResponse.data);
+      });
+
+  Future<PartnerCountryListResponseModel> getPartnerCountryList() =>
+      exceptionHandledHttpClientRequest(() async {
+        final countryListResponse = await httpClient.get(partnerCountryPath);
+
+        return PartnerCountryListResponseModel.fromJson(
+            countryListResponse.data);
       });
 }

@@ -1,33 +1,35 @@
 import 'package:app_settings/app_settings.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lykke_mobile_mavn/app/resources/color_styles.dart';
 import 'package:lykke_mobile_mavn/app/resources/localized_strings.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/campaign/response_model/campaign_response_model.dart';
+import 'package:lykke_mobile_mavn/base/remote_data_source/api/country/response_model/partner_country_list_response_model.dart';
 import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/bloc/campaign_map_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/bloc/campaign_map_bloc_output.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/ui_components/partner_bottom_sheet.dart';
-import 'package:lykke_mobile_mavn/feature_campaigns_map/ui_components/pop_back_button.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/util/location_to_marker_mapper.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/util/map_utils.dart';
 import 'package:lykke_mobile_mavn/feature_campaigns_map/util/marker_helper.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/bloc/partner_country_list_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/bloc/partner_country_list_bloc_output.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/view/search_bar.dart';
 import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc_state.dart';
-import 'package:lykke_mobile_mavn/feature_location/util/user_position.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
+import 'package:lykke_mobile_mavn/library_extensions/list_extensions.dart';
+import 'package:lykke_mobile_mavn/library_ui_components/buttons/custom_back_button.dart';
 import 'package:pedantic/pedantic.dart';
 
 class CampaignMapPage extends HookWidget {
   static const _defaultInitialPosition = LatLng(47.3769, 8.5417);
 
-  ///a rough estimate of Switzerland's size
-  static const _radiusDefault = 350000.0;
-
-  ///default radius by AC
-  static const _radiusUserLocation = 2000.0;
   GoogleMapController _mapController;
+  final partnerCountryInputGlobalKey =
+      GlobalKey<AutoCompleteTextFieldState<PartnerCountry>>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,37 +37,34 @@ class CampaignMapPage extends HookWidget {
     final localizedStrings = useLocalizedStrings();
 
     final userLocationBloc = useUserLocationBloc();
+    final userLocationState = useBlocState(userLocationBloc);
+    final partnerCountryBloc = usePartnerCountryListBloc();
 
     final campaignMapBloc = useCampaignMapBloc();
-    final campaignMapBlocState = useBlocState(campaignMapBloc);
     final mapper = useLocationToMarkerMapper();
     final markerHelper = useMarkerHelper();
 
     final isErrorDismissed = useState(false);
-    final isCenteredLocation = useState(false);
+    final isForcedCameraUpdate = useState(false);
     final isReturningFromSettings = useState(false);
-    final currentUserLocation = useState<UserPosition>();
+    final currentUserLocation = useState<LatLng>();
     final data = useState<List<Marker>>([]);
+    final selectedCountry = useValueNotifier<PartnerCountry>(null);
 
+    ///listen for user location
     useBlocEventListener(userLocationBloc, (event) async {
       if (event is UserLocationFetchedLocationEvent) {
         isErrorDismissed.value = false;
+        currentUserLocation.value = LatLng(
+          event.userPosition.lat,
+          event.userPosition.long,
+        );
 
         ///load campaigns for this location
         unawaited(campaignMapBloc.loadCampaignsForLocation(
           lat: event.userPosition.lat,
           long: event.userPosition.long,
         ));
-        currentUserLocation.value = event.userPosition;
-
-        ///animate to user location
-        _centerCamera(
-          lat: currentUserLocation.value.lat,
-          long: currentUserLocation.value.long,
-          isCenteredCamera: isCenteredLocation,
-          radius: _radiusUserLocation,
-          context: context,
-        );
 
         return;
       }
@@ -83,124 +82,121 @@ class CampaignMapPage extends HookWidget {
           userLocationBloc.stopUsingLocation();
         }
       }
+    });
 
-      /// fallback
-      /// Load campaigns for default location
-      unawaited(campaignMapBloc.loadCampaignsForCountry());
-      //center on Switzerland
-      _centerCamera(
-        lat: _defaultInitialPosition.latitude,
-        long: _defaultInitialPosition.longitude,
-        isCenteredCamera: isCenteredLocation,
-        radius: _radiusUserLocation,
-        context: context,
-      );
+    ///listen for new campaigns
+    useBlocEventListener(campaignMapBloc, (event) {
+      if (event is CampaignMapLoadedEvent) {
+        if (event.campaignList.isNotEmpty) {
+          data.value = mapper.mapCampaignsToMarkers(
+            event.campaignList,
+            (partnerLocation) => _showPartnerBottomSheet(
+              campaigns: markerHelper.getCampaignsForPartnerLocation(
+                campaigns: event.campaignList,
+                partnerId: partnerLocation.partnerId,
+                lat: partnerLocation.location.lat,
+                long: partnerLocation.location.long,
+              ),
+              partnerLocation: partnerLocation,
+              context: context,
+            ),
+          );
+          if (event.isFirstLoad || !event.isForUserLocation) {
+            final markerBounds = MapUtils.getBoundsFromMarkerList(
+              markers: data.value,
+              userLocation: currentUserLocation.value,
+            );
+
+            ///fit all markers on screen
+            isForcedCameraUpdate.value = true;
+            _mapController
+                ?.animateCamera(CameraUpdate.newLatLngBounds(markerBounds, 50));
+          }
+          return;
+        }
+
+        if (event.campaignList.isEmpty) {
+          data.value = [];
+        }
+
+        ///zoom to user location on first load
+        if (event.isForUserLocation &&
+            event.isFirstLoad &&
+            event.campaignList.isEmpty) {
+          _mapController?.animateCamera(CameraUpdate.newLatLngZoom(
+              currentUserLocation.value,
+              MapUtils.getZoomForRadius(
+                radius: event.radius,
+                mapWidth: MediaQuery.of(context).size.width,
+                latitude: currentUserLocation.value.latitude,
+              )));
+        }
+      }
+    });
+
+    ///listen for selected countries
+    useBlocEventListener(partnerCountryBloc, (event) {
+      if (event is PartnerCountrySelectedEvent) {
+        campaignMapBloc.loadCampaignsForCountry(
+          countryCode: event.userPartnerCountry.countryIso3Code,
+        );
+      }
     });
 
     useEffect(() {
       userLocationBloc.getUserLocation();
     }, [userLocationBloc]);
 
-    void _onMapCreated(GoogleMapController controller) {
-      _mapController = controller;
-      final mapLocation = currentUserLocation.value != null
-          ? LatLng(
-              currentUserLocation.value.lat,
-              currentUserLocation.value.long,
-            )
-          : _defaultInitialPosition;
-
-      final radius = currentUserLocation.value != null
-          ? _radiusUserLocation
-          : _radiusDefault;
-
-      ///center camera when map is ready
-      ///in case it wasn't when user location was received
-      _centerCamera(
-        lat: mapLocation.latitude,
-        long: mapLocation.longitude,
-        isCenteredCamera: isCenteredLocation,
-        radius: radius,
-        context: context,
-      );
-    }
-
-    if (campaignMapBlocState is CampaignMapLoadedState) {
-      data.value = mapper.mapCampaignsToMarkers(
-        campaignMapBlocState.campaignList,
-        (partnerLocation) => _showPartnerBottomSheet(
-          campaigns: markerHelper.getCampaignsForPartnerLocation(
-            campaigns: campaignMapBlocState.campaignList,
-            partnerId: partnerLocation.partnerId,
-            lat: partnerLocation.location.lat,
-            long: partnerLocation.location.long,
-          ),
-          partnerLocation: partnerLocation,
-          context: context,
-        ),
-      );
-    }
-
     Future<void> onCameraIdle() async {
+      ///if we're not using user location
+      ///we don't need to update on camera move
+      ///since we show campaigns for countries
+      if (currentUserLocation.value == null || isForcedCameraUpdate.value) {
+        isForcedCameraUpdate.value = false;
+        return;
+      }
       final bounds = await _mapController.getVisibleRegion();
-      final centerLat =
-          (bounds.northeast.latitude + bounds.southwest.latitude) / 2.0;
-      final centerLng =
-          (bounds.northeast.longitude + bounds.southwest.longitude) / 2.0;
-      final radius = bounds.getRadius();
 
-      ///when user moves position
-      ///reload campaigns
+      ///if scrolled area doesn't contain user location
+      ///do not load campaigns
+      if (!bounds.contains(currentUserLocation.value)) return;
+
+      ///get distance to farthest point
+      final distance = [
+        MapUtils.getDistance(currentUserLocation.value, bounds.northeast),
+        MapUtils.getDistance(currentUserLocation.value, bounds.southwest),
+      ].max().toDouble();
+
       unawaited(campaignMapBloc.loadCampaignsForLocation(
-          lat: centerLat, long: centerLng, radius: radius));
+        lat: currentUserLocation.value.latitude,
+        long: currentUserLocation.value.longitude,
+        radius: distance,
+      ));
     }
 
     return Scaffold(
-      body: SafeArea(
-        top: false,
-        child: Stack(
-          children: <Widget>[
-            GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition:
-                  const CameraPosition(target: _defaultInitialPosition),
-              myLocationEnabled: true,
-              markers: data.value.toSet(),
-              onCameraIdle: onCameraIdle,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 48, horizontal: 24),
-              child: FloatingBackButton(),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        brightness: Brightness.light,
+        backgroundColor: ColorStyles.offWhite,
+        centerTitle: false,
+        leading: const CustomBackButton(),
+        title: (userLocationState is UserLocationPermissionDeniedState ||
+                userLocationState is UserLocationServiceDisabledState ||
+                userLocationState is UserLocationDoNotUseLocationState)
+            ? SearchBar(
+                inputGlobalKey: partnerCountryInputGlobalKey,
+                selectedCountryValueNotifier: selectedCountry,
+              )
+            : Container(),
       ),
-    );
-  }
-
-  void _centerCamera({
-    double lat,
-    double long,
-    ValueNotifier<bool> isCenteredCamera,
-    double radius,
-    BuildContext context,
-  }) {
-    if (isCenteredCamera.value || _mapController == null) return;
-    isCenteredCamera.value = true;
-    unawaited(
-      _mapController?.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: LatLng(
-              lat,
-              long,
-            ),
-            zoom: MapUtils.getZoomForRadius(
-              radius: radius,
-              mapWidth: MediaQuery.of(context).size.width,
-              latitude: lat,
-            ),
-          ),
+      body: SafeArea(
+        child: GoogleMap(
+          onMapCreated: (controller) => _mapController = controller,
+          initialCameraPosition:
+              const CameraPosition(target: _defaultInitialPosition),
+          myLocationEnabled: true,
+          markers: data.value.toSet(),
+          onCameraIdle: onCameraIdle,
         ),
       ),
     );

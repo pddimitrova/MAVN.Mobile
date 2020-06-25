@@ -178,6 +178,16 @@ class LocalSettingsRepository {
 
   Future<void> setIsDarkMode({bool isDarkMode}) => _sharedPreferencesManager
       .writeBool(key: SharedPreferencesKeys.isDarkMode, value: isDarkMode);
+
+  void setPartnerCountryIso3({String iso3Code}) {
+    _sharedPreferencesManager.write(
+      key: SharedPreferencesKeys.partnerCountryIso3,
+      value: iso3Code,
+    );
+  }
+
+  String getPartnerCountryIso3() => _sharedPreferencesManager.read(
+      key: SharedPreferencesKeys.partnerCountryIso3);
 }
 
 LocalSettingsRepository useLocalSettingsRepository() =>

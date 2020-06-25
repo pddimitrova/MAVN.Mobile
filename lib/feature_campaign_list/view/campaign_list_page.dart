@@ -1,4 +1,5 @@
 import 'package:app_settings/app_settings.dart';
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lykke_mobile_mavn/app/resources/color_styles.dart';
@@ -9,11 +10,17 @@ import 'package:lykke_mobile_mavn/app/resources/text_styles.dart';
 import 'package:lykke_mobile_mavn/base/common_blocs/generic_list_bloc_output.dart';
 import 'package:lykke_mobile_mavn/base/constants/bottom_bar_navigation_constants.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/campaign/response_model/campaign_response_model.dart';
+import 'package:lykke_mobile_mavn/base/remote_data_source/api/country/response_model/partner_country_list_response_model.dart';
 import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_page_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_refresh_bloc_output.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_list/bloc/campaign_list_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_list/ui_components/campaign_widget.dart';
+import 'package:lykke_mobile_mavn/feature_campaign_list/ui_components/custom_sliver_persistent_header_delegate.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/bloc/partner_country_list_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/bloc/partner_country_list_bloc_output.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/view/preferred_size_wrapper.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/view/search_bar.dart';
 import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc_state.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
@@ -27,6 +34,8 @@ import 'package:pedantic/pedantic.dart';
 
 class CampaignListPage extends HookWidget {
   static const campaignHeroTag = 'campaign_';
+  final partnerCountryInputGlobalKey =
+      GlobalKey<AutoCompleteTextFieldState<PartnerCountry>>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +46,10 @@ class CampaignListPage extends HookWidget {
     final campaignListBlocState = useBlocState(campaignListBloc);
 
     final userLocationBloc = useUserLocationBloc();
+    final userLocationState = useBlocState(userLocationBloc);
+
+    final selectedCountryBloc = usePartnerCountryListBloc();
+    final selectedCountryBlocState = useBlocState(selectedCountryBloc);
 
     final bottomBarPageBloc = useBottomBarPageBloc();
     final throttler = useThrottling(duration: const Duration(seconds: 30));
@@ -44,6 +57,8 @@ class CampaignListPage extends HookWidget {
     final data = useState(<CampaignResponseModel>[]);
     final isErrorDismissed = useState(false);
     final isReturningFromSettings = useState(false);
+
+    final selectedCountry = useValueNotifier<PartnerCountry>(null);
 
     void loadData() {
       isErrorDismissed.value = false;
@@ -77,10 +92,13 @@ class CampaignListPage extends HookWidget {
           userLocationBloc.stopUsingLocation();
         }
       }
+    });
 
-      ///in case we don't have location
-      ///just load all offers
-      unawaited(campaignListBloc.updateGenericList());
+    useBlocEventListener(selectedCountryBloc, (event) {
+      if (event is PartnerCountrySelectedEvent) {
+        campaignListBloc.getCampaignsForCountry(
+            partnerCountry: event.userPartnerCountry);
+      }
     });
 
     useBlocEventListener(bottomBarPageBloc, (event) {
@@ -148,6 +166,27 @@ class CampaignListPage extends HookWidget {
                     ),
                   ),
                 ),
+
+                ///show [SearchBar] only if location will not be used
+                if (userLocationState is UserLocationPermissionDeniedState ||
+                    userLocationState is UserLocationServiceDisabledState ||
+                    userLocationState is UserLocationDoNotUseLocationState)
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: CustomSliverAppBarDelegate(
+                      PreferredSizeWrapper(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 4),
+                          child: SearchBar(
+                            inputGlobalKey: partnerCountryInputGlobalKey,
+                            selectedCountryValueNotifier: selectedCountry,
+                          ),
+                        ),
+                        preferredHeight: SearchBar.preferredHeight,
+                      ),
+                    ),
+                  )
               ],
               body: RefreshIndicator(
                 color: ColorStyles.gold1,
@@ -163,9 +202,23 @@ class CampaignListPage extends HookWidget {
                         backgroundColor: ColorStyles.offWhite,
                         isLoading: campaignListBlocState
                             is GenericListPaginationLoadingState,
-                        isEmpty: campaignListBlocState is GenericListEmptyState,
-                        emptyText: localizedStrings.voucherListEmpty,
-                        emptyIcon: SvgAssets.voucher,
+                        isEmpty:
+                            campaignListBlocState is GenericListEmptyState ||
+                                (campaignListBlocState
+                                        is GenericListUninitializedState &&
+                                    selectedCountryBlocState
+                                        is! PartnerCountrySelectedState),
+                        emptyText: _getEmptyText(
+                          userLocationState: userLocationState,
+                          partnerCountryState: selectedCountryBlocState,
+                          campaignListState: campaignListBlocState,
+                          localizedStrings: localizedStrings,
+                        ),
+                        emptyIcon: _getEmptyIcon(
+                          userLocationState: userLocationState,
+                          partnerCountryState: selectedCountryBlocState,
+                          campaignListState: campaignListBlocState,
+                        ),
                         retryOnError: loadData,
                         loadData: loadData,
                         showError:
@@ -199,5 +252,36 @@ class CampaignListPage extends HookWidget {
         ),
       ),
     );
+  }
+
+  String _getEmptyText({
+    @required UserLocationState userLocationState,
+    @required PartnerCountryListState partnerCountryState,
+    @required GenericListState campaignListState,
+    @required LocalizedStrings localizedStrings,
+  }) {
+    if ((userLocationState is UserLocationPermissionDeniedState ||
+            userLocationState is UserLocationServiceDisabledState ||
+            userLocationState is UserLocationDoNotUseLocationState) &&
+        partnerCountryState is! PartnerCountrySelectedState &&
+        campaignListState is GenericListUninitializedState) {
+      return localizedStrings.selectCampaignLocation;
+    }
+    return localizedStrings.voucherListEmpty;
+  }
+
+  String _getEmptyIcon({
+    @required UserLocationState userLocationState,
+    @required PartnerCountryListState partnerCountryState,
+    @required GenericListState campaignListState,
+  }) {
+    if ((userLocationState is UserLocationPermissionDeniedState ||
+            userLocationState is UserLocationServiceDisabledState ||
+            userLocationState is UserLocationDoNotUseLocationState) &&
+        partnerCountryState is! PartnerCountrySelectedState &&
+        campaignListState is GenericListUninitializedState) {
+      return SvgAssets.search;
+    }
+    return SvgAssets.voucher;
   }
 }

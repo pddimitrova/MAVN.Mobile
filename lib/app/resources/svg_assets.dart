@@ -19,6 +19,7 @@ class SvgAssets {
   static const String camera = 'assets/svg/camera.svg';
   static const String challengesIcon = 'assets/svg/challenges_icon.svg';
   static const String copyPaste = 'assets/svg/copy_paste.svg';
+  static const String checkMark = 'assets/svg/check.svg';
   static const String document = 'assets/svg/document.svg';
   static const String dropdown = 'assets/svg/dropdown.svg';
   static const String earn = 'assets/svg/earn.svg';

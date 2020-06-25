@@ -12,7 +12,6 @@ import 'package:lykke_mobile_mavn/base/common_blocs/customer_bloc.dart';
 import 'package:lykke_mobile_mavn/base/constants/bottom_bar_navigation_constants.dart';
 import 'package:lykke_mobile_mavn/base/dependency_injection/app_module.dart';
 import 'package:lykke_mobile_mavn/base/router/router.dart';
-import 'package:lykke_mobile_mavn/feature_balance/bloc/balance/balance_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_barcode_scan/bloc/barcode_scanner_manager.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/analytics/bottom_bar_analytics_manager.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_page_bloc.dart';
@@ -23,8 +22,6 @@ import 'package:lykke_mobile_mavn/feature_wallet/bloc/wallet_bloc.dart';
 import 'package:lykke_mobile_mavn/lib_dynamic_links/dynamic_link_manager.dart';
 import 'package:lykke_mobile_mavn/lib_dynamic_links/dynamic_link_manager_mixin.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
-import 'package:lykke_mobile_mavn/library_custom_hooks/app_lifecycle_hook.dart';
-import 'package:lykke_mobile_mavn/library_custom_hooks/on_dispose_hook.dart';
 import 'package:lykke_mobile_mavn/library_dependency_injection/core.dart';
 import 'package:lykke_mobile_mavn/library_fcm/bloc/firebase_messaging_bloc.dart';
 import 'package:lykke_mobile_mavn/library_qr_actions/qr_content_manager.dart';
@@ -33,11 +30,14 @@ import 'package:lykke_mobile_mavn/library_ui_components/misc/standard_sized_svg.
 class BottomBarPage extends HookWidget with DynamicLinkManagerMixin {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  ///!!!! the commented code is for web socket balance
+  ///DO NOT DELETE
+
   @override
   Widget build(BuildContext context) {
     final bottomBarAnalyticsManager = useBottomBarAnalyticsManager();
     final bottomBarPageBloc = useBottomBarPageBloc();
-    final balanceBloc = useBalanceBloc();
+//    final balanceBloc = useBalanceBloc();
     final walletBloc = useWalletBloc();
     final hotelReferralBloc = useAcceptHotelReferralBloc();
     final voucherPurchaseSuccessBloc = useVoucherPurchaseSuccessBloc();
@@ -51,13 +51,18 @@ class BottomBarPage extends HookWidget with DynamicLinkManagerMixin {
     useEffect(() {
       firebaseMessagingBloc.init();
       bottomBarPageBloc.init();
-      balanceBloc.init();
+//      balanceBloc.init();
       customerBloc.getCustomer();
-    }, [bottomBarPageBloc, balanceBloc, firebaseMessagingBloc, customerBloc]);
+    }, [
+      bottomBarPageBloc,
+//      balanceBloc,
+      firebaseMessagingBloc,
+      customerBloc,
+    ]);
 
-    useOnDispose(() {
-      balanceBloc.logout();
-    });
+//    useOnDispose(() {
+//      balanceBloc.logout();
+//    });
 
     final currentTabIndexState = useState(0);
 
@@ -102,16 +107,16 @@ class BottomBarPage extends HookWidget with DynamicLinkManagerMixin {
       ..removeListener(onNavigateToTabCallback)
       ..addListener(onNavigateToTabCallback);
 
-    useAppLifecycle((appLifecycleState) {
-      if (appLifecycleState == AppLifecycleState.paused) {
-        balanceBloc.pause();
-      }
-
-      if (appLifecycleState == AppLifecycleState.resumed) {
-        balanceBloc.resume();
-        walletBloc.fetchWallet();
-      }
-    });
+//    useAppLifecycle((appLifecycleState) {
+//      if (appLifecycleState == AppLifecycleState.paused) {
+//        balanceBloc.pause();
+//      }
+//
+//      if (appLifecycleState == AppLifecycleState.resumed) {
+//        balanceBloc.resume();
+//        walletBloc.fetchWallet();
+//      }
+//    });
 
     useBlocEventListener(hotelReferralBloc, (event) {
       dynamicLinkManager.routePendingRequests(fromEvent: event);
@@ -121,11 +126,11 @@ class BottomBarPage extends HookWidget with DynamicLinkManagerMixin {
       dynamicLinkManager.routePendingRequests(fromEvent: event);
     });
 
-    useBlocEventListener(balanceBloc, (event) {
-      if (event is BalanceUpdatedEvent) {
-        walletBloc.fetchWallet();
-      }
-    });
+//    useBlocEventListener(balanceBloc, (event) {
+//      if (event is BalanceUpdatedEvent) {
+//        walletBloc.fetchWallet();
+//      }
+//    });
 
     useEffect(() {
       SchedulerBinding.instance.addPostFrameCallback((_) {

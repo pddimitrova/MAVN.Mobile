@@ -4,7 +4,6 @@ PODS:
   - barcode_scan (0.0.1):
     - Flutter
     - MTBBarcodeScanner
-    - SwiftProtobuf
   - camera (0.0.1):
     - Flutter
   - clipboard_manager (0.0.3):
@@ -200,11 +199,8 @@ PODS:
     - Flutter
   - shared_preferences_web (0.0.1):
     - Flutter
-  - sms_autofill (0.0.1):
-    - Flutter
   - store_redirect (0.0.1):
     - Flutter
-  - SwiftProtobuf (1.9.0)
   - url_launcher (0.0.1):
     - Flutter
   - url_launcher_macos (0.0.1):
@@ -252,7 +248,6 @@ DEPENDENCIES:
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - shared_preferences_macos (from `.symlinks/plugins/shared_preferences_macos/ios`)
   - shared_preferences_web (from `.symlinks/plugins/shared_preferences_web/ios`)
-  - sms_autofill (from `.symlinks/plugins/sms_autofill/ios`)
   - store_redirect (from `.symlinks/plugins/store_redirect/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
@@ -289,7 +284,6 @@ SPEC REPOS:
     - Protobuf
     - SDWebImage
     - SDWebImageWebPCoder
-    - SwiftProtobuf
 
 EXTERNAL SOURCES:
   app_settings:
@@ -354,8 +348,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_macos/ios"
   shared_preferences_web:
     :path: ".symlinks/plugins/shared_preferences_web/ios"
-  sms_autofill:
-    :path: ".symlinks/plugins/sms_autofill/ios"
   store_redirect:
     :path: ".symlinks/plugins/store_redirect/ios"
   url_launcher:
@@ -375,7 +367,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   app_settings: d103828c9f5d515c4df9ee754dabd443f7cedcf3
-  barcode_scan: a5c27959edfafaa0c771905bad0b29d6d39e4479
+  barcode_scan: 33f586d02270046fc6559135038b34b5754eaa4f
   camera: 38cc83ae9a5667bb5a71c7d9edaf60a91920fd4e
   clipboard_manager: f4800834e62cc26b1cc4e0a92a35cd452dd8b827
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
@@ -430,9 +422,7 @@ SPEC CHECKSUMS:
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   shared_preferences_macos: f3f29b71ccbb56bf40c9dd6396c9acf15e214087
   shared_preferences_web: 141cce0c3ed1a1c5bf2a0e44f52d31eeb66e5ea9
-  sms_autofill: c461043483362c3f1709ee76eaae6eb570b31686
   store_redirect: 2977747cf81689a39bd62c248c2deacb7a0d131e
-  SwiftProtobuf: ecbec1be9036d15655f6b3443a1c4ea693c97932
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
   url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c

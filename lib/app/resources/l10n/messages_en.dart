@@ -1147,6 +1147,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "scannedInfoDialogVoucherPositiveButton":
             MessageLookupByLibrary.simpleMessage("Invalidate Voucher"),
         "search": MessageLookupByLibrary.simpleMessage("Search"),
+        "searchForCountries":
+            MessageLookupByLibrary.simpleMessage("Search for countries"),
+        "selectCampaignLocation": MessageLookupByLibrary.simpleMessage(
+            "Please select location in order to see available offers"),
         "sendToExternalWalletButton":
             MessageLookupByLibrary.simpleMessage("Transfer to external wallet"),
         "sendToExternalWalletButtonSubtitle": m70,

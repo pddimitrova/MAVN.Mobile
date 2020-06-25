@@ -3042,7 +3042,7 @@ class LocalizedStrings {
 
 //endregion Friend Referral
 
-//region Vouchers
+//region Campaigns
 
   String get voucherListEmpty => Intl.message(
         'There are no vouchers available at the moment',
@@ -3054,7 +3054,12 @@ class LocalizedStrings {
         name: 'voucherCopied',
       );
 
-//endregion Vouchers
+  String get selectCampaignLocation => Intl.message(
+        'Please select location in order to see available offers',
+        name: 'selectCampaignLocation',
+      );
+
+//endregion Campaigns
 
 //region Campaign Details
 
@@ -3437,4 +3442,12 @@ class LocalizedStrings {
 
 //endregion Voucher Usage
 
+//region Partner Country Search
+
+  String get searchForCountries => Intl.message(
+        'Search for countries',
+        name: 'searchForCountries',
+      );
+
+//endregion Partner Country Search
 }

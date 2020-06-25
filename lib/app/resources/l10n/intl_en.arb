@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-06-24T12:09:36.551982",
+  "@@last_modified": "2020-06-25T15:35:09.457941",
   "networkErrorTitle": "Internet connection problem",
   "@networkErrorTitle": {
     "type": "text",
@@ -3155,6 +3155,11 @@
     "type": "text",
     "placeholders": {}
   },
+  "selectCampaignLocation": "Please select location in order to see available offers",
+  "@selectCampaignLocation": {
+    "type": "text",
+    "placeholders": {}
+  },
   "viewOffer": "View Offer",
   "@viewOffer": {
     "type": "text",
@@ -3518,6 +3523,11 @@
   },
   "voucherUsageSuccessPageTitle": "Successfully used voucher",
   "@voucherUsageSuccessPageTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "searchForCountries": "Search for countries",
+  "@searchForCountries": {
     "type": "text",
     "placeholders": {}
   }

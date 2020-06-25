@@ -2,6 +2,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lykke_mobile_mavn/app/resources/lazy_localized_strings.dart';
 import 'package:lykke_mobile_mavn/base/common_blocs/generic_list_bloc.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/campaign/response_model/campaign_response_model.dart';
+import 'package:lykke_mobile_mavn/base/remote_data_source/api/country/response_model/partner_country_list_response_model.dart';
 import 'package:lykke_mobile_mavn/base/repository/campaign/campaign_repository.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_list/di/campaign_list_module.dart';
 import 'package:lykke_mobile_mavn/feature_location/util/user_position.dart';
@@ -15,12 +16,21 @@ class CampaignListBloc
   final CampaignRepository _campaignRepository;
 
   UserPosition userPosition;
+  PartnerCountry partnerCountry;
 
   Future<void> getCampaignsForUserLocation({
     UserPosition currentPosition,
     bool refresh = false,
   }) {
     userPosition = currentPosition;
+    updateGenericList(refresh: refresh);
+  }
+
+  Future<void> getCampaignsForCountry({
+    PartnerCountry partnerCountry,
+    bool refresh = false,
+  }) {
+    this.partnerCountry = partnerCountry;
     updateGenericList(refresh: refresh);
   }
 
@@ -38,6 +48,7 @@ class CampaignListBloc
         currentPage: page,
         long: userPosition?.long,
         lat: userPosition?.lat,
+        countryCode: partnerCountry?.countryIso3Code,
       );
 }
 
