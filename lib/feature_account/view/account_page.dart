@@ -82,6 +82,7 @@ class AccountPage extends HookWidget {
           style: TextStyles.darkHeaderTitle,
         ),
         backgroundColor: ColorStyles.alabaster,
+        brightness: Brightness.light,
         elevation: 0,
       ),
       body: SafeArea(

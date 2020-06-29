@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lykke_mobile_mavn/app/resources/color_styles.dart';
+import 'package:lykke_mobile_mavn/app/resources/image_assets.dart';
 import 'package:lykke_mobile_mavn/app/resources/localized_strings.dart';
-import 'package:lykke_mobile_mavn/app/resources/svg_assets.dart';
+import 'package:lykke_mobile_mavn/app/resources/text_styles.dart';
 import 'package:lykke_mobile_mavn/base/common_blocs/base_bloc_output.dart';
 import 'package:lykke_mobile_mavn/base/common_blocs/earn_rule_list_bloc.dart';
 import 'package:lykke_mobile_mavn/base/common_blocs/generic_list_bloc_output.dart';
@@ -29,6 +29,8 @@ import 'package:lykke_mobile_mavn/library_ui_components/misc/spinner.dart';
 class HomePage extends HookWidget {
   @override
   Widget build(BuildContext context) {
+    final localizedStrings = useLocalizedStrings();
+
     final balanceBloc = useBalanceBloc();
     final earnRuleListBloc = useEarnRuleListBloc();
     final earnRuleListState = useBlocState<GenericListState>(earnRuleListBloc);
@@ -94,45 +96,74 @@ class HomePage extends HookWidget {
     ].every((state) => state is BaseLoadingState);
 
     return Scaffold(
-        backgroundColor: ColorStyles.alabaster,
-        appBar: AppBar(
-          title: SvgPicture.asset(SvgAssets.appDarkLogo),
-          backgroundColor: ColorStyles.alabaster,
-          brightness: Brightness.light,
-          elevation: 0,
-          actions: <Widget>[
-            IconButton(
-              tooltip: useLocalizedStrings().notifications,
-              icon: NotificationIconWidget(
-                color: ColorStyles.boulder,
+      backgroundColor: ColorStyles.alabaster,
+      body: SafeArea(
+        top: false,
+        child: Stack(
+          children: [
+            NestedScrollView(
+              headerSliverBuilder: (context, isScrolling) => [
+                SliverAppBar(
+                  title: Text(
+                    localizedStrings.bottomBarExplore,
+                    style: TextStyles.lightHeaderTitle,
+                  ),
+                  brightness: Brightness.dark,
+                  centerTitle: true,
+                  automaticallyImplyLeading: false,
+                  backgroundColor: ColorStyles.white,
+                  elevation: 0,
+                  expandedHeight: 150,
+                  floating: false,
+                  pinned: true,
+                  actions: <Widget>[
+                    IconButton(
+                      tooltip: localizedStrings.notifications,
+                      icon: NotificationIconWidget(
+                        color: ColorStyles.white,
+                      ),
+                      onPressed: () {
+                        router.pushNotificationListPage();
+                        notificationCountBloc.markAsSeen();
+                      },
+                    ),
+                  ],
+                  flexibleSpace: Container(
+                    color: ColorStyles.salmon,
+                    child: FlexibleSpaceBar(
+                      background: Image(
+                        image: AssetImage(ImageAssets.backgroundFoodItems),
+                        fit: BoxFit.none,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    if (!isLoading)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24),
+                        child: _buildBody(
+                          router,
+                          isNetworkError,
+                          isGenericError,
+                          onErrorRetry,
+                          earnRuleListState,
+                        ),
+                      )
+                    else
+                      Container(),
+                    if (isLoading) _buildLoading(),
+                  ],
+                ),
               ),
-              onPressed: () {
-                router.pushNotificationListPage();
-                notificationCountBloc.markAsSeen();
-              },
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              if (!isLoading)
-                Padding(
-                  padding: const EdgeInsets.only(top: 24),
-                  child: _buildBody(
-                    router,
-                    isNetworkError,
-                    isGenericError,
-                    onErrorRetry,
-                    earnRuleListState,
-                  ),
-                )
-              else
-                Container(),
-              if (isLoading) _buildLoading(),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 
   Widget _buildBody(
