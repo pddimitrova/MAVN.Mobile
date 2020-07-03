@@ -70,6 +70,7 @@ import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/base/router/router_page_factory.dart';
 import 'package:lykke_mobile_mavn/feature_balance/bloc/balance/balance_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_biometrics/bloc/biometric_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/bloc/partner_country_list_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_debug_menu/bloc/debug_menu_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_email_verification/analytics/email_verification_analytics_manager.dart';
 import 'package:lykke_mobile_mavn/feature_email_verification/bloc/email_confirmation_bloc.dart';
@@ -224,6 +225,8 @@ class AppModule extends Module {
   TransferVoucherBloc get transferVoucherBloc => get();
 
   VoucherUsageSuccessBloc get voucherUsageSuccessBloc => get();
+
+  PartnerCountryListBloc get partnerCountryBloc => get();
 
   @override
   void provideInstances() {
@@ -403,6 +406,8 @@ class AppModule extends Module {
     provideSingleton(() => TransferVoucherBloc(get(), get()));
 
     provideSingleton(() => VoucherUsageSuccessBloc());
+
+    provideSingleton(() => PartnerCountryListBloc(get(), get(), get()));
 
     // Dynamic Link Manager
     provideSingleton(

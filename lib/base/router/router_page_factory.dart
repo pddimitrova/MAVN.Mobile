@@ -26,7 +26,6 @@ import 'package:lykke_mobile_mavn/feature_change_password/view/change_password_s
 import 'package:lykke_mobile_mavn/feature_coming_soon/view/coming_soon_page.dart';
 import 'package:lykke_mobile_mavn/feature_country/view/country_list_page.dart';
 import 'package:lykke_mobile_mavn/feature_country_code/view/country_code_list_page.dart';
-import 'package:lykke_mobile_mavn/feature_country_search/di/partner_country_module.dart';
 import 'package:lykke_mobile_mavn/feature_earn/di/earn_module.dart';
 import 'package:lykke_mobile_mavn/feature_earn_detail/di/earn_rule_detail_module.dart';
 import 'package:lykke_mobile_mavn/feature_earn_detail/view/earn_rule_detail_page.dart';
@@ -423,11 +422,8 @@ class RouterPageFactory {
   //endregion Transactions & Payments
 
   //region Spend & Earn rules
-  static Widget getOffersPage() => MultiProvider(
-        providers: [
-          ModuleProvider(module: CampaignListModule()),
-          ModuleProvider(module: PartnerCountryModule()),
-        ],
+  static Widget getOffersPage() => ModuleProvider(
+        module: CampaignListModule(),
         child: CampaignListPage(),
       );
 
@@ -495,11 +491,8 @@ class RouterPageFactory {
         child: CampaignListPage(),
       );
 
-  static Widget getCampaignMapPage() => MultiProvider(
-        providers: [
-          ModuleProvider(module: CampaignMapModule()),
-          ModuleProvider(module: PartnerCountryModule()),
-        ],
+  static Widget getCampaignMapPage() => ModuleProvider(
+        module: CampaignMapModule(),
         child: CampaignMapPage(),
       );
 

@@ -150,6 +150,7 @@ class BottomBarPage extends HookWidget with DynamicLinkManagerMixin {
           value: SystemUiOverlayStyle.dark,
           child: Scaffold(
             key: _scaffoldKey,
+            resizeToAvoidBottomPadding: false,
             floatingActionButton: Container(
               width: 56,
               height: 56,

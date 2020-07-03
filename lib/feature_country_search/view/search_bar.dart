@@ -76,6 +76,8 @@ class SearchBar extends HookWidget {
                                 : [],
                         itemSubmitted: (item) => partnerCountryBloc
                             .selectCountry(partnerCountry: item),
+                        textSubmitted: (text) => partnerCountryBloc
+                            .selectCountryByName(countryName: text),
                         itemSorter: (a, b) => a.name.compareTo(b.name),
                         itemFilter: (suggestion, query) => suggestion.name
                             .toLowerCase()
