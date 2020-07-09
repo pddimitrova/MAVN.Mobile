@@ -36,6 +36,9 @@ class NotificationTapped {
     }
   }
 
+//TODO: Delete. This is mock for NotificationMessage model
+  Map<String, dynamic> toJson() => {};
+
   NotificationTappedCustomPayload notificationTappedCustomPayload;
 }
 

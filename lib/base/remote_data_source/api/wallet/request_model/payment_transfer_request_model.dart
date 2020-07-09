@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'payment_transfer_request_model.g.dart';
+
+@JsonSerializable()
 class PaymentTransferRequestModel {
   PaymentTransferRequestModel({this.campaignId, this.invoiceId, this.amount});
 
@@ -5,9 +10,5 @@ class PaymentTransferRequestModel {
   final String invoiceId;
   final String amount;
 
-  Map<String, dynamic> toJson() => {
-        'CampaignId': campaignId,
-        'InvoiceId': invoiceId,
-        'Amount': amount,
-      };
+  Map<String, dynamic> toJson() => _$PaymentTransferRequestModelToJson(this);
 }

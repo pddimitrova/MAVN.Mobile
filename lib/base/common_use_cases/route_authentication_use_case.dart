@@ -89,7 +89,9 @@ class RouteAuthenticationUseCase {
     try {
       final customer = await _customerRepository.getCustomer();
 
-      if (customer.isPhoneNumberVerified && customer.isEmailVerified) {
+      //TODO reenable phone verification when needed
+      //   if (customer.isPhoneNumberVerified && customer.isEmailVerified) {
+      if (customer.isEmailVerified) {
         unawaited(_localSettingsRepository.setUserVerified(isVerified: true));
         return _VerificationFlowState(_RouteAuthenticationStatus.verified);
       }

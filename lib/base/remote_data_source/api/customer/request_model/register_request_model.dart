@@ -1,5 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'register_request_model.g.dart';
+
+@JsonSerializable()
 class RegisterRequestModel {
   RegisterRequestModel({
     @required this.email,
@@ -17,12 +21,5 @@ class RegisterRequestModel {
   final String lastName;
   final int countryOfNationalityId;
 
-  Map<String, dynamic> toJson() => {
-        'Email': email,
-        'Password': password,
-        'ReferralCode': referralCode,
-        'FirstName': firstName,
-        'LastName': lastName,
-        'CountryOfNationalityId': countryOfNationalityId
-      };
+  Map<String, dynamic> toJson() => _$RegisterRequestModelToJson(this);
 }

@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'link_advanced_wallet_request_model.g.dart';
+
+@JsonSerializable()
 class LinkAdvancedWalletRequestModel {
   LinkAdvancedWalletRequestModel({
     this.privateAddress,
@@ -9,9 +14,5 @@ class LinkAdvancedWalletRequestModel {
   final String publicAddress;
   final String signature;
 
-  Map<String, dynamic> toJson() => {
-        'PrivateAddress': privateAddress,
-        'PublicAddress': publicAddress,
-        'Signature': signature,
-      };
+  Map<String, dynamic> toJson() => _$LinkAdvancedWalletRequestModelToJson(this);
 }

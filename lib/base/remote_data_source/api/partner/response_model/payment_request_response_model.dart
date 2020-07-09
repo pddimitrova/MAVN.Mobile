@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:lykke_mobile_mavn/library_models/token_currency.dart';
 
+part 'payment_request_response_model.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+@TokenCurrencyConverter()
 class PaymentRequestResponseModel {
   const PaymentRequestResponseModel({
     @required this.paymentRequestId,
@@ -23,30 +28,13 @@ class PaymentRequestResponseModel {
     @required this.expirationTimeStamp,
   });
 
-  PaymentRequestResponseModel.fromJson(json)
-      : paymentRequestId = json['PaymentRequestId'],
-        status = _toPaymentRequestStatus(json['Status']),
-        totalInToken = TokenCurrency(value: json['TotalInToken']),
-        requestedAmountInTokens =
-            TokenCurrency(value: json['RequestedAmountInTokens']),
-        totalInCurrency = json['TotalInCurrency'],
-        sendingAmountInToken =
-            TokenCurrency(value: json['SendingAmountInToken']),
-        currencyCode = json['CurrencyCode'],
-        partnerId = json['PartnerId'],
-        partnerName = json['PartnerName'],
-        locationId = json['LocationId'],
-        locationName = json['LocationName'],
-        paymentInfo = json['PaymentInfo'],
-        walletBalance = TokenCurrency(value: json['WalletBalance']),
-        date = json['Date'],
-        lastUpdatedDate = json['LastUpdatedDate'],
-        tokensToFiatConversionRate = json['TokensToFiatConversionRate'],
-        expirationTimeLeftInSeconds =
-            json['CustomerActionExpirationTimeLeftInSeconds'],
-        expirationTimeStamp = json['CustomerActionExpirationTimestamp'];
+  factory PaymentRequestResponseModel.fromJson(json) =>
+      _$PaymentRequestResponseModelFromJson(json);
 
   final String paymentRequestId;
+  @JsonKey(
+      fromJson: _paymentRequestStatusFromJson,
+      toJson: _paymentRequestStatusToJson)
   final PaymentRequestStatus status;
   final TokenCurrency totalInToken;
   final TokenCurrency requestedAmountInTokens;
@@ -62,10 +50,15 @@ class PaymentRequestResponseModel {
   final String date;
   final String lastUpdatedDate;
   final double tokensToFiatConversionRate;
+  @JsonKey(name: 'CustomerActionExpirationTimeLeftInSeconds')
   final int expirationTimeLeftInSeconds;
+  @JsonKey(name: 'CustomerActionExpirationTimestamp')
   final String expirationTimeStamp;
 
-  static PaymentRequestStatus _toPaymentRequestStatus(String requestStatus) {
+  Map<String, dynamic> toJson() => _$PaymentRequestResponseModelToJson(this);
+
+  static PaymentRequestStatus _paymentRequestStatusFromJson(
+      String requestStatus) {
     for (final status in PaymentRequestStatus.values) {
       if (status.toString().split('.')[1].toLowerCase() ==
           requestStatus.toLowerCase()) {
@@ -74,14 +67,25 @@ class PaymentRequestResponseModel {
     }
     return null;
   }
+
+  static String _paymentRequestStatusToJson(PaymentRequestStatus status) {
+    return status.toString();
+  }
 }
 
 enum PaymentRequestStatus {
+  @JsonValue('Pending')
   pending,
+  @JsonValue('Confirmed')
   confirmed,
+  @JsonValue('Completed')
   completed,
+  @JsonValue('Cancelled')
   cancelled,
+  @JsonValue('Failed')
   failed,
+  @JsonValue('RequestExpired')
   requestExpired,
+  @JsonValue('PaymentExpired')
   paymentExpired,
 }

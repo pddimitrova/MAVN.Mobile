@@ -1,5 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
+part 'country_codes_response_model.g.dart';
+
+@JsonSerializable()
 class CountryCode {
   const CountryCode({
     @required this.id,
@@ -9,15 +13,12 @@ class CountryCode {
     @required this.countryIso3Code,
   });
 
-  CountryCode.fromJson(Map<String, dynamic> json)
-      : id = json['Id'],
-        code = json['Code'],
-        name = json['CountryName'],
-        countryIso2Code = json['CountryIso2Code'],
-        countryIso3Code = json['CountryIso3Code'];
+  factory CountryCode.fromJson(Map<String, dynamic> json) =>
+      _$CountryCodeFromJson(json);
 
   final int id;
   final String code;
+  @JsonKey(name: 'CountryName')
   final String name;
   final String countryIso2Code;
   final String countryIso3Code;

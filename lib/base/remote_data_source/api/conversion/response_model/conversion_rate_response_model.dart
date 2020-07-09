@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'conversion_rate_response_model.g.dart';
+
+@JsonSerializable()
 class ConversionRateResponseModel {
   ConversionRateResponseModel({
     this.amount,
@@ -6,11 +11,8 @@ class ConversionRateResponseModel {
     this.error,
   });
 
-  ConversionRateResponseModel.fromJson(Map<String, dynamic> json)
-      : amount = json['Amount'],
-        rate = json['Rate'],
-        currencyCode = json['CurrencyCode'],
-        error = json['Error'];
+  factory ConversionRateResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$ConversionRateResponseModelFromJson(json);
 
   final String amount;
   final String rate;

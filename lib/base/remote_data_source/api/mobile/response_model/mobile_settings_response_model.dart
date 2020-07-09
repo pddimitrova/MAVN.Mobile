@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'mobile_settings_response_model.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class MobileSettings extends Equatable {
   const MobileSettings({
     @required this.supportPhoneNumber,
@@ -17,48 +21,29 @@ class MobileSettings extends Equatable {
     @required this.pinCode,
   });
 
-  MobileSettings.fromJson(Map<String, dynamic> json)
-      : supportPhoneNumber = json['CustomerSupportPhoneNumber'],
-        supportEmail = json['CustomerSupportEmail'],
-        termsOfUseUrl = json['PrivacyAndTermsUrl'],
-        privacyUrl = json['PrivacyUrl'],
-        tokenPrecision = json['TokenPrecision'],
-        baseCurrency = json['BaseCurrencyCode'],
-        tokenSymbol = json['TokenSymbol'],
-        registrationMobileSettings =
-            RegistrationMobileSettings.fromJson(json['Registration']),
-        passwordStrength = PasswordStrength.fromJson(json['PasswordStrength']),
-        appVersion = AppVersion.fromJson(json['AppVersion']),
-        dAppMobileSettings = DAppMobileSettings.fromJson(json['DApp']),
-        pinCode = PinCode.fromJson(json['PinCode']);
+  factory MobileSettings.fromJson(Map<String, dynamic> json) =>
+      _$MobileSettingsFromJson(json);
 
+  @JsonKey(name: 'CustomerSupportPhoneNumber')
   final String supportPhoneNumber;
+  @JsonKey(name: 'CustomerSupportEmail')
   final String supportEmail;
+  @JsonKey(name: 'PrivacyAndTermsUrl')
   final String termsOfUseUrl;
   final String privacyUrl;
   final int tokenPrecision;
+  @JsonKey(name: 'BaseCurrencyCode')
   final String baseCurrency;
   final String tokenSymbol;
+  @JsonKey(name: 'Registration')
   final RegistrationMobileSettings registrationMobileSettings;
   final PasswordStrength passwordStrength;
   final AppVersion appVersion;
+  @JsonKey(name: 'DApp')
   final DAppMobileSettings dAppMobileSettings;
   final PinCode pinCode;
 
-  Map<String, dynamic> toJson() => {
-        'CustomerSupportPhoneNumber': supportPhoneNumber,
-        'CustomerSupportEmail': supportEmail,
-        'PrivacyAndTermsUrl': termsOfUseUrl,
-        'PrivacyUrl': privacyUrl,
-        'TokenPrecision': tokenPrecision,
-        'BaseCurrencyCode': baseCurrency,
-        'TokenSymbol': tokenSymbol,
-        'Registration': registrationMobileSettings.toJson(),
-        'PasswordStrength': passwordStrength.toJson(),
-        'AppVersion': appVersion.toJson(),
-        'DApp': dAppMobileSettings.toJson(),
-        'PinCode': pinCode.toJson(),
-      };
+  Map<String, dynamic> toJson() => _$MobileSettingsToJson(this);
 
   @override
   List get props => [
@@ -77,36 +62,38 @@ class MobileSettings extends Equatable {
       ];
 }
 
+@JsonSerializable()
 class DAppMobileSettings extends Equatable {
-  DAppMobileSettings.fromJson(Map<String, dynamic> json)
-      : linkWalletAppUrlTemplate = json['LinkWalletAppUrlTemplate'];
+  const DAppMobileSettings({this.linkWalletAppUrlTemplate});
+
+  factory DAppMobileSettings.fromJson(Map<String, dynamic> json) =>
+      _$DAppMobileSettingsFromJson(json);
 
   final String linkWalletAppUrlTemplate;
 
-  Map<String, dynamic> toJson() => {
-        'LinkWalletAppUrlTemplate': linkWalletAppUrlTemplate,
-      };
+  Map<String, dynamic> toJson() => _$DAppMobileSettingsToJson(this);
 
   @override
   List get props => [linkWalletAppUrlTemplate];
 }
 
+@JsonSerializable(explicitToJson: true)
 class RegistrationMobileSettings extends Equatable {
   const RegistrationMobileSettings(
       {@required this.verificationCodeExpirationPeriod});
 
-  RegistrationMobileSettings.fromJson(Map<String, dynamic> json)
-      : verificationCodeExpirationPeriod =
-            _toDuration(json['VerificationCodeExpirationPeriod']);
+  factory RegistrationMobileSettings.fromJson(Map<String, dynamic> json) =>
+      _$RegistrationMobileSettingsFromJson(json);
 
+  @JsonKey(fromJson: _durationFromJson, toJson: _durationToJson)
   final Duration verificationCodeExpirationPeriod;
 
-  Map<String, dynamic> toJson() => {
-        'VerificationCodeExpirationPeriod':
-            _fromDuration(verificationCodeExpirationPeriod)
-      };
+  Map<String, dynamic> toJson() => _$RegistrationMobileSettingsToJson(this);
 
-  static Duration _toDuration(String s) {
+  @override
+  List get props => [verificationCodeExpirationPeriod];
+
+  static Duration _durationFromJson(String s) {
     var hours = 0;
     var minutes = 0;
     final parts = s.split(':');
@@ -120,13 +107,11 @@ class RegistrationMobileSettings extends Equatable {
     return Duration(hours: hours, minutes: minutes, seconds: seconds);
   }
 
-  static String _fromDuration(Duration duration) =>
+  static String _durationToJson(Duration duration) =>
       duration.toString().split('.').first.padLeft(8, '0');
-
-  @override
-  List get props => [verificationCodeExpirationPeriod];
 }
 
+@JsonSerializable()
 class PasswordStrength extends Equatable {
   const PasswordStrength({
     @required this.minLength,
@@ -139,35 +124,22 @@ class PasswordStrength extends Equatable {
     @required this.canUseSpaces,
   });
 
-  PasswordStrength.fromJson(Map<String, dynamic> json)
-      : minLength = json['MinimumLength'],
-        maxLength = json['MaximumLength'],
-        minUpperCase = json['MinUpperCase'],
-        minLowerCase = json['MinLowerCase'],
-        minNumbers = json['MinNumbers'],
-        minSpecialSymbols = json['MinSpecialSymbols'],
-        specialCharacters = json['SpecialCharacters'],
-        canUseSpaces = json['Spaces'];
+  factory PasswordStrength.fromJson(Map<String, dynamic> json) =>
+      _$PasswordStrengthFromJson(json);
 
+  @JsonKey(name: 'MinimumLength')
   final int minLength;
+  @JsonKey(name: 'MaximumLength')
   final int maxLength;
   final int minUpperCase;
   final int minLowerCase;
   final int minNumbers;
   final int minSpecialSymbols;
   final String specialCharacters;
+  @JsonKey(name: 'Spaces')
   final bool canUseSpaces;
 
-  Map<String, dynamic> toJson() => {
-        'MinimumLength': minLength,
-        'MaximumLength': maxLength,
-        'MinUpperCase': minUpperCase,
-        'MinLowerCase': minLowerCase,
-        'MinNumbers': minNumbers,
-        'MinSpecialSymbols': minSpecialSymbols,
-        'SpecialCharacters': specialCharacters,
-        'Spaces': canUseSpaces,
-      };
+  Map<String, dynamic> toJson() => _$PasswordStrengthToJson(this);
 
   @override
   List get props => [
@@ -182,6 +154,7 @@ class PasswordStrength extends Equatable {
       ];
 }
 
+@JsonSerializable()
 class PinCode extends Equatable {
   const PinCode({
     @required this.pinCodeLength,
@@ -189,20 +162,14 @@ class PinCode extends Equatable {
     @required this.pinCodeMaximumAttemptCount,
   });
 
-  PinCode.fromJson(Map<String, dynamic> json)
-      : pinCodeLength = json['PinCodeLength'],
-        pinCodeWarningAttemptCount = json['PinCodeWarningAttemptCount'],
-        pinCodeMaximumAttemptCount = json['PinCodeMaximumAttemptCount'];
+  factory PinCode.fromJson(Map<String, dynamic> json) =>
+      _$PinCodeFromJson(json);
 
   final int pinCodeLength;
   final int pinCodeWarningAttemptCount;
   final int pinCodeMaximumAttemptCount;
 
-  Map<String, dynamic> toJson() => {
-        'PinCodeLength': pinCodeLength,
-        'PinCodeWarningAttemptCount': pinCodeWarningAttemptCount,
-        'PinCodeMaximumAttemptCount': pinCodeMaximumAttemptCount,
-      };
+  Map<String, dynamic> toJson() => _$PinCodeToJson(this);
 
   @override
   List get props => [
@@ -212,24 +179,20 @@ class PinCode extends Equatable {
       ];
 }
 
+@JsonSerializable()
 class AppVersion extends Equatable {
   const AppVersion({
     @required this.latestAppVersion,
     @required this.latestMandatoryUpgradeAppVersion,
   });
 
-  AppVersion.fromJson(Map<String, dynamic> json)
-      : latestAppVersion = json['LatestAppVersion'],
-        latestMandatoryUpgradeAppVersion =
-            json['LatestMandatoryUpgradeAppVersion'];
+  factory AppVersion.fromJson(Map<String, dynamic> json) =>
+      _$AppVersionFromJson(json);
 
   final String latestAppVersion;
   final String latestMandatoryUpgradeAppVersion;
 
-  Map<String, dynamic> toJson() => {
-        'LatestAppVersion': latestAppVersion,
-        'LatestMandatoryUpgradeAppVersion': latestMandatoryUpgradeAppVersion,
-      };
+  Map<String, dynamic> toJson() => _$AppVersionToJson(this);
 
   @override
   List get props => [

@@ -1,10 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/common/offer_type.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/customer/response_model/partner_response_model.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/earn/response_model/earn_rule_condition_response_model.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/earn/response_model/earn_rule_response_model.dart';
 import 'package:lykke_mobile_mavn/library_models/token_currency.dart';
 
+part 'extended_earn_rule_condition.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+@TokenCurrencyConverter()
 class ExtendedEarnRuleCondition extends EarnRuleCondition {
   ExtendedEarnRuleCondition({
     @required this.partners,
@@ -44,18 +49,10 @@ class ExtendedEarnRuleCondition extends EarnRuleCondition {
           usePartnerCurrencyRate: usePartnerCurrencyRate,
         );
 
-  ExtendedEarnRuleCondition.fromJson(Map<String, dynamic> json)
-      : partners = Partner.toListOfPartners(json['Partners']),
-        customerCompletionCount = json['CustomerCompletionCount'],
-        super.fromJson(json);
+  factory ExtendedEarnRuleCondition.fromJson(Map<String, dynamic> json) =>
+      _$ExtendedEarnRuleConditionFromJson(json);
 
-  static List<ExtendedEarnRuleCondition> toListFromJson(List list) =>
-      list == null
-          ? []
-          : list
-              .map((condition) => ExtendedEarnRuleCondition.fromJson(condition))
-              .toList();
-
+  @JsonKey(defaultValue: [])
   final List<Partner> partners;
   final int customerCompletionCount;
 }

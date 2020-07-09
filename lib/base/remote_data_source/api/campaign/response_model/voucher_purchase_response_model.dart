@@ -1,6 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:lykke_mobile_mavn/library_utils/enum_mapper.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'voucher_purchase_response_model.g.dart';
+
+@JsonSerializable()
 class VoucherPurchaseResponseModel {
   VoucherPurchaseResponseModel({
     @required this.paymentUrl,
@@ -8,18 +11,20 @@ class VoucherPurchaseResponseModel {
     this.reservedVoucherShortCode,
   });
 
-  VoucherPurchaseResponseModel.fromJson(Map<String, dynamic> json)
-      : paymentUrl = json['PaymentUrl'],
-        errorCode = EnumMapper.mapFromString(
-          json['ErrorCode'],
-          enumValues: VoucherPurchaseErrorCode.values,
-          defaultValue: null,
-        ),
-        reservedVoucherShortCode = json['AlreadyReservedVoucherShortCode'];
+  factory VoucherPurchaseResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$VoucherPurchaseResponseModelFromJson(json);
 
   final String paymentUrl;
+  @JsonKey(nullable: true)
+  @JsonKey(defaultValue: null)
   final VoucherPurchaseErrorCode errorCode;
+  @JsonKey(name: 'AlreadyReservedVoucherShortCode')
   final String reservedVoucherShortCode;
 }
 
-enum VoucherPurchaseErrorCode { none, customerHaveAnotherReservedVoucher }
+enum VoucherPurchaseErrorCode {
+  @JsonValue('None')
+  none,
+  @JsonValue('CustomerHaveAnotherReservedVoucher ')
+  customerHaveAnotherReservedVoucher,
+}

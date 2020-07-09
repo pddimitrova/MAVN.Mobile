@@ -1,5 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/partner/response_model/payment_request_response_model.dart';
 
+part 'payments_response_model.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class PaginatedPartnerPaymentsResponseModel {
   PaginatedPartnerPaymentsResponseModel({
     this.currentPage,
@@ -8,11 +12,9 @@ class PaginatedPartnerPaymentsResponseModel {
     this.paymentRequests,
   });
 
-  PaginatedPartnerPaymentsResponseModel.fromJson(Map<String, dynamic> json)
-      : currentPage = json['CurrentPage'],
-        pageSize = json['PageSize'],
-        totalCount = json['TotalCount'],
-        paymentRequests = _mapPaymentRequests(json['PaymentRequests']);
+  factory PaginatedPartnerPaymentsResponseModel.fromJson(
+          Map<String, dynamic> json) =>
+      _$PaginatedPartnerPaymentsResponseModelFromJson(json);
 
   final int currentPage;
   final int pageSize;
@@ -20,16 +22,14 @@ class PaginatedPartnerPaymentsResponseModel {
   final List<PaymentRequestResponseModel> paymentRequests;
 }
 
+@JsonSerializable(explicitToJson: true)
 class PartnerPaymentsResponseModel {
   const PartnerPaymentsResponseModel({
     this.paymentRequests,
   });
 
-  PartnerPaymentsResponseModel.fromJson(json)
-      : paymentRequests = _mapPaymentRequests(json);
+  factory PartnerPaymentsResponseModel.fromJson(json) =>
+      _$PartnerPaymentsResponseModelFromJson(json);
 
   final List<PaymentRequestResponseModel> paymentRequests;
 }
-
-List<PaymentRequestResponseModel> _mapPaymentRequests(List<dynamic> json) =>
-    json.map((json) => PaymentRequestResponseModel.fromJson(json)).toList();

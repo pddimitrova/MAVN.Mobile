@@ -1,8 +1,12 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/earn/response_model/earn_rule_condition_response_model.dart';
 import 'package:lykke_mobile_mavn/library_models/token_currency.dart';
-import 'package:lykke_mobile_mavn/library_utils/enum_mapper.dart';
 
+part 'earn_rule_response_model.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+@TokenCurrencyConverter()
 class EarnRule {
   const EarnRule({
     @required this.id,
@@ -23,47 +27,48 @@ class EarnRule {
     this.approximateAward,
   });
 
-  EarnRule.fromJson(Map<String, dynamic> json)
-      : id = json['Id'],
-        title = json['Title'],
-        status = EnumMapper.mapFromString(json['Status'],
-            enumValues: EarnRuleStatus.values,
-            defaultValue: EarnRuleStatus.inactive),
-        description = json['Description'],
-        imageUrl = json['ImageUrl'],
-        reward = TokenCurrency(value: json['Reward']),
-        approximateAward = TokenCurrency(value: json['ApproximateAward']),
-        isApproximate = json['IsApproximate'] ?? false,
-        rewardType = EnumMapper.mapFromString(json['RewardType'],
-            enumValues: RewardType.values, defaultValue: RewardType.fixed),
-        fromDate = json['FromDate'],
-        toDate = json['ToDate'],
-        createdBy = json['CreatedBy'],
-        creationDate = json['CreationDate'],
-        completionCount = json['CompletionCount'],
-        conditions =
-            EarnRuleCondition.toListFromJson(json['Conditions'] as List),
-        optionalConditions = EarnRuleCondition.toListFromJson(
-            json['OptionalConditions'] as List);
+  factory EarnRule.fromJson(Map<String, dynamic> json) =>
+      _$EarnRuleFromJson(json);
 
   final String id;
   final String title;
+  @JsonKey(defaultValue: EarnRuleStatus.inactive)
   final EarnRuleStatus status;
   final String description;
   final String imageUrl;
   final TokenCurrency reward;
   final TokenCurrency approximateAward;
+  @JsonKey(nullable: true, defaultValue: false)
   final bool isApproximate;
+  @JsonKey(defaultValue: RewardType.fixed)
   final RewardType rewardType;
   final String fromDate;
   final String toDate;
   final String createdBy;
   final String creationDate;
   final int completionCount;
+  @JsonKey(defaultValue: [])
   final List<EarnRuleCondition> conditions;
+  @JsonKey(defaultValue: [])
   final List<EarnRuleCondition> optionalConditions;
 }
 
-enum EarnRuleStatus { pending, active, completed, inactive }
+enum EarnRuleStatus {
+  @JsonValue('Pending')
+  pending,
+  @JsonValue('Active')
+  active,
+  @JsonValue('Completed')
+  completed,
+  @JsonValue('Inactive')
+  inactive
+}
 
-enum RewardType { fixed, percentage, conversionRate }
+enum RewardType {
+  @JsonValue('Fixed')
+  fixed,
+  @JsonValue('Percentage')
+  percentage,
+  @JsonValue('ConversionRate')
+  conversionRate
+}

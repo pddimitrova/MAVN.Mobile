@@ -1,16 +1,20 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 
+part 'partner_country_list_response_model.g.dart';
+
+@JsonSerializable()
 class PartnerCountry {
   const PartnerCountry({
     @required this.name,
     @required this.countryIso3Code,
   });
 
-  PartnerCountry.fromJson(Map<String, dynamic> json)
-      : name = json['Name'],
-        countryIso3Code = json['Iso3Code'];
+  factory PartnerCountry.fromJson(Map<String, dynamic> json) =>
+      _$PartnerCountryFromJson(json);
 
   final String name;
+  @JsonKey(name: 'Iso3Code')
   final String countryIso3Code;
 }
 

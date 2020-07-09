@@ -1,6 +1,10 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:lykke_mobile_mavn/library_utils/string_utils.dart';
 import 'package:meta/meta.dart';
 
+part 'customer_response_model.g.dart';
+
+@JsonSerializable()
 class CustomerResponseModel {
   CustomerResponseModel({
     @required this.firstName,
@@ -18,30 +22,19 @@ class CustomerResponseModel {
     @required this.linkedPartnerId,
   });
 
-  CustomerResponseModel.fromJson(Map<String, dynamic> json)
-      : firstName = json['FirstName'],
-        lastName = json['LastName'],
-        phoneNumber = json['PhoneNumber'],
-        phoneCountryCode = json['CountryPhoneCode'],
-        phoneCountryCodeId = json['CountryPhoneCodeId'],
-        email = json['Email'],
-        isEmailVerified = json['IsEmailVerified'],
-        //TODO: uncomment this line to enable phone verification
-//        isPhoneNumberVerified = json['IsPhoneNumberVerified'],
-        isPhoneNumberVerified = true,
-        isAccountBlocked = json['IsAccountBlocked'],
-        countryOfNationalityId = json['CountryOfNationalityId'],
-        countryOfNationalityName = json['CountryOfNationalityName'],
-        hasPin = json['HasPin'],
-        linkedPartnerId = json['LinkedPartnerId'];
+  factory CustomerResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$CustomerResponseModelFromJson(json);
 
   String get phoneNumberWithCode =>
       StringUtils.concatenate([phoneCountryCode, phoneNumber]);
 
   final String firstName;
   final String lastName;
+  @JsonKey(nullable: true)
   final String phoneNumber;
+  @JsonKey(name: 'CountryPhoneCode', nullable: true)
   final String phoneCountryCode;
+  @JsonKey(name: 'CountryPhoneCodeId', nullable: true)
   final int phoneCountryCodeId;
   final String email;
   final bool isEmailVerified;
@@ -50,5 +43,6 @@ class CustomerResponseModel {
   final int countryOfNationalityId;
   final String countryOfNationalityName;
   final bool hasPin;
+  @JsonKey(nullable: true)
   final String linkedPartnerId;
 }

@@ -1,5 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'friend_referral_model.g.dart';
+
+@JsonSerializable()
 class FriendReferralRequestModel {
   FriendReferralRequestModel({
     @required this.fullName,
@@ -9,11 +13,8 @@ class FriendReferralRequestModel {
 
   final String fullName;
   final String email;
+  @JsonKey(name: 'CampaignId')
   final String earnRuleId;
 
-  Map<String, dynamic> toJson() => {
-        'FullName': fullName,
-        'Email': email,
-        'CampaignId': earnRuleId,
-      };
+  Map<String, dynamic> toJson() => _$FriendReferralRequestModelToJson(this);
 }

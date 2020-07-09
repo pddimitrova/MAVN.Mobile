@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'partner_message_response_model.g.dart';
+
+@JsonSerializable()
 class PartnerMessageResponseModel with EquatableMixin {
   PartnerMessageResponseModel({
     this.partnerMessageId,
@@ -13,16 +17,8 @@ class PartnerMessageResponseModel with EquatableMixin {
     this.message,
   });
 
-  PartnerMessageResponseModel.fromJson(json)
-      : partnerMessageId = json['PartnerMessageId'],
-        partnerId = json['PartnerId'],
-        partnerName = json['PartnerName'],
-        locationId = json['LocationId'],
-        locationName = json['LocationName'],
-        customerId = json['CustomerId'],
-        timestamp = json['Timestamp'],
-        subject = json['Subject'],
-        message = json['Message'];
+  factory PartnerMessageResponseModel.fromJson(json) =>
+      _$PartnerMessageResponseModelFromJson(json);
 
   final String partnerMessageId;
   final String partnerId;

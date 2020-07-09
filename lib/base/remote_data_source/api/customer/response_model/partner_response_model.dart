@@ -1,5 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'partner_response_model.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Partner {
   const Partner({
     @required this.id,
@@ -7,20 +11,18 @@ class Partner {
     @required this.locations,
   });
 
-  Partner.fromJson(Map<String, dynamic> json)
-      : id = json['Id'],
-        name = json['Name'],
-        locations = PartnerLocation.toListFromJson(json['Locations'] as List);
+  factory Partner.fromJson(Map<String, dynamic> json) =>
+      _$PartnerFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PartnerToJson(this);
 
   final String id;
   final String name;
+  @JsonKey(defaultValue: [])
   final List<PartnerLocation> locations;
-
-  static List<Partner> toListOfPartners(List list) => list == null
-      ? []
-      : list.map((partner) => Partner.fromJson(partner)).toList();
 }
 
+@JsonSerializable()
 class PartnerLocation {
   const PartnerLocation({
     @required this.id,
@@ -29,15 +31,10 @@ class PartnerLocation {
     @required this.createdAt,
   });
 
-  PartnerLocation.fromJson(Map<String, dynamic> json)
-      : id = json['Id'],
-        name = json['Name'],
-        address = json['Address'],
-        createdAt = json['CreatedAt'];
+  factory PartnerLocation.fromJson(Map<String, dynamic> json) =>
+      _$PartnerLocationFromJson(json);
 
-  static List<PartnerLocation> toListFromJson(List list) => list == null
-      ? []
-      : list.map((location) => PartnerLocation.fromJson(location)).toList();
+  Map<String, dynamic> toJson() => _$PartnerLocationToJson(this);
 
   final String id;
   final String name;

@@ -1,6 +1,11 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
 import 'package:lykke_mobile_mavn/library_models/token_currency.dart';
 
+part 'earn_rule_staking_response_model.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+@TokenCurrencyConverter()
 class EarnRuleStakingResponseModel {
   EarnRuleStakingResponseModel({
     @required this.referralId,
@@ -13,21 +18,10 @@ class EarnRuleStakingResponseModel {
     @required this.date,
   });
 
-  EarnRuleStakingResponseModel.fromJson(Map<String, dynamic> json)
-      : referralId = json['ReferralId'],
-        referralName = json['ReferralName'],
-        stakeAmount = TokenCurrency(value: json['StakeAmount']),
-        totalReward = TokenCurrency(value: json['TotalReward']),
-        stakingPeriod = json['StakingPeriod'],
-        stakeWarningPeriod = json['StakeWarningPeriod'],
-        stakingRule = json['StakingRule'],
-        date = json['Timestamp'];
+  factory EarnRuleStakingResponseModel.fromJson(Map<String, dynamic> json) =>
+      _$EarnRuleStakingResponseModelFromJson(json);
 
-  static List<EarnRuleStakingResponseModel> toListOf(List list) => list == null
-      ? []
-      : list
-          .map((item) => EarnRuleStakingResponseModel.fromJson(item))
-          .toList();
+  Map<String, dynamic> toJson() => _$EarnRuleStakingResponseModelToJson(this);
 
   final String referralId;
   final String referralName;
@@ -36,17 +30,19 @@ class EarnRuleStakingResponseModel {
   final int stakingPeriod;
   final int stakeWarningPeriod;
   final double stakingRule;
+  @JsonKey(name: 'Timestamp')
   final String date;
 }
 
+@JsonSerializable(explicitToJson: true)
 class EarnRuleStakingListResponseModel {
   EarnRuleStakingListResponseModel({this.totalCount, this.earnRuleStakings});
 
-  EarnRuleStakingListResponseModel.fromJson(Map<String, dynamic> json)
-      : totalCount = json['TotalCount'],
-        earnRuleStakings =
-            EarnRuleStakingResponseModel.toListOf(json['EarnRuleStakings']);
+  factory EarnRuleStakingListResponseModel.fromJson(
+          Map<String, dynamic> json) =>
+      _$EarnRuleStakingListResponseModelFromJson(json);
 
   final int totalCount;
+  @JsonKey(defaultValue: [])
   final List<EarnRuleStakingResponseModel> earnRuleStakings;
 }

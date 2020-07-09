@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
+import 'package:json_annotation/json_annotation.dart';
+import 'package:lykke_mobile_mavn/base/remote_data_source/api/earn/response_model/earn_rule_condition_response_model.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/earn/response_model/earn_rule_response_model.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/earn/response_model/extended_earn_rule_condition.dart';
 import 'package:lykke_mobile_mavn/library_models/token_currency.dart';
-import 'package:lykke_mobile_mavn/library_utils/enum_mapper.dart';
+part 'extended_earn_rule_response_model.g.dart';
 
-import 'earn_rule_condition_response_model.dart';
-
+@JsonSerializable(explicitToJson: true)
+@TokenCurrencyConverter()
 class ExtendedEarnRule {
   ExtendedEarnRule({
     @required this.amountInTokens,
@@ -30,49 +32,28 @@ class ExtendedEarnRule {
     this.approximateAward,
   });
 
-  ExtendedEarnRule.fromJson(Map<String, dynamic> json)
-      : id = json['Id'],
-        title = json['Title'],
-        status = EnumMapper.mapFromString(json['Status'],
-            enumValues: EarnRuleStatus.values,
-            defaultValue: EarnRuleStatus.inactive),
-        description = json['Description'],
-        imageUrl = json['ImageUrl'],
-        reward = TokenCurrency(value: json['Reward']),
-        approximateAward = TokenCurrency(value: json['ApproximateAward']),
-        isApproximate = json['IsApproximate'],
-        rewardType = EnumMapper.mapFromString(json['RewardType'],
-            enumValues: RewardType.values, defaultValue: RewardType.fixed),
-        fromDate = json['FromDate'],
-        toDate = json['ToDate'],
-        createdBy = json['CreatedBy'],
-        creationDate = json['CreationDate'],
-        completionCount = json['CompletionCount'],
-        conditions = ExtendedEarnRuleCondition.toListFromJson(
-            json['Conditions'] as List),
-        optionalConditions = ExtendedEarnRuleCondition.toListFromJson(
-            json['OptionalConditions'] as List),
-        amountInTokens = TokenCurrency(value: json['AmountInTokens']),
-        amountInCurrency = json['AmountInCurrency'],
-        customerCompletionCount = json['CustomerCompletionCount'],
-        currentRewardedAmount =
-            TokenCurrency(value: json['CurrentRewardedAmount']);
+  factory ExtendedEarnRule.fromJson(Map<String, dynamic> json) =>
+      _$ExtendedEarnRuleFromJson(json);
 
   final String id;
   final String title;
+  @JsonKey(defaultValue: EarnRuleStatus.inactive)
   final EarnRuleStatus status;
   final String description;
   final String imageUrl;
   final TokenCurrency reward;
   final TokenCurrency approximateAward;
   final bool isApproximate;
+  @JsonKey(defaultValue: RewardType.fixed)
   final RewardType rewardType;
   final String fromDate;
   final String toDate;
   final String createdBy;
   final String creationDate;
   final int completionCount;
+  @JsonKey(defaultValue: [])
   final List<ExtendedEarnRuleCondition> conditions;
+  @JsonKey(defaultValue: [])
   final List<ExtendedEarnRuleCondition> optionalConditions;
   final TokenCurrency amountInTokens;
   final double amountInCurrency;

@@ -1,6 +1,10 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:lykke_mobile_mavn/library_models/token_currency.dart';
-import 'package:lykke_mobile_mavn/library_utils/enum_mapper.dart';
 
+part 'referral_response_model.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+@TokenCurrencyConverter()
 class CustomerCommonReferralResponseModel {
   CustomerCommonReferralResponseModel({
     this.status,
@@ -19,36 +23,13 @@ class CustomerCommonReferralResponseModel {
     this.isApproximate,
   });
 
-  CustomerCommonReferralResponseModel.fromJson(Map<String, dynamic> json)
-      : status = EnumMapper.mapFromString(
-          json['Status'],
-          enumValues: ReferralStatus.values,
-          defaultValue: null,
-        ),
-        referralType = EnumMapper.mapFromString(
-          json['ReferralType'],
-          enumValues: ReferralType.values,
-          defaultValue: null,
-        ),
-        firstName = json['FirstName'],
-        lastName = json['LastName'],
-        email = json['Email'],
-        partnerName = json['PartnerName'],
-        timeStamp = DateTime.tryParse(json['TimeStamp']),
-        totalReward = TokenCurrency(value: json['TotalReward']),
-        currentRewardedAmount =
-            TokenCurrency(value: json['CurrentRewardedAmount']),
-        rewardHasRatio = json['RewardHasRatio'],
-        rewardRatio = json['RewardHasRatio'] && json['RewardRatio'] != null
-            ? RewardRatio.fromJson(json['RewardRatio'])
-            : null,
-        hasStaking = json['HasStaking'],
-        staking = json['HasStaking'] && json['Staking'] != null
-            ? ReferralStaking.fromJson(json['Staking'])
-            : null,
-        isApproximate = json['IsApproximate'];
+  factory CustomerCommonReferralResponseModel.fromJson(
+          Map<String, dynamic> json) =>
+      _$CustomerCommonReferralResponseModelFromJson(json);
 
+  @JsonKey(defaultValue: null)
   final ReferralStatus status;
+  @JsonKey(defaultValue: null)
   final ReferralType referralType;
   final String firstName;
   final String lastName;
@@ -58,52 +39,73 @@ class CustomerCommonReferralResponseModel {
   final TokenCurrency totalReward;
   final TokenCurrency currentRewardedAmount;
   final bool rewardHasRatio;
+  //TODO: Add check json['RewardHasRatio'] && json['RewardRatio'] != null
+  @JsonKey(nullable: true)
   final RewardRatio rewardRatio;
   final bool hasStaking;
+  //TODO: Add check json['HasStaking'] && json['Staking'] != null
+  @JsonKey(nullable: true)
   final ReferralStaking staking;
   final bool isApproximate;
 
-  static List<CustomerCommonReferralResponseModel> toListFromJson(
-          List list) =>
-      list
-          .map((referralsJson) =>
-              CustomerCommonReferralResponseModel.fromJson(referralsJson))
-          .toList();
+  Map<String, dynamic> toJson() =>
+      _$CustomerCommonReferralResponseModelToJson(this);
 }
 
-enum ReferralType { hospitality, realEstate, retail, friend }
-enum ReferralStatus { ongoing, accepted, expired }
+enum ReferralType {
+  @JsonValue('Hospitality')
+  hospitality,
+  @JsonValue('RealEstate')
+  realEstate,
+  @JsonValue('Retail')
+  retail,
+  @JsonValue('Friend')
+  friend
+}
+enum ReferralStatus {
+  @JsonValue('Ongoing')
+  ongoing,
+  @JsonValue('Accepted')
+  accepted,
+  @JsonValue('Expired')
+  expired
+}
 
+@JsonSerializable()
+@TokenCurrencyConverter()
 class ReferralStaking {
   ReferralStaking({
     this.stakeAmount,
     this.stakingExpirationDate,
   });
 
-  ReferralStaking.fromJson(Map<String, dynamic> json)
-      : stakeAmount = TokenCurrency(value: json['StakeAmount']),
-        stakingExpirationDate =
-            DateTime.tryParse(json['StakingExpirationDate']);
+  factory ReferralStaking.fromJson(Map<String, dynamic> json) =>
+      _$ReferralStakingFromJson(json);
 
   final TokenCurrency stakeAmount;
   final DateTime stakingExpirationDate;
+
+  Map<String, dynamic> toJson() => _$ReferralStakingToJson(this);
 }
 
+@JsonSerializable(explicitToJson: true)
 class RewardRatio {
   RewardRatio({
     this.ratios,
     this.ratioCompletions,
   });
 
-  RewardRatio.fromJson(Map<String, dynamic> json)
-      : ratios = Ratio.toListFromJson(json['Ratios'] as List),
-        ratioCompletions =
-            RatioCompletion.toListFromJson(json['RatioCompletion'] as List);
+  factory RewardRatio.fromJson(Map<String, dynamic> json) =>
+      _$RewardRatioFromJson(json);
 
   final List<Ratio> ratios;
+  @JsonKey(name: 'RatioCompletion')
   final List<RatioCompletion> ratioCompletions;
+
+  Map<String, dynamic> toJson() => _$RewardRatioToJson(this);
 }
 
+@JsonSerializable()
 class Ratio {
   Ratio({
     this.order,
@@ -112,21 +114,17 @@ class Ratio {
     this.threshold,
   });
 
-  Ratio.fromJson(Map<String, dynamic> json)
-      : order = json['Order'],
-        rewardRatio = json['RewardRatio'],
-        paymentRatio = json['PaymentRatio'],
-        threshold = json['Threshold'];
-
-  static List<Ratio> toListFromJson(List list) =>
-      list == null ? [] : list.map((item) => Ratio.fromJson(item)).toList();
+  factory Ratio.fromJson(Map<String, dynamic> json) => _$RatioFromJson(json);
 
   final int order;
   final double rewardRatio;
   final double paymentRatio;
   final double threshold;
+
+  Map<String, dynamic> toJson() => _$RatioToJson(this);
 }
 
+@JsonSerializable()
 class RatioCompletion {
   RatioCompletion(
     this.id,
@@ -135,18 +133,14 @@ class RatioCompletion {
     this.checkpoint,
   );
 
-  RatioCompletion.fromJson(Map<String, dynamic> json)
-      : id = json['PaymentId'],
-        name = json['Name'],
-        givenThreshold = json['GivenThreshold'],
-        checkpoint = json['Checkpoint'];
+  factory RatioCompletion.fromJson(Map<String, dynamic> json) =>
+      _$RatioCompletionFromJson(json);
 
-  static List<RatioCompletion> toListFromJson(List list) => list == null
-      ? []
-      : list.map((item) => RatioCompletion.fromJson(item)).toList();
-
+  @JsonKey(name: 'PaymentId')
   final String id;
   final String name;
   final double givenThreshold;
   final int checkpoint;
+
+  Map<String, dynamic> toJson() => _$RatioCompletionToJson(this);
 }

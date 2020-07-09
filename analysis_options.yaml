@@ -149,4 +149,3 @@ analyzer:
     missing_return: ignore
   exclude:
     - lib/app/resources/l10n
-    - lib/library_flutter_native_device_orientation
