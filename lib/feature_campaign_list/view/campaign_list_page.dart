@@ -229,7 +229,9 @@ class CampaignListPage extends HookWidget {
                             : null,
                         itemBuilder: (campaign, _, itemContext) => InkWell(
                           onTap: () => router.pushCampaignDetailsPage(
-                              campaign: campaign),
+                            campaign: campaign,
+                            heroTag: campaignHeroTag,
+                          ),
                           child: MaterialHero(
                             tag: '$campaignHeroTag${campaign.id}',
                             child: CampaignWidget(

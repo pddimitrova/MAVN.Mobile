@@ -90,4 +90,8 @@ class ColorStyles {
   static const Color wildSand = Color(0xFFF4F4F4);
   static const Color froly = Color(0xffF87B73);
   static const Color iron = Color(0xffCBCED1);
+  static const Color primaryButton = Color(0xffE48177);
+  static const Color gray = Color(0xff919191);
+  static const Color mercury = Color(0xffE8E8E8);
+  static const Color alto = Color(0xffD8D8D8);
 }

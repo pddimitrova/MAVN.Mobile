@@ -11,6 +11,7 @@ class CampaignApi extends BaseApi {
   static const String vouchersBasePath = '/smartVouchers';
   static const String vouchersPath = '$vouchersBasePath/campaigns';
   static const String voucherDetailsPath = '$vouchersPath/search';
+  static const String campaignOfDayPath = '$vouchersBasePath/campaignOfTheDay';
   static const String purchaseVoucherPath = '$vouchersBasePath/reserve';
 
   //query params
@@ -49,6 +50,13 @@ class CampaignApi extends BaseApi {
             .get<Map<String, dynamic>>(voucherDetailsPath, queryParameters: {
           queryParamId: id,
         });
+        return CampaignResponseModel.fromJson(response.data);
+      });
+
+  Future<CampaignResponseModel> getCampaignOfDay() async =>
+      exceptionHandledHttpClientRequest(() async {
+        final response =
+            await httpClient.get<Map<String, dynamic>>(campaignOfDayPath);
         return CampaignResponseModel.fromJson(response.data);
       });
 

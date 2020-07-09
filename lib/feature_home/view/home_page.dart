@@ -13,12 +13,14 @@ import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_balance/bloc/balance/balance_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_page_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_refresh_bloc_output.dart';
+import 'package:lykke_mobile_mavn/feature_home/ui_elements/home_sliver_widget.dart';
 import 'package:lykke_mobile_mavn/feature_home/ui_elements/shortcut/home_shortcut_carousel.dart';
 import 'package:lykke_mobile_mavn/feature_home/view/earn_token_section.dart';
 import 'package:lykke_mobile_mavn/feature_notification/bloc/notification_count_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_notification/bloc/notification_mark_as_read_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_notification/ui_components/notification_icon_widget.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
+import 'package:lykke_mobile_mavn/library_custom_hooks/scroll_controller_hook.dart';
 import 'package:lykke_mobile_mavn/library_custom_hooks/throttling_hook.dart';
 import 'package:lykke_mobile_mavn/library_fcm/bloc/firebase_messaging_bloc.dart';
 import 'package:lykke_mobile_mavn/library_fcm/bloc/firebase_messaging_bloc_output.dart';
@@ -27,6 +29,8 @@ import 'package:lykke_mobile_mavn/library_ui_components/error/network_error.dart
 import 'package:lykke_mobile_mavn/library_ui_components/misc/spinner.dart';
 
 class HomePage extends HookWidget {
+  static const double _sliverImageSize = 200;
+
   @override
   Widget build(BuildContext context) {
     final localizedStrings = useLocalizedStrings();
@@ -40,6 +44,7 @@ class HomePage extends HookWidget {
     final notificationMarkAsReadBloc = useNotificationMarkAsReadBloc();
     final bottomBarPageBloc = useBottomBarPageBloc();
     final throttler = useThrottling(duration: const Duration(seconds: 30));
+    final scrollController = useScrollController();
 
     final router = useRouter();
 
@@ -102,6 +107,7 @@ class HomePage extends HookWidget {
         child: Stack(
           children: [
             NestedScrollView(
+              controller: scrollController,
               headerSliverBuilder: (context, isScrolling) => [
                 SliverAppBar(
                   title: Text(
@@ -113,7 +119,7 @@ class HomePage extends HookWidget {
                   automaticallyImplyLeading: false,
                   backgroundColor: ColorStyles.white,
                   elevation: 0,
-                  expandedHeight: 150,
+                  expandedHeight: _sliverImageSize,
                   floating: false,
                   pinned: true,
                   actions: <Widget>[
@@ -142,6 +148,7 @@ class HomePage extends HookWidget {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
+                    const SizedBox(height: 120),
                     if (!isLoading)
                       Padding(
                         padding: const EdgeInsets.only(top: 24),
@@ -160,6 +167,7 @@ class HomePage extends HookWidget {
                 ),
               ),
             ),
+            _buildSliverWidget(context, scrollController)
           ],
         ),
       ),
@@ -205,6 +213,49 @@ class HomePage extends HookWidget {
           )
         ],
       );
+
+  Widget _buildSliverWidget(
+      BuildContext context, ScrollController scrollController) {
+    //starting widget position
+    final defaultTopMargin =
+        _sliverImageSize + MediaQuery.of(context).padding.top - 150.0;
+    //pixels from top where opacity change should start
+    final opacityChangeStart = defaultTopMargin / 2;
+    //pixels from top where opacity change should end
+    final opacityChangeEnd = opacityChangeStart / 2;
+
+    var top = defaultTopMargin;
+    var opacity = 1.0;
+    if (scrollController.hasClients) {
+      final offset = scrollController.offset;
+      top -= offset;
+      if (offset < defaultTopMargin - opacityChangeStart) {
+        //offset small => don't decrease opacity
+        opacity = 1;
+      } else if (offset < defaultTopMargin - opacityChangeEnd) {
+        //opacityChangeStart < offset> opacityChangeEnd => decrease opacity
+        opacity =
+            (defaultTopMargin - opacityChangeEnd - offset) / opacityChangeEnd;
+      } else {
+        //offset passed opacityChangeEnd => hide widget
+        opacity = 0;
+      }
+    }
+    final availableWidth = MediaQuery.of(context).size.width;
+
+    final width = availableWidth - (2 * 24);
+    return Positioned(
+      top: top + 24,
+      left: 24,
+      child: Opacity(
+        opacity: opacity,
+        child: Container(
+          width: width,
+          child: HomeSliverWidget(),
+        ),
+      ),
+    );
+  }
 
   Widget _buildLoading() => const SafeArea(child: Center(child: Spinner()));
 

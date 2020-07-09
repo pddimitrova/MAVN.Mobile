@@ -9,9 +9,7 @@ class VoucherUsageSuccessBloc extends Bloc<VoucherUsageSuccessState> {
   VoucherUsageSuccessState initialState() => VoucherUsageSuccessInitialState();
 
   Future<void> markVoucherAsUsed() async {
-    sendEvent(
-      VoucherUsageSuccessEvent(),
-    );
+    sendEvent(VoucherUsageSuccessEvent());
   }
 }
 

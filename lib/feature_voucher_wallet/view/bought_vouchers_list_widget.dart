@@ -118,6 +118,7 @@ class BoughtVouchersList extends HookWidget {
                         voucherShortCode: voucher.shortCode,
                         voucher: voucher,
                         voucherColor: voucherTintColor,
+                        heroTag: voucherHeroTag,
                       ),
                       child: MaterialHero(
                         tag: '$voucherHeroTag${voucher.id}',

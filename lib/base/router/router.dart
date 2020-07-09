@@ -748,10 +748,15 @@ class Router extends BaseRouter {
     );
   }
 
-  Future<void> pushCampaignDetailsPage(
-      {@required CampaignResponseModel campaign}) async {
+  Future<void> pushCampaignDetailsPage({
+    @required CampaignResponseModel campaign,
+    String heroTag,
+  }) async {
     await pushPage(
-      RouterPageFactory.getCampaignDetailsPage(campaign: campaign),
+      RouterPageFactory.getCampaignDetailsPage(
+        campaign: campaign,
+        heroTag: heroTag,
+      ),
       pageName: RouterPageName.campaignDetailsPage,
     );
   }
@@ -765,12 +770,14 @@ class Router extends BaseRouter {
     @required String voucherShortCode,
     VoucherResponseModel voucher,
     Color voucherColor,
+    String heroTag,
   }) async {
     await pushPage(
       RouterPageFactory.getVoucherDetailsPage(
         voucherShortCode: voucherShortCode,
         voucher: voucher,
         voucherColor: voucherColor,
+        heroTag: heroTag,
       ),
       pageName: RouterPageName.voucherDetailsPage,
     );

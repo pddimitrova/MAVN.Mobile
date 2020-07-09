@@ -33,6 +33,9 @@ class CampaignRepository {
   }) =>
       _campaignApi.getVoucherDetailsById(id);
 
+  Future<CampaignResponseModel> getCampaignOfDay() =>
+      _campaignApi.getCampaignOfDay();
+
   Future<VoucherPurchaseResponseModel> purchaseVoucher({
     @required String id,
   }) =>

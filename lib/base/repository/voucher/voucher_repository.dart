@@ -21,6 +21,12 @@ class VoucherRepository {
   }) =>
       _voucherApi.getVoucherDetailsByShortCode(shortCode);
 
+  Future<VoucherResponseModel> getPendingVoucher() =>
+      _voucherApi.getPendingVoucher();
+
+  Future<VoucherResponseModel> getExpiringVoucher() =>
+      _voucherApi.getExpiringVoucher();
+
   Future<VoucherPurchaseResponseModel> getPaymentUrl({
     @required String shortCode,
   }) =>

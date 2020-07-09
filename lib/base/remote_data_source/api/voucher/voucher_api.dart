@@ -11,6 +11,8 @@ class VoucherApi extends BaseApi {
 
   static const String vouchersPath = '/smartVouchers';
   static const String voucherDetailsPath = '$vouchersPath/voucherShortCode';
+  static const String pendingVoucherPath = '$vouchersPath/reserved';
+  static const String expiringVoucherPath = '$vouchersPath/soonestToExpire';
   static const String paymentUrl = '$vouchersPath/paymentUrl';
   static const String cancelVoucherPath = '$vouchersPath/cancelReservation';
   static const String transfer = '$vouchersPath/transfer';
@@ -42,6 +44,20 @@ class VoucherApi extends BaseApi {
           queryParamVoucherShortCode: shortCode,
         });
         return VoucherDetailsResponseModel.fromJson(response.data);
+      });
+
+  Future<VoucherResponseModel> getPendingVoucher() async =>
+      exceptionHandledHttpClientRequest(() async {
+        final response =
+            await httpClient.get<Map<String, dynamic>>(pendingVoucherPath);
+        return VoucherResponseModel.fromJson(response.data);
+      });
+
+  Future<VoucherResponseModel> getExpiringVoucher() async =>
+      exceptionHandledHttpClientRequest(() async {
+        final response =
+            await httpClient.get<Map<String, dynamic>>(expiringVoucherPath);
+        return VoucherResponseModel.fromJson(response.data);
       });
 
   Future<VoucherPurchaseResponseModel> getPaymentUrl(String shortCode) async =>

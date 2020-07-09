@@ -17,7 +17,6 @@ import 'package:lykke_mobile_mavn/feature_voucher_details/bloc/payment_url_bloc_
 import 'package:lykke_mobile_mavn/feature_voucher_details/bloc/voucher_details_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_details/view/voucher_qr_widget.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_wallet/ui_components/voucher_card_widget.dart';
-import 'package:lykke_mobile_mavn/feature_voucher_wallet/view/bought_vouchers_list_widget.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/buttons/primary_button.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/buttons/styled_outline_button.dart';
@@ -29,6 +28,7 @@ import 'package:lykke_mobile_mavn/library_ui_components/misc/spinner.dart';
 class VoucherDetailsPage extends HookWidget {
   const VoucherDetailsPage({
     @required this.voucherShortCode,
+    this.heroTag,
     this.voucher,
     this.voucherColor,
   });
@@ -36,6 +36,7 @@ class VoucherDetailsPage extends HookWidget {
   final VoucherResponseModel voucher;
   final String voucherShortCode;
   final Color voucherColor;
+  final String heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +155,7 @@ class VoucherDetailsPage extends HookWidget {
   ) =>
       ScaffoldWithSliverHero(
         title: localizedStrings.viewVoucher,
-        heroTag: '${BoughtVouchersList.voucherHeroTag}${voucherResponse.id}',
+        heroTag: '$heroTag${voucherResponse.id}',
         heroWidget: Material(
           type: MaterialType.transparency,
           child: VoucherCardWidget(

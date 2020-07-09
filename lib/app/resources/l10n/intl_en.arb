@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-06-25T15:35:09.457941",
+  "@@last_modified": "2020-07-09T09:23:59.002552",
   "networkErrorTitle": "Internet connection problem",
   "@networkErrorTitle": {
     "type": "text",
@@ -740,6 +740,36 @@
     "placeholders": {
       "count": {}
     }
+  },
+  "pendingPurchase": "Pending purchase",
+  "@pendingPurchase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "continuePurchase": "Continue purchase",
+  "@continuePurchase": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "untilExpiryDate": "until expiry date",
+  "@untilExpiryDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "campaignOfDay": "Offer of the day",
+  "@campaignOfDay": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "popularOffers": "Popular offers nearby",
+  "@popularOffers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "viewAll": "View all",
+  "@viewAll": {
+    "type": "text",
+    "placeholders": {}
   },
   "offers": "Offers",
   "@offers": {

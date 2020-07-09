@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:lykke_mobile_mavn/app/resources/lazy_localized_strings.dart';
 import 'package:lykke_mobile_mavn/base/remote_data_source/api/error/errors.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
@@ -11,7 +10,7 @@ abstract class GenericDetailsBloc<T> extends Bloc<GenericDetailsState> {
   @override
   GenericDetailsState initialState() => GenericDetailsUninitializedState();
 
-  Future<void> getDetails({@required String identifier}) async {
+  Future<void> getDetails({String identifier}) async {
     setState(GenericDetailsLoadingState());
 
     try {

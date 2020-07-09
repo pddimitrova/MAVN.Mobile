@@ -721,6 +721,23 @@ class LocalizedStrings {
       Intl.message('View all ($count)',
           args: [count], name: 'homePageCountdownViewAll');
 
+  String get pendingPurchase =>
+      Intl.message('Pending purchase', name: 'pendingPurchase');
+
+  String get continuePurchase =>
+      Intl.message('Continue purchase', name: 'continuePurchase');
+
+  String get untilExpiryDate =>
+      Intl.message('until expiry date', name: 'untilExpiryDate');
+
+  String get campaignOfDay =>
+      Intl.message('Offer of the day', name: 'campaignOfDay');
+
+  String get popularOffers =>
+      Intl.message('Popular offers nearby', name: 'popularOffers');
+
+  String get viewAll => Intl.message('View all', name: 'viewAll');
+
 //endregion Home Page
 
 //region Offers

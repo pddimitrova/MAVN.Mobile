@@ -8,7 +8,6 @@ import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_details/ui_components/campaign_about_section.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_details/ui_components/campaign_top_section.dart';
 import 'package:lykke_mobile_mavn/feature_campaign_list/ui_components/campaign_widget.dart';
-import 'package:lykke_mobile_mavn/feature_campaign_list/view/campaign_list_page.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_purchase/bloc/voucher_purchase_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_voucher_purchase/bloc/voucher_purchase_bloc_output.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
@@ -18,9 +17,10 @@ import 'package:lykke_mobile_mavn/library_ui_components/error/network_error.dart
 import 'package:lykke_mobile_mavn/library_ui_components/layout/scaffold_with_sliver_hero.dart';
 
 class CampaignDetailsPage extends HookWidget {
-  const CampaignDetailsPage({@required this.campaign});
+  const CampaignDetailsPage({@required this.campaign, this.heroTag});
 
   final CampaignResponseModel campaign;
+  final String heroTag;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class CampaignDetailsPage extends HookWidget {
 
     return ScaffoldWithSliverHero(
       title: localizedStrings.viewOffer,
-      heroTag: '${CampaignListPage.campaignHeroTag}${campaign.id}',
+      heroTag: '$heroTag${campaign.id}',
       heroWidget: CampaignWidget(
         title: campaign.name,
         price: campaign.price,

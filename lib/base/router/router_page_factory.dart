@@ -34,7 +34,7 @@ import 'package:lykke_mobile_mavn/feature_email_verification/di/email_verificati
 import 'package:lykke_mobile_mavn/feature_email_verification/view/email_confirmation_page.dart';
 import 'package:lykke_mobile_mavn/feature_email_verification/view/email_verification_page.dart';
 import 'package:lykke_mobile_mavn/feature_email_verification/view/email_verification_success_page.dart';
-import 'package:lykke_mobile_mavn/feature_home/di/staking_referrals_module.dart';
+import 'package:lykke_mobile_mavn/feature_home/di/home_page_module.dart';
 import 'package:lykke_mobile_mavn/feature_home/view/home_page.dart';
 import 'package:lykke_mobile_mavn/feature_hotel_pre_checkout/di/hotel_pre_checkout_di.dart';
 import 'package:lykke_mobile_mavn/feature_hotel_pre_checkout/view/hotel_pre_checkout_dialog.dart';
@@ -253,7 +253,7 @@ class RouterPageFactory {
   //region Home
   static Widget getHomePage() => MultiProvider(
         providers: [
-          ModuleProvider(module: StakingReferralsModule()),
+          ModuleProvider(module: HomePageModule()),
           ModuleProvider(module: NotificationModule())
         ],
         child: HomePage(),
@@ -496,10 +496,16 @@ class RouterPageFactory {
         child: CampaignMapPage(),
       );
 
-  static Widget getCampaignDetailsPage({CampaignResponseModel campaign}) =>
+  static Widget getCampaignDetailsPage({
+    CampaignResponseModel campaign,
+    String heroTag,
+  }) =>
       ModuleProvider(
         module: VoucherPurchaseModule(),
-        child: CampaignDetailsPage(campaign: campaign),
+        child: CampaignDetailsPage(
+          campaign: campaign,
+          heroTag: heroTag,
+        ),
       );
 
   //endregion Campaigns
@@ -518,6 +524,7 @@ class RouterPageFactory {
     String voucherShortCode,
     VoucherResponseModel voucher,
     Color voucherColor,
+    String heroTag,
   }) =>
       ModuleProvider(
         module: VoucherDetailsModule(),
@@ -525,6 +532,7 @@ class RouterPageFactory {
           voucherShortCode: voucherShortCode,
           voucher: voucher,
           voucherColor: voucherColor,
+          heroTag: heroTag,
         ),
       );
 

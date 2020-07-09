@@ -367,6 +367,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("\nPleased with the result?"),
         "cameraViewGuide": MessageLookupByLibrary.simpleMessage(
             "•\tPlace fully in the frame, not cut off\n•\tAvoid glare so that all info is visible\n•\tHold steady to avoid a blurry scan"),
+        "campaignOfDay":
+            MessageLookupByLibrary.simpleMessage("Offer of the day"),
         "canNotReferYourselfError": MessageLookupByLibrary.simpleMessage(
             "Self-referral is not possible. Your referral cannot be submitted."),
         "cancelButton": MessageLookupByLibrary.simpleMessage("Cancel"),
@@ -409,6 +411,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "contactUsWhatsAppStartingMessage":
             MessageLookupByLibrary.simpleMessage("Hello"),
         "continueButton": MessageLookupByLibrary.simpleMessage("Continue"),
+        "continuePurchase":
+            MessageLookupByLibrary.simpleMessage("Continue purchase"),
         "conversionRate": m8,
         "copiedToClipboard":
             MessageLookupByLibrary.simpleMessage("Copied to Clipboard"),
@@ -956,6 +960,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "paymentSuccessDetails": MessageLookupByLibrary.simpleMessage(
             "Great! Your transfer has been submitted. We\'ll notify you as soon as it\'s approved"),
         "pending": MessageLookupByLibrary.simpleMessage("Pending"),
+        "pendingPurchase":
+            MessageLookupByLibrary.simpleMessage("Pending purchase"),
         "pendingReferralListEmptyState": MessageLookupByLibrary.simpleMessage(
             "You have no pending referrals at the moment"),
         "personalDetailsCountryOfNationality":
@@ -1010,6 +1016,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter your PIN"),
         "pinVerificationDescription":
             MessageLookupByLibrary.simpleMessage("Please re-enter your PIN"),
+        "popularOffers":
+            MessageLookupByLibrary.simpleMessage("Popular offers nearby"),
         "previousReferralsCardAward":
             MessageLookupByLibrary.simpleMessage("award"),
         "previousReferralsCardContact": m65,
@@ -1353,6 +1361,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Unlinking in progress"),
         "unlinkWalletInProgressTitle": MessageLookupByLibrary.simpleMessage(
             "Your wallet is currently being unlinked"),
+        "untilExpiryDate":
+            MessageLookupByLibrary.simpleMessage("until expiry date"),
         "useBiometricButton":
             MessageLookupByLibrary.simpleMessage("or use biometric"),
         "useFaceIDButton":
@@ -1367,6 +1377,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Error. The verification code has expired"),
         "verificationCodeMismatchError": MessageLookupByLibrary.simpleMessage(
             "Error. The verification code is invalid"),
+        "viewAll": MessageLookupByLibrary.simpleMessage("View all"),
         "viewOffer": MessageLookupByLibrary.simpleMessage("View Offer"),
         "viewPartner": MessageLookupByLibrary.simpleMessage("View the shop"),
         "viewPartnerDetailsButtonTitle":

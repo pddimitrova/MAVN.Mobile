@@ -16,4 +16,22 @@ class GradientStyles {
     ],
     tileMode: TileMode.clamp,
   );
+
+  static final shadowGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      ColorStyles.alto,
+      ColorStyles.mercury,
+      ColorStyles.mercury.withOpacity(0.5),
+      ColorStyles.mercury.withOpacity(0.2),
+      ColorStyles.white,
+      ColorStyles.white,
+      ColorStyles.white,
+      ColorStyles.white,
+      ColorStyles.white,
+      ColorStyles.white,
+    ],
+    tileMode: TileMode.clamp,
+  );
 }
