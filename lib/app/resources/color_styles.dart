@@ -94,4 +94,5 @@ class ColorStyles {
   static const Color gray = Color(0xff919191);
   static const Color mercury = Color(0xffE8E8E8);
   static const Color alto = Color(0xffD8D8D8);
+  static const Color darkMercury = Color(0xffE1E0E0);
 }

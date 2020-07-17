@@ -14,7 +14,12 @@ class UserLocationBloc extends Bloc<UserLocationState> {
   @override
   UserLocationState initialState() => UserLocationUninitializedState();
 
-  Future<void> getUserLocation() async {
+  Future<void> getUserLocation({Duration delay}) async {
+    ///delay requesting location if necessary
+    if (delay != null) {
+      await Future.delayed(delay);
+    }
+
     ///if user has not enabled location
     ///or has denied permission
     ///in this run of the app

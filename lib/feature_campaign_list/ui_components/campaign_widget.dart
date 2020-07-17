@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lykke_mobile_mavn/app/resources/color_styles.dart';
+import 'package:lykke_mobile_mavn/app/resources/gradient_styles.dart';
 import 'package:lykke_mobile_mavn/app/resources/text_styles.dart';
 import 'package:lykke_mobile_mavn/library_models/fiat_currency.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/misc/network_image_with_placeholder.dart';
@@ -41,7 +41,9 @@ class CampaignWidget extends StatelessWidget {
                     Positioned.fill(
                       child: Container(
                         padding: const EdgeInsets.all(8),
-                        color: ColorStyles.resolutionBlue.withOpacity(0.5),
+                        decoration: BoxDecoration(
+                          gradient: GradientStyles.blueGradient,
+                        ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
