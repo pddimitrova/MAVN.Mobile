@@ -1,5 +1,4 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,6 +13,7 @@ import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_onboarding/analytics/onboarding_analytics_manager.dart';
 import 'package:lykke_mobile_mavn/lib_dynamic_links/dynamic_link_manager_mixin.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/layout/auth_scaffold.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingPage extends HookWidget with DynamicLinkManagerMixin {
   static const pageDataLength = 4;
@@ -107,7 +107,8 @@ class OnboardingPage extends HookWidget with DynamicLinkManagerMixin {
             ),
             _buildDotIndicator(
                 pageCount: pageData.length,
-                currentPageIndex: currentPage.value),
+                currentPageIndex: currentPage.value,
+                controller: _pageController),
             const SizedBox(height: 48),
             if (currentPage.value < pageData.length - 1)
               _buildButtonBar(onSkipTap: skip, onNextTap: proceedToNextPage)
@@ -123,16 +124,22 @@ class OnboardingPage extends HookWidget with DynamicLinkManagerMixin {
     );
   }
 
-  Widget _buildDotIndicator({int pageCount, int currentPageIndex}) =>
-      DotsIndicator(
-          dotsCount: pageCount,
-          position: currentPageIndex == null ? 0 : currentPageIndex.toDouble(),
-          decorator: DotsDecorator(
-            size: const Size(8, 8),
-            spacing: const EdgeInsets.all(8),
-            color: ColorStyles.charcoalGrey.withOpacity(0.5),
-            activeColor: ColorStyles.charcoalGrey,
-          ));
+  Widget _buildDotIndicator({
+    int pageCount,
+    int currentPageIndex,
+    PageController controller,
+  }) =>
+      SmoothPageIndicator(
+        controller: controller,
+        count: pageCount,
+        effect: WormEffect(
+          dotHeight: 8,
+          dotWidth: 8,
+          spacing: 16,
+          dotColor: ColorStyles.charcoalGrey.withOpacity(0.5),
+          activeDotColor: ColorStyles.charcoalGrey,
+        ),
+      );
 
   Widget _buildButtonBar({VoidCallback onSkipTap, VoidCallback onNextTap}) =>
       Padding(
