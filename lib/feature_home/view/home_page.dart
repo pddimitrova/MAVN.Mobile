@@ -13,9 +13,14 @@ import 'package:lykke_mobile_mavn/base/router/router.dart';
 import 'package:lykke_mobile_mavn/feature_balance/bloc/balance/balance_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_page_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_refresh_bloc_output.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/bloc/partner_country_list_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_country_search/bloc/partner_country_list_bloc_output.dart';
+import 'package:lykke_mobile_mavn/feature_home/bloc/popular_offers_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_home/ui_elements/home_sliver_widget.dart';
 import 'package:lykke_mobile_mavn/feature_home/ui_elements/shortcut/home_shortcut_carousel.dart';
 import 'package:lykke_mobile_mavn/feature_home/view/popular_campaigns_widget.dart';
+import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc.dart';
+import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc_state.dart';
 import 'package:lykke_mobile_mavn/feature_notification/bloc/notification_count_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_notification/bloc/notification_mark_as_read_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_notification/ui_components/notification_icon_widget.dart';
@@ -38,6 +43,13 @@ class HomePage extends HookWidget {
     final balanceBloc = useBalanceBloc();
     final earnRuleListBloc = useEarnRuleListBloc();
     final earnRuleListState = useBlocState<GenericListState>(earnRuleListBloc);
+    final userLocationBloc = useUserLocationBloc();
+    final userLocationState = useBlocState(userLocationBloc);
+    final partnerCountryBloc = usePartnerCountryListBloc();
+    final partnerCountryState = useBlocState(partnerCountryBloc);
+
+    final popularCampaignsBloc = usePopularCampaignsBloc();
+    final popularCampaignsState = useBlocState(popularCampaignsBloc);
     final firebaseMessagingBloc = useFirebaseMessagingBloc();
     final notificationCountBloc = useNotificationCountBloc();
     final notificationCountState = useBlocState(notificationCountBloc);
@@ -53,9 +65,23 @@ class HomePage extends HookWidget {
       notificationCountBloc.getUnreadNotificationCount();
     }
 
+    void reloadPopularOffers() {
+      if (userLocationState is UserLocationLoadedState) {
+        popularCampaignsBloc.loadCampaignsForLocation(
+            lat: userLocationState.userPosition.lat,
+            long: userLocationState.userPosition.long);
+      } else if (partnerCountryState is PartnerCountrySelectedState) {
+        popularCampaignsBloc.loadCampaignsForCountry(
+            countryCode: partnerCountryState.partnerCountry.countryIso3Code);
+      } else {
+        popularCampaignsBloc.loadCampaignsForCountry();
+      }
+    }
+
     void onErrorRetry() {
       loadPageData();
       balanceBloc.retry();
+      reloadPopularOffers();
     }
 
     useBlocEventListener(balanceBloc, (event) {
@@ -90,6 +116,7 @@ class HomePage extends HookWidget {
     final isNetworkError = [
       earnRuleListState,
       notificationCountState,
+      popularCampaignsState,
     ].any((state) => state is BaseNetworkErrorState);
 
     final isGenericError = [

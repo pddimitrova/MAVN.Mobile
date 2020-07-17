@@ -33,7 +33,11 @@ class CampaignRepository {
     double lat,
     String countryCode,
   }) =>
-      _campaignApi.getPopularCampaigns(
+      //TODO switch to actual popular campaigns endpoint
+      _campaignApi.getCampaigns(
+        pageSize: 10,
+        currentPage: 1,
+        radius: 128,
         long: long,
         lat: lat,
         countryCode: countryCode,

@@ -18,6 +18,7 @@ import 'package:lykke_mobile_mavn/feature_home/ui_elements/carousel.dart';
 import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_location/bloc/user_location_bloc_state.dart';
 import 'package:lykke_mobile_mavn/library_bloc/core.dart';
+import 'package:lykke_mobile_mavn/library_ui_components/error/generic_error_widget.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/misc/empty_list_widget.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/misc/material_hero.dart';
 import 'package:lykke_mobile_mavn/library_ui_components/misc/secondary_call_to_action.dart';
@@ -89,6 +90,19 @@ class PopularCampaignsWidget extends HookWidget {
       userLocationBloc.getUserLocation(delay: const Duration(seconds: 2));
     }, [userLocationBloc]);
 
+    void reload() {
+      if (userLocationState is UserLocationLoadedState) {
+        popularCampaignsBloc.loadCampaignsForLocation(
+            lat: userLocationState.userPosition.lat,
+            long: userLocationState.userPosition.long);
+      } else if (partnerCountryState is PartnerCountrySelectedState) {
+        popularCampaignsBloc.loadCampaignsForCountry(
+            countryCode: partnerCountryState.partnerCountry.countryIso3Code);
+      } else {
+        popularCampaignsBloc.loadCampaignsForCountry();
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
@@ -123,45 +137,65 @@ class PopularCampaignsWidget extends HookWidget {
                   userLocationState is UserLocationDoNotUseLocationState) &&
               popularCampaignsState is PopularCampaignsUninitializedState &&
               partnerCountryState is! PartnerCountrySelectedState)
-            Container(
-              height: 200,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: EmptyListWidget(
-                  text: localizedStrings.selectCampaignLocation,
-                  asset: SvgAssets.search,
-                ),
-              ),
+            _buildEmptyWidget(
+              text: localizedStrings.selectCampaignLocation,
+              asset: SvgAssets.search,
             ),
           if (popularCampaignsState is PopularCampaignsLoadingState)
             const Center(child: Spinner()),
+          if (popularCampaignsState is PopularCampaignsErrorState)
+            _buildError(onRetryTap: reload),
           if (popularCampaignsState is PopularCampaignsLoadedState)
-            _buildCarousel(popularCampaignsState, router),
+            _buildLoadedState(
+                popularCampaignsState.campaignList, router, localizedStrings),
         ],
       ),
     );
   }
 
-  Widget _buildCarousel(
-    PopularCampaignsLoadedState popularCampaignsState,
+  Widget _buildLoadedState(
+    List<CampaignResponseModel> campaignList,
     Router router,
-  ) =>
-      Carousel<CampaignResponseModel, CampaignWidget>(
-        dataSet: popularCampaignsState.campaignList,
-        itemBuilder: (item) => MaterialHero(
-          tag: '$_heroTag${item.id}',
-          child: InkWell(
-            onTap: () {
-              router.pushCampaignDetailsPage(
-                campaign: item,
-                heroTag: _heroTag,
-              );
-            },
-            child: CampaignWidget(
-              title: item.name,
-              imageUrl: item.imageUrl,
-              price: item.price,
-            ),
+    LocalizedStrings localizedStrings,
+  ) {
+    if (campaignList.isEmpty) {
+      return _buildEmptyWidget(
+        text: localizedStrings.voucherListEmpty,
+        asset: SvgAssets.voucher,
+      );
+    }
+    return Carousel<CampaignResponseModel, CampaignWidget>(
+      dataSet: campaignList,
+      itemBuilder: (item) => MaterialHero(
+        tag: '$_heroTag${item.id}',
+        child: InkWell(
+          onTap: () {
+            router.pushCampaignDetailsPage(
+              campaign: item,
+              heroTag: _heroTag,
+            );
+          },
+          child: CampaignWidget(
+            title: item.name,
+            imageUrl: item.imageUrl,
+            price: item.price,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildError({VoidCallback onRetryTap}) => GenericErrorWidget(
+        onRetryTap: onRetryTap,
+      );
+
+  Widget _buildEmptyWidget({String text, String asset}) => Container(
+        height: 200,
+        child: FittedBox(
+          fit: BoxFit.contain,
+          child: EmptyListWidget(
+            text: text,
+            asset: asset,
           ),
         ),
       );
