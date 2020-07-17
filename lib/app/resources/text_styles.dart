@@ -45,6 +45,13 @@ class TextStyles {
     decoration: TextDecoration.underline,
   );
 
+  static const TextStyle secondaryCallToAction = TextStyle(
+    color: ColorStyles.resolutionBlue,
+    fontFamily: commonFontFamily,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+  );
+
   static const TextStyle body1BoldDarkHigh = TextStyle(
     color: ColorStyles.charcoalGrey,
     fontFamily: commonFontFamily,

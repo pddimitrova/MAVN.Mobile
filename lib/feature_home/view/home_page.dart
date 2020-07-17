@@ -15,7 +15,7 @@ import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_page_bloc.d
 import 'package:lykke_mobile_mavn/feature_bottom_bar/bloc/bottom_bar_refresh_bloc_output.dart';
 import 'package:lykke_mobile_mavn/feature_home/ui_elements/home_sliver_widget.dart';
 import 'package:lykke_mobile_mavn/feature_home/ui_elements/shortcut/home_shortcut_carousel.dart';
-import 'package:lykke_mobile_mavn/feature_home/view/earn_token_section.dart';
+import 'package:lykke_mobile_mavn/feature_home/view/popular_campaigns_widget.dart';
 import 'package:lykke_mobile_mavn/feature_notification/bloc/notification_count_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_notification/bloc/notification_mark_as_read_bloc.dart';
 import 'package:lykke_mobile_mavn/feature_notification/ui_components/notification_icon_widget.dart';
@@ -148,7 +148,7 @@ class HomePage extends HookWidget {
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 120),
+                    const SizedBox(height: 100),
                     if (!isLoading)
                       Padding(
                         padding: const EdgeInsets.only(top: 24),
@@ -204,13 +204,10 @@ class HomePage extends HookWidget {
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          PopularCampaignsWidget(),
+          const SizedBox(height: 24),
           HomeShortcutCarouselWidget(earnRuleListState: earnRuleListState),
           const SizedBox(height: 24),
-          EarnTokenSection(
-            earnRuleListState: earnRuleListState,
-            router: router,
-            onRetryTap: onErrorRetry,
-          )
         ],
       );
 

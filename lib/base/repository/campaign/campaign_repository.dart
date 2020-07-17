@@ -28,10 +28,21 @@ class CampaignRepository {
         countryCode: countryCode,
       );
 
+  Future<CampaignListResponseModel> getPopularCampaigns({
+    double long,
+    double lat,
+    String countryCode,
+  }) =>
+      _campaignApi.getPopularCampaigns(
+        long: long,
+        lat: lat,
+        countryCode: countryCode,
+      );
+
   Future<CampaignResponseModel> getCampaignDetails({
     @required String id,
   }) =>
-      _campaignApi.getVoucherDetailsById(id);
+      _campaignApi.getCampaignDetailsById(id);
 
   Future<CampaignResponseModel> getCampaignOfDay() =>
       _campaignApi.getCampaignOfDay();

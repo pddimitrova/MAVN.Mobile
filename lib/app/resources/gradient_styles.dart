@@ -17,6 +17,16 @@ class GradientStyles {
     tileMode: TileMode.clamp,
   );
 
+  static final blueGradient = LinearGradient(
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
+    colors: [
+      ColorStyles.resolutionBlue.withOpacity(0.7),
+      ColorStyles.transparent,
+    ],
+    tileMode: TileMode.clamp,
+  );
+
   static final shadowGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
